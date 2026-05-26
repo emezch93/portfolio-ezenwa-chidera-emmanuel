@@ -13,6 +13,878 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --green:        #22c55e;
+      --green-dark:   #16a34a;
+      --green-dim:    rgba(34,197,94,0.08);
+      --green-border: rgba(34,197,94,0.18);
+      --text-primary: #f0f7f2;
+      --text-muted:   rgba(240,247,242,0.65);
+      --text-faint:   rgba(240,247,242,0.45);
+      --bg-dark:      #080e0a;
+      --bg-mid:       #0d1a10;
+      --nav-h:        64px;
+
+      /* Spacing scale */
+      --sp-xs:  0.5rem;
+      --sp-sm:  1rem;
+      --sp-md:  1.5rem;
+      --sp-lg:  2.5rem;
+      --sp-xl:  4rem;
+      --sp-2xl: 5.5rem;
+
+      /* Section vertical rhythm */
+      --section-py: clamp(3.5rem, 7vw, 5.5rem);
+    }
+
+    /* ============================================================
+       GLOBAL RESET — pointer-events on ALL decorative layers
+    ============================================================ */
+    .hero-bg,
+    .hero-overlay,
+    .blob,
+    .blob-1,
+    .blob-2,
+    .blob-3,
+    .particles,
+    .particle,
+    .scroll-indicator,
+    .scroll-indicator *,
+    .highlights-bg-pattern,
+    .cta-bg-pattern,
+    .cta-blobs,
+    .cta-blob,
+    .cta-blob-1,
+    .cta-blob-2,
+    .card-glow {
+      pointer-events: none !important;
+    }
+
+    /* Scroll lock handled in JS — no CSS class needed */
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      z-index: 900;
+      background: rgba(8,14,10,0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--green-border);
+      transition: background 0.3s;
+    }
+
+    .nav-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    /* Logo — always above everything */
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      text-decoration: none;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 950;
+    }
+
+    /* ---- Desktop links ---- */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.1rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: color 0.18s, background 0.18s;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--green);
+      background: var(--green-dim);
+      outline: none;
+    }
+
+    .nav-cta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #071008;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      padding: 0.5rem 1.15rem;
+      border-radius: 8px;
+      text-decoration: none;
+      white-space: nowrap;
+      margin-left: 0.5rem;
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .nav-cta:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    /* ---- Hamburger button ---- */
+    .nav-toggle {
+      /* Hidden on desktop */
+      display: none;
+      position: relative;
+      z-index: 950;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      background: rgba(34,197,94,0.08);
+      border: 1.5px solid rgba(34,197,94,0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      /* No tap flash on mobile */
+      -webkit-tap-highlight-color: transparent;
+      /* Treat entire area as one tap target, no delay */
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .nav-toggle .bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--green);
+      border-radius: 2px;
+      /* pointer-events none so spans never eat the button's events */
+      pointer-events: none;
+      transform-origin: center;
+      transition: transform 0.26s cubic-bezier(.4,0,.2,1),
+                  opacity  0.26s cubic-bezier(.4,0,.2,1),
+                  width    0.26s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* X state */
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(2) {
+      opacity: 0;
+      width: 0;
+    }
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* ============================================================
+       MOBILE MENU  (≤ 900 px)
+    ============================================================ */
+    @media (max-width: 900px) {
+      .nav-toggle { display: flex; }
+
+      /* The menu panel slides down from behind the navbar */
+      .nav-links {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0;
+        right: 0;
+        /* Full-screen minus navbar */
+        height: calc(100dvh - var(--nav-h));
+        /* Fallback for browsers without dvh */
+        max-height: calc(100vh - var(--nav-h));
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 1.5rem 1.25rem 2rem;
+        gap: 0.2rem;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        background: rgba(6,12,8,0.98);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-top: 1px solid var(--green-border);
+        z-index: 890;
+
+        /* Hidden state */
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition:
+          opacity     0.22s cubic-bezier(.4,0,.2,1),
+          transform   0.22s cubic-bezier(.4,0,.2,1),
+          visibility  0s   linear 0.22s;
+
+        /* Crucially: no pointer events while hidden */
+        pointer-events: none;
+      }
+
+      /* Open state — JS adds this class */
+      .nav-links.is-open {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+          opacity   0.22s cubic-bezier(.4,0,.2,1),
+          transform 0.22s cubic-bezier(.4,0,.2,1);
+        pointer-events: auto;
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-link {
+        display: block;
+        width: 100%;
+        padding: 0.85rem 1rem;
+        font-size: 0.98rem;
+        font-weight: 500;
+        color: rgba(255,255,255,0.82);
+        border-radius: 10px;
+        border-bottom: 1px solid rgba(34,197,94,0.07);
+        text-align: left;
+      }
+      .nav-link:active {
+        background: rgba(34,197,94,0.12);
+        color: var(--green);
+      }
+
+      .nav-cta {
+        display: block;
+        width: 100%;
+        margin: 0.75rem 0 0 0;
+        text-align: center;
+        padding: 0.9rem 1rem;
+        border-radius: 10px;
+        font-size: 0.98rem;
+      }
+    }
+
+    /* ============================================================
+       SHARED SECTION SPACING SYSTEM
+    ============================================================ */
+    main section {
+      padding: var(--section-py) 0;
+    }
+
+    /* Hero overrides — handled by style.css / hero-specific styles */
+    #hero {
+      padding: 0;
+    }
+
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 4vw, 2rem);
+    }
+
+    /* Consistent section header block */
+    .section-header {
+      text-align: center;
+      margin-bottom: clamp(2rem, 4vw, 3rem);
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: rgba(34,197,94,0.09);
+      border: 1px solid rgba(34,197,94,0.22);
+      padding: 0.28rem 0.85rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+    .section-tag.light { color: var(--green); }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.55rem, 3.5vw, 2.35rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin: 0 0 0.6rem;
+    }
+    .section-title.light { color: var(--text-primary); }
+
+    .section-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .section-sub.light { color: var(--text-muted); }
+
+    /* ============================================================
+       SECTION BACKGROUNDS
+    ============================================================ */
+    #about-sweep,
+    #programs,
+    #contact-section {
+      background: var(--bg-dark);
+      position: relative;
+    }
+
+    #about-festival,
+    #get-involved {
+      background: var(--bg-mid);
+      position: relative;
+    }
+
+    /* Subtle grid texture */
+    #about-sweep::after,
+    #programs::after,
+    #contact-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(34,197,94,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,197,94,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #about-sweep > *,
+    #programs > *,
+    #contact-section > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================================
+       REVEAL ANIMATIONS
+    ============================================================ */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal-card {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal-up.visible,
+    .reveal-card.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Stagger children in grids */
+    .reveal-card:nth-child(2) { transition-delay: 0.07s; }
+    .reveal-card:nth-child(3) { transition-delay: 0.14s; }
+    .reveal-card:nth-child(4) { transition-delay: 0.21s; }
+    .reveal-card:nth-child(5) { transition-delay: 0.28s; }
+    .reveal-card:nth-child(6) { transition-delay: 0.35s; }
+
+    /* ============================================================
+       ABOUT SWEEP
+    ============================================================ */
+    .sweep-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .sweep-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(34,197,94,0.09);
+      border: 1px solid rgba(34,197,94,0.22);
+      color: var(--green);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.85rem;
+      border-radius: 100px;
+      margin-bottom: 1.1rem;
+    }
+
+    .sweep-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.22;
+      margin: 0 0 1.25rem;
+    }
+    .sweep-heading em {
+      font-style: normal;
+      color: var(--green);
+    }
+
+    .sweep-body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.96rem;
+      line-height: 1.82;
+      color: var(--text-muted);
+    }
+    .sweep-body p + p { margin-top: 0.95rem; }
+
+    .sweep-stat-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .sweep-stat-item {
+      background: rgba(34,197,94,0.04);
+      border: 1px solid var(--green-border);
+      border-radius: 14px;
+      padding: 1.1rem 1.35rem;
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .sweep-stat-item:hover {
+      border-color: rgba(34,197,94,0.38);
+      background: rgba(34,197,94,0.08);
+    }
+    .sweep-stat-item .s-icon {
+      font-size: 1.45rem;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .sweep-stat-item strong {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 0.22rem;
+    }
+    .sweep-stat-item span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    @media (max-width: 720px) {
+      .sweep-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       ABOUT FESTIVAL
+    ============================================================ */
+    .festival-intro {
+      max-width: 760px;
+      margin: 0 auto clamp(2rem, 4vw, 3rem);
+      text-align: center;
+    }
+    .festival-intro p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      line-height: 1.82;
+      color: var(--text-muted);
+      margin-top: 0.9rem;
+    }
+
+    .sub-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.1rem;
+      display: block;
+    }
+
+    .why-matters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .wm-card {
+      background: rgba(34,197,94,0.04);
+      border: 1px solid var(--green-border);
+      border-radius: 14px;
+      padding: 1.35rem 1.25rem;
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+    }
+    .wm-card:hover {
+      background: rgba(34,197,94,0.08);
+      border-color: rgba(34,197,94,0.35);
+      transform: translateY(-3px);
+    }
+    .wm-card .wm-icon { font-size: 1.6rem; margin-bottom: 0.65rem; }
+    .wm-card h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 0.35rem;
+    }
+    .wm-card p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* ============================================================
+       PROGRAMS
+    ============================================================ */
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.35rem;
+    }
+
+    .program-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(34,197,94,0.12);
+      border-radius: 16px;
+      padding: 1.75rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    }
+    .program-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), var(--green-dark));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .program-card:hover {
+      border-color: rgba(34,197,94,0.32);
+      background: rgba(34,197,94,0.055);
+      transform: translateY(-4px);
+    }
+    .program-card:hover::before { opacity: 1; }
+
+    .program-card .p-icon { font-size: 1.85rem; margin-bottom: 0.85rem; display: block; }
+    .program-card .p-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.55rem;
+      display: block;
+    }
+    .program-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 0.65rem;
+    }
+    .program-card p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.72;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .who-attend-banner {
+      margin-top: clamp(2rem, 4vw, 3rem);
+      background: rgba(34,197,94,0.05);
+      border: 1px solid rgba(34,197,94,0.16);
+      border-radius: 16px;
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+    }
+    .who-attend-banner h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green);
+      margin: 0 0 1rem;
+    }
+    .who-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+    .who-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      padding: 0.38rem 0.9rem;
+      border-radius: 100px;
+      background: rgba(34,197,94,0.07);
+      border: 1px solid rgba(34,197,94,0.2);
+      color: rgba(240,247,242,0.8);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       GET INVOLVED
+    ============================================================ */
+    .involved-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.35rem;
+    }
+
+    .inv-card {
+      border-radius: 18px;
+      padding: clamp(1.5rem, 3vw, 2.1rem);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transition: transform 0.28s;
+    }
+    .inv-card:hover { transform: translateY(-5px); }
+
+    .inv-card.exhibit {
+      background: linear-gradient(140deg, rgba(34,197,94,0.11), rgba(22,163,74,0.04));
+      border: 1.5px solid rgba(34,197,94,0.28);
+    }
+    .inv-card.partner {
+      background: linear-gradient(140deg, rgba(234,179,8,0.09), rgba(161,98,7,0.03));
+      border: 1.5px solid rgba(234,179,8,0.22);
+    }
+    .inv-card.attend {
+      background: linear-gradient(140deg, rgba(99,102,241,0.09), rgba(67,56,202,0.03));
+      border: 1.5px solid rgba(99,102,241,0.22);
+    }
+
+    .inv-card .inv-icon { font-size: 2rem; }
+    .inv-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    .inv-card p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin: 0;
+      flex: 1;
+    }
+    .inv-btn {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity 0.18s, transform 0.18s;
+      align-self: flex-start;
+    }
+    .inv-btn:hover { opacity: 0.82; transform: translateY(-1px); }
+    .inv-card.exhibit .inv-btn { background: rgba(34,197,94,0.18); color: var(--green); border: 1px solid rgba(34,197,94,0.32); }
+    .inv-card.partner .inv-btn { background: rgba(234,179,8,0.14); color: #eab308; border: 1px solid rgba(234,179,8,0.28); }
+    .inv-card.attend  .inv-btn { background: rgba(99,102,241,0.14); color: #818cf8; border: 1px solid rgba(99,102,241,0.28); }
+
+    @media (max-width: 720px) {
+      .involved-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       CONTACT SECTION
+    ============================================================ */
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 3.5rem);
+      align-items: start;
+    }
+
+    .contact-info-col > p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.96rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin: 0 0 1.75rem;
+    }
+
+    .contact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .ci-item {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      background: rgba(34,197,94,0.04);
+      border: 1px solid var(--green-border);
+      border-radius: 11px;
+      padding: 0.9rem 1.1rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.22s, border-color 0.22s;
+    }
+    .ci-item:hover {
+      background: rgba(34,197,94,0.09);
+      border-color: rgba(34,197,94,0.28);
+    }
+    .ci-icon { font-size: 1.25rem; flex-shrink: 0; }
+    .ci-item strong {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--green);
+      margin-bottom: 0.18rem;
+    }
+    .ci-item span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(240,247,242,0.78);
+    }
+
+    .contact-form-box {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(34,197,94,0.12);
+      border-radius: 18px;
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+    }
+    .contact-form-box h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 1.35rem;
+    }
+
+    .fg { margin-bottom: 1rem; }
+    .fg label {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-faint);
+      margin-bottom: 0.35rem;
+    }
+    .fg input,
+    .fg select,
+    .fg textarea {
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(34,197,94,0.03);
+      border: 1px solid rgba(34,197,94,0.18);
+      border-radius: 8px;
+      padding: 0.65rem 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.18s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .fg input:focus,
+    .fg select:focus,
+    .fg textarea:focus {
+      border-color: rgba(34,197,94,0.48);
+    }
+    .fg textarea {
+      resize: vertical;
+      min-height: 86px;
+    }
+    .fg select option { background: #0d1a10; }
+
+    .form-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #071008;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.82rem 1.5rem;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      margin-top: 0.25rem;
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    @media (max-width: 720px) {
+      .contact-wrap { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       MOBILE GLOBAL SPACING FIXES
+    ============================================================ */
+    @media (max-width: 600px) {
+      :root {
+        --section-py: 3rem;
+      }
+
+      .section-header { margin-bottom: 1.75rem; }
+
+      .who-attend-banner {
+        padding: 1.25rem;
+      }
+      .who-tag {
+        font-size: 0.78rem;
+        padding: 0.32rem 0.75rem;
+      }
+
+      .sweep-stat-item { padding: 0.9rem 1rem; }
+
+      .program-card { padding: 1.35rem 1.15rem; }
+
+      .contact-form-box { padding: 1.25rem; }
+    }
+
+    /* ============================================================
+       HERO PADDING TOP fix (account for fixed navbar)
+    ============================================================ */
+    #hero { padding-top: var(--nav-h) !important; }
+  </style>
 </head>
 <body>
 
@@ -28,25 +900,31 @@
   <header id="navbar" role="banner">
     <nav class="nav-container" aria-label="Main navigation">
 
-      <a href="#hero" class="nav-logo" aria-label="Anambra Green Fest Home">
-        <span class="logo-leaf">🌱</span>
-        <span class="logo-text">AnambraGreenFest</span>
+      <a href="#hero" class="nav-logo" target="_self" aria-label="Anambra Green Fest Home">
+        <span aria-hidden="true">🌱</span>
+        <span>AnambraGreenFest</span>
       </a>
 
+      <!-- Hamburger — type="button" prevents any form-submit side effects -->
       <button
-        class="nav-toggle"
         id="navToggle"
-        aria-label="Toggle menu"
+        class="nav-toggle"
+        type="button"
+        aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="navLinks">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
       </button>
 
-      <ul class="nav-links" id="navLinks" role="list">
-        <li><a href="#why-attend" class="nav-link">Why Attend</a></li>
-        <li><a href="#highlights" class="nav-link">Highlights</a></li>
+      <ul id="navLinks" class="nav-links" role="list" aria-label="Site navigation">
+        <li><a href="#about-sweep"     class="nav-link" target="_self">About SWEEP</a></li>
+        <li><a href="#about-festival"  class="nav-link" target="_self">About Festival</a></li>
+        <li><a href="#programs"        class="nav-link" target="_self">Programs</a></li>
+        <li><a href="#why-attend"      class="nav-link" target="_self">Why Attend</a></li>
+        <li><a href="#get-involved"    class="nav-link" target="_self">Get Involved</a></li>
+        <li><a href="#contact-section" class="nav-link" target="_self">Contact</a></li>
         <li>
           <a href="https://forms.gle/qYZwyTAoeqimoVk27"
              class="nav-cta"
@@ -60,21 +938,18 @@
     </nav>
   </header>
 
-  <!-- ==================== MAIN CONTENT ==================== -->
+  <!-- ==================== MAIN ==================== -->
   <main>
 
-    <!-- ===== HERO SECTION ===== -->
+    <!-- ===== HERO ===== -->
     <section id="hero" aria-label="Hero">
 
-      <div class="hero-bg" role="img" aria-label="Sustainability and green enterprise scene"></div>
-      <div class="hero-overlay"></div>
+      <div class="hero-bg"      role="img" aria-label="Sustainability and green enterprise scene"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="blob blob-1"  aria-hidden="true"></div>
+      <div class="blob blob-2"  aria-hidden="true"></div>
+      <div class="blob blob-3"  aria-hidden="true"></div>
 
-      <!-- Floating background blobs -->
-      <div class="blob blob-1" aria-hidden="true"></div>
-      <div class="blob blob-2" aria-hidden="true"></div>
-      <div class="blob blob-3" aria-hidden="true"></div>
-
-      <!-- Floating leaf particles -->
       <div class="particles" aria-hidden="true">
         <span class="particle">🌿</span>
         <span class="particle">♻️</span>
@@ -115,54 +990,123 @@
         </div>
 
         <div class="hero-ctas reveal-up">
-          <a href="https://forms.gle/qYZwyTAoeqimoVk27"
-             class="btn btn-primary"
-             target="_blank"
-             rel="noopener noreferrer">
-            Register Free
-          </a>
-          <a href="#exhibitor" class="btn btn-outline">Become an Exhibitor</a>
+          <a href="https://forms.gle/qYZwyTAoeqimoVk27" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Register Free</a>
+          <a href="#get-involved" class="btn btn-outline" target="_self">Become an Exhibitor</a>
           <a href="mailto:info@anambragreenfest.ng?subject=Send%20Me%20the%20Festival%20Program&body=Hello%2C%0A%0APlease%20send%20me%20the%20AnambraGreenFest%202026%20festival%20program.%0A%0AMy%20Name%3A%0AMy%20Phone%3A"
-             class="btn btn-ghost"
-             aria-label="Request Festival Program"
-             target="_blank">
-            📩 Request Program
-          </a>
+             class="btn btn-ghost" target="_blank">📩 Request Program</a>
         </div>
 
-        <!-- COUNTDOWN TIMER -->
+        <!-- COUNTDOWN -->
         <div class="countdown-wrap reveal-up" aria-label="Countdown to event">
           <p class="countdown-label" id="countdownLabel">Event starts in</p>
           <div class="countdown" id="countdown">
-            <div class="countdown-item">
-              <span class="count-num" id="days">00</span>
-              <span class="count-label">Days</span>
-            </div>
+            <div class="countdown-item"><span class="count-num" id="days">00</span><span class="count-label">Days</span></div>
             <div class="countdown-sep" aria-hidden="true">:</div>
-            <div class="countdown-item">
-              <span class="count-num" id="hours">00</span>
-              <span class="count-label">Hours</span>
-            </div>
+            <div class="countdown-item"><span class="count-num" id="hours">00</span><span class="count-label">Hours</span></div>
             <div class="countdown-sep" aria-hidden="true">:</div>
-            <div class="countdown-item">
-              <span class="count-num" id="minutes">00</span>
-              <span class="count-label">Minutes</span>
-            </div>
+            <div class="countdown-item"><span class="count-num" id="minutes">00</span><span class="count-label">Minutes</span></div>
             <div class="countdown-sep" aria-hidden="true">:</div>
-            <div class="countdown-item">
-              <span class="count-num" id="seconds">00</span>
-              <span class="count-label">Seconds</span>
-            </div>
+            <div class="countdown-item"><span class="count-num" id="seconds">00</span><span class="count-label">Seconds</span></div>
           </div>
-          <!-- Shown when event is live or has passed -->
           <p class="countdown-message" id="countdownMessage" style="display:none;"></p>
         </div>
 
-        <!-- Scroll indicator -->
         <div class="scroll-indicator reveal-up" aria-hidden="true">
           <span>Scroll</span>
-          <div class="scroll-line">
-            <div class="scroll-dot"></div>
+          <div class="scroll-line"><div class="scroll-dot"></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== ABOUT SWEEP ===== -->
+    <section id="about-sweep" aria-labelledby="sweep-title">
+      <div class="section-container">
+        <div class="sweep-layout">
+
+          <div class="sweep-text reveal-up">
+            <div class="sweep-badge">🌍 SWEEP Foundation NG</div>
+            <h2 id="sweep-title" class="sweep-heading">
+              Building a <em>Circular Economy</em><br>in Anambra Since 2020
+            </h2>
+            <div class="sweep-body">
+              <p>SWEEP Foundation NG has been active in Anambra State since 2020, working closely with the Ministry of Environment, local government authorities, and community groups to build practical solutions for waste management and the circular economy.</p>
+              <p>The Foundation's state presence is anchored through the Anambra Waste Recyclers Association (AWRA), which it helped establish in 2021 — positioning Anambra as a recognized hub for grassroots waste recovery and green enterprise development in Southeast Nigeria.</p>
+              <p>Our approach remains partnership-driven, focused on delivering measurable economic opportunities while reducing environmental pollution across the state through field engagement in Awka, Onitsha, Nnewi, and other LGAs.</p>
+            </div>
+          </div>
+
+          <div class="sweep-stat-col reveal-card">
+            <div class="sweep-stat-item">
+              <span class="s-icon">🏭</span>
+              <div>
+                <strong>Cooperative Formation</strong>
+                <span>Organizing traders and recyclers into structured cooperatives with safe-handling training and value-addition on recyclables.</span>
+              </div>
+            </div>
+            <div class="sweep-stat-item">
+              <span class="s-icon">🔗</span>
+              <div>
+                <strong>Market Linkages</strong>
+                <span>Direct connections between waste aggregators and manufacturers who need recycled plastic, organic, and metal materials.</span>
+              </div>
+            </div>
+            <div class="sweep-stat-item">
+              <span class="s-icon">🏛️</span>
+              <div>
+                <strong>Policy Dialogues</strong>
+                <span>Facilitated policy engagement aligning state environmental goals with informal sector realities.</span>
+              </div>
+            </div>
+            <div class="sweep-stat-item">
+              <span class="s-icon">🎯</span>
+              <div>
+                <strong>Flagship Events</strong>
+                <span>Annual programs including the Anambra Green Enterprise and Circular Economy Festival for World Environment Day.</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT FESTIVAL ===== -->
+    <section id="about-festival" aria-labelledby="festival-title">
+      <div class="section-container">
+
+        <div class="section-header">
+          <span class="section-tag">About the Festival</span>
+          <h2 id="festival-title" class="section-title">Anambra's Flagship Green Event</h2>
+        </div>
+
+        <div class="festival-intro reveal-up">
+          <p>The <strong>Anambra Green Enterprise and Circular Economy Festival</strong> is Anambra State's flagship event for World Environment Day 2026. It brings together traders, artisans, green entrepreneurs, manufacturers, investors, and policymakers to showcase practical solutions for waste-to-wealth, renewable energy, and sustainable production.</p>
+          <p>Scheduled for <strong>5th June 2026</strong> at the Prof. Dora Akunyili Women Development Centre, Awka, the Festival features exhibitions, business linkages, and policy dialogues designed to turn green ideas into viable enterprises — giving Anambra's MSMEs direct access to markets, finance, and partnerships.</p>
+        </div>
+
+        <span class="sub-label reveal-up">Why It Matters</span>
+
+        <div class="why-matters-grid">
+          <div class="wm-card reveal-card">
+            <div class="wm-icon">🛒</div>
+            <h4>Opens New Markets</h4>
+            <p>New channels for recycled products, eco-friendly goods, and renewable energy solutions.</p>
+          </div>
+          <div class="wm-card reveal-card">
+            <div class="wm-icon">🔗</div>
+            <h4>Business Connections</h4>
+            <p>Linking local enterprises directly with manufacturers who need recycled material inputs.</p>
+          </div>
+          <div class="wm-card reveal-card">
+            <div class="wm-icon">📖</div>
+            <h4>Practical Training</h4>
+            <p>Hands-on workshops on profitable green business models, financing, and market access.</p>
+          </div>
+          <div class="wm-card reveal-card">
+            <div class="wm-icon">💸</div>
+            <h4>Investor Access</h4>
+            <p>Direct linkages between producers, buyers, and investors to fund and scale green enterprise.</p>
           </div>
         </div>
 
@@ -180,40 +1124,36 @@
         </div>
 
         <div class="why-grid">
-
           <article class="why-card glass reveal-card" tabindex="0">
             <div class="why-icon" aria-hidden="true">🤝</div>
             <h3>Network &amp; Sell</h3>
             <p>Meet buyers, manufacturers, NGOs, and investors looking for green solutions.</p>
             <div class="card-glow" aria-hidden="true"></div>
           </article>
-
           <article class="why-card glass reveal-card" tabindex="0">
             <div class="why-icon" aria-hidden="true">📚</div>
             <h3>Learn &amp; Grow</h3>
             <p>Practical workshops on recycling, renewable energy, upcycling, and green funding.</p>
             <div class="card-glow" aria-hidden="true"></div>
           </article>
-
           <article class="why-card glass reveal-card" tabindex="0">
             <div class="why-icon" aria-hidden="true">🏆</div>
             <h3>Showcase Your Work</h3>
             <p>Exhibition spaces for green startups, enterprises, and innovators.</p>
             <div class="card-glow" aria-hidden="true"></div>
           </article>
-
           <article class="why-card glass reveal-card" tabindex="0">
             <div class="why-icon" aria-hidden="true">💰</div>
             <h3>Win &amp; Get Funded</h3>
             <p>Pitch competitions, investor access, and funding opportunities await you.</p>
             <div class="card-glow" aria-hidden="true"></div>
           </article>
-
         </div>
+
       </div>
     </section>
 
-    <!-- ===== EVENT HIGHLIGHTS / STATS ===== -->
+    <!-- ===== HIGHLIGHTS / STATS ===== -->
     <section id="highlights" class="dark-section" aria-labelledby="highlights-title">
       <div class="highlights-bg-pattern" aria-hidden="true"></div>
       <div class="section-container">
@@ -225,32 +1165,80 @@
         </div>
 
         <div class="stats-grid">
-
           <div class="stat-card reveal-card" tabindex="0">
             <div class="stat-icon" aria-hidden="true">🎤</div>
             <span class="stat-num" data-target="20">0</span><span class="stat-plus">+</span>
             <span class="stat-label">Expert Speakers</span>
           </div>
-
           <div class="stat-card reveal-card" tabindex="0">
             <div class="stat-icon" aria-hidden="true">🏭</div>
-            <span class="stat-num" data-target="50">0</span><span class="stat-plus">+</span>
+            <span class="stat-num" data-target="100">0</span><span class="stat-plus">+</span>
             <span class="stat-label">Exhibitors</span>
           </div>
-
           <div class="stat-card reveal-card" tabindex="0">
             <div class="stat-icon" aria-hidden="true">👥</div>
             <span class="stat-num" data-target="2000">0</span><span class="stat-plus">+</span>
             <span class="stat-label">Attendees Expected</span>
           </div>
-
           <div class="stat-card reveal-card" tabindex="0">
             <div class="stat-icon" aria-hidden="true">💡</div>
             <span class="stat-num" data-target="15">0</span><span class="stat-plus">+</span>
             <span class="stat-label">Live Demos</span>
           </div>
-
         </div>
+
+      </div>
+    </section>
+
+    <!-- ===== PROGRAMS ===== -->
+    <section id="programs" aria-labelledby="programs-title">
+      <div class="section-container">
+
+        <div class="section-header">
+          <span class="section-tag">Programs &amp; Activities</span>
+          <h2 id="programs-title" class="section-title">What's Happening at the Festival</h2>
+          <p class="section-sub">Four high-impact tracks designed for real business outcomes</p>
+        </div>
+
+        <div class="programs-grid">
+          <div class="program-card reveal-card">
+            <span class="p-icon">🏪</span>
+            <span class="p-num">01 — Exhibition</span>
+            <h3>Exhibition &amp; Marketplace</h3>
+            <p>Over 100 MSMEs will exhibit recycled crafts, organic fertilizers, solar products, eco-packaging, and upcycled goods to buyers and investors.</p>
+          </div>
+          <div class="program-card reveal-card">
+            <span class="p-icon">🤝</span>
+            <span class="p-num">02 — Linkages</span>
+            <h3>Business Linkage Sessions</h3>
+            <p>Structured meetings between manufacturers, waste aggregators, and traders to negotiate supply agreements for recyclables and green products.</p>
+          </div>
+          <div class="program-card reveal-card">
+            <span class="p-icon">💡</span>
+            <span class="p-num">03 — Knowledge</span>
+            <h3>Knowledge Exchange</h3>
+            <p>Short, practical sessions on financing for green MSMEs, compliance, product design, and market access in the circular economy.</p>
+          </div>
+          <div class="program-card reveal-card">
+            <span class="p-icon">🏛️</span>
+            <span class="p-num">04 — Policy</span>
+            <h3>Policy Dialogue</h3>
+            <p>A high-level session with the Ministry of Environment, LGAs, and private sector leaders on policies that support green enterprise growth in Anambra.</p>
+          </div>
+        </div>
+
+        <div class="who-attend-banner reveal-up">
+          <h3>Who Should Attend</h3>
+          <div class="who-tags">
+            <span class="who-tag">♻️ Traders &amp; Artisans</span>
+            <span class="who-tag">🌱 Green MSMEs &amp; Startups</span>
+            <span class="who-tag">🏭 Manufacturers</span>
+            <span class="who-tag">💼 Investors &amp; Development Partners</span>
+            <span class="who-tag">🏛️ Government &amp; LGAs</span>
+            <span class="who-tag">🎓 Students &amp; Researchers</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -265,61 +1253,40 @@
         </div>
 
         <div class="who-grid">
-
           <div class="who-card reveal-card" tabindex="0">
             <div class="who-icon" aria-hidden="true">♻️</div>
             <h3>Waste Recyclers</h3>
             <p>Connect with buyers and learn profitable recycling models</p>
           </div>
-
           <div class="who-card reveal-card" tabindex="0">
             <div class="who-icon" aria-hidden="true">🌱</div>
             <h3>Green Entrepreneurs</h3>
             <p>Scale your sustainable business with funding and networks</p>
           </div>
-
           <div class="who-card reveal-card" tabindex="0">
             <div class="who-icon" aria-hidden="true">🛠️</div>
             <h3>Eco-Product Makers</h3>
             <p>Exhibit and sell your sustainable products to a ready market</p>
           </div>
-
           <div class="who-card reveal-card" tabindex="0">
             <div class="who-icon" aria-hidden="true">🎓</div>
             <h3>Students &amp; Researchers</h3>
             <p>Learn, present your work, and find mentorship opportunities</p>
           </div>
-
           <div class="who-card reveal-card" tabindex="0">
             <div class="who-icon" aria-hidden="true">🌍</div>
             <h3>NGOs &amp; Investors</h3>
             <p>Discover and fund the next generation of green enterprises</p>
           </div>
-
           <div class="who-card reveal-card" tabindex="0">
             <div class="who-icon" aria-hidden="true">🏛️</div>
             <h3>Policymakers &amp; Government</h3>
             <p>Shape Anambra's green economy with evidence and partnerships</p>
           </div>
-
         </div>
+
       </div>
     </section>
-
-    <!-- ===== SPEAKERS — uncomment when speakers are confirmed =====
-    <section id="speakers" class="dark-section" aria-labelledby="speakers-title">
-      <div class="section-container">
-        <div class="section-header light">
-          <span class="section-tag light">Speakers</span>
-          <h2 id="speakers-title" class="section-title light">Featured Speakers</h2>
-          <p class="section-sub light">Industry leaders shaping Nigeria's green economy</p>
-        </div>
-        <div class="speakers-grid">
-          Speaker cards go here
-        </div>
-      </div>
-    </section>
-    ===== END SPEAKERS ===== -->
 
     <!-- ===== PARTNERS CAROUSEL ===== -->
     <section id="partners" class="dark-section" aria-labelledby="partners-title">
@@ -332,49 +1299,21 @@
 
         <div class="carousel-track-wrap" aria-label="Partner logos carousel">
           <div class="carousel-track" id="carouselTrack">
-
-            <!-- SET 1 — real logos -->
-            <div class="partner-logo-card" aria-label="EarthServe Incorporated">
-              <img src="IMG-20260517-WA0009.jpg" alt="EarthServe Incorporated" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="SWEEP">
-              <img src="IMG-20260517-WA0011.jpg" alt="SWEEP" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Ministry of Environment – Anambra State">
-              <img src="IMG-20260517-WA0014.jpg" alt="Ministry of Environment – Anambra State" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="The Green Campus Project">
-              <img src="IMG-20260517-WA0008.jpg" alt="The Green Campus Project" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="CityScope Africa">
-              <img src="IMG-20260517-WA0012.jpg" alt="CityScope Africa" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="The Coca-Cola Company">
-              <img src="IMG-20260517-WA0013.jpg" alt="The Coca-Cola Company" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Waste in the City">
-              <img src="IMG-20260517-WA0015.jpg" alt="Waste in the City" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Global Goals Games">
-              <img src="IMG-20260517-WA0010.jpg" alt="Global Goals Games for Sustainable Development" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Dream and Pathway Aid Foundation – DPAF">
-              <img src="IMG-20260517-WA0007.jpg" alt="Dream and Pathway Aid Foundation – DPAF" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Anambra Waste Recyclers Association – AWRA">
-              <img src="IMG-20260517-WA0005.jpg" alt="Anambra Waste Recyclers Association – AWRA" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Green Vault">
-              <img src="IMG-20260517-WA0006.jpg" alt="Green Vault – Digital Waste-to-Capital Cooperative" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Government of Anambra State">
-              <img src="IMG-20260517-WA0004.jpg" alt="Government of Anambra State" loading="lazy" />
-            </div>
-            <div class="partner-logo-card" aria-label="Anambra Green Enterprise Festival">
-              <img src="IMG-20260517-WA0003.jpg" alt="Anambra Green Enterprise & Circular Economy Festival" loading="lazy" />
-            </div>
-
-            <!-- SET 2 — seamless loop duplicates (hidden from screen readers) -->
+            <!-- Set 1 -->
+            <div class="partner-logo-card" aria-label="EarthServe Incorporated"><img src="IMG-20260517-WA0009.jpg" alt="EarthServe Incorporated" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="SWEEP"><img src="IMG-20260517-WA0011.jpg" alt="SWEEP" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Ministry of Environment Anambra State"><img src="IMG-20260517-WA0014.jpg" alt="Ministry of Environment – Anambra State" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="The Green Campus Project"><img src="IMG-20260517-WA0008.jpg" alt="The Green Campus Project" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="CityScope Africa"><img src="IMG-20260517-WA0012.jpg" alt="CityScope Africa" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="The Coca-Cola Company"><img src="IMG-20260517-WA0013.jpg" alt="The Coca-Cola Company" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Waste in the City"><img src="IMG-20260517-WA0015.jpg" alt="Waste in the City" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Global Goals Games"><img src="IMG-20260517-WA0010.jpg" alt="Global Goals Games for Sustainable Development" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Dream and Pathway Aid Foundation"><img src="IMG-20260517-WA0007.jpg" alt="Dream and Pathway Aid Foundation – DPAF" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Anambra Waste Recyclers Association"><img src="IMG-20260517-WA0005.jpg" alt="Anambra Waste Recyclers Association – AWRA" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Green Vault"><img src="IMG-20260517-WA0006.jpg" alt="Green Vault" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Government of Anambra State"><img src="IMG-20260517-WA0004.jpg" alt="Government of Anambra State" loading="lazy" /></div>
+            <div class="partner-logo-card" aria-label="Anambra Green Enterprise Festival"><img src="IMG-20260517-WA0003.jpg" alt="Anambra Green Enterprise & Circular Economy Festival" loading="lazy" /></div>
+            <!-- Set 2 — seamless loop clone -->
             <div class="partner-logo-card" aria-hidden="true"><img src="IMG-20260517-WA0009.jpg" alt="" loading="lazy" /></div>
             <div class="partner-logo-card" aria-hidden="true"><img src="IMG-20260517-WA0011.jpg" alt="" loading="lazy" /></div>
             <div class="partner-logo-card" aria-hidden="true"><img src="IMG-20260517-WA0014.jpg" alt="" loading="lazy" /></div>
@@ -388,41 +1327,11 @@
             <div class="partner-logo-card" aria-hidden="true"><img src="IMG-20260517-WA0006.jpg" alt="" loading="lazy" /></div>
             <div class="partner-logo-card" aria-hidden="true"><img src="IMG-20260517-WA0004.jpg" alt="" loading="lazy" /></div>
             <div class="partner-logo-card" aria-hidden="true"><img src="IMG-20260517-WA0003.jpg" alt="" loading="lazy" /></div>
-
           </div>
         </div>
 
       </div>
     </section>
-
-    <!-- ===== GALLERY — uncomment when impact photos are received =====
-    <section id="gallery" aria-labelledby="gallery-title">
-      <div class="section-container">
-        <div class="section-header">
-          <span class="section-tag">Impact</span>
-          <h2 id="gallery-title" class="section-title">Green Impact In Action</h2>
-          <p class="section-sub">A snapshot of the movement we're building</p>
-        </div>
-        <div class="masonry-grid">
-          <div class="masonry-item tall reveal-card">
-            <img src="impact1.jpg" alt="Recycling Initiatives" style="width:100%; height:100%; object-fit:cover; border-radius:18px;" />
-          </div>
-          <div class="masonry-item reveal-card">
-            <img src="impact2.jpg" alt="Green Businesses" style="width:100%; height:100%; object-fit:cover; border-radius:18px;" />
-          </div>
-          <div class="masonry-item reveal-card">
-            <img src="impact3.jpg" alt="Youth Participation" style="width:100%; height:100%; object-fit:cover; border-radius:18px;" />
-          </div>
-          <div class="masonry-item wide reveal-card">
-            <img src="impact4.jpg" alt="Renewable Energy" style="width:100%; height:100%; object-fit:cover; border-radius:18px;" />
-          </div>
-          <div class="masonry-item reveal-card">
-            <img src="impact5.jpg" alt="Sustainability Projects" style="width:100%; height:100%; object-fit:cover; border-radius:18px;" />
-          </div>
-        </div>
-      </div>
-    </section>
-    ===== END GALLERY ===== -->
 
     <!-- ===== TESTIMONIALS ===== -->
     <section id="testimonials" class="dark-section" aria-labelledby="testimonials-title">
@@ -435,75 +1344,85 @@
         </div>
 
         <div class="testimonials-grid">
-
           <article class="testimonial-card glass reveal-card" tabindex="0">
             <div class="quote-mark" aria-hidden="true">"</div>
-            <blockquote>
-              <p>"This festival gave my recycling business the visibility it needed. I secured two major contracts just from networking at the event."</p>
-            </blockquote>
+            <blockquote><p>"This festival gave my recycling business the visibility it needed. I secured two major contracts just from networking at the event."</p></blockquote>
             <footer class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">JO</div>
-              <div>
-                <strong>James Okafor</strong>
-                <span>Founder, GreenLoop Recyclers, Onitsha</span>
-              </div>
+              <div><strong>James Okafor</strong><span>Founder, GreenLoop Recyclers, Onitsha</span></div>
             </footer>
           </article>
-
           <article class="testimonial-card glass reveal-card" tabindex="0">
             <div class="quote-mark" aria-hidden="true">"</div>
-            <blockquote>
-              <p>"As an environmental advocate, this is the most impactful sustainability gathering I've attended in Nigeria. Truly transformative."</p>
-            </blockquote>
+            <blockquote><p>"As an environmental advocate, this is the most impactful sustainability gathering I've attended in Nigeria. Truly transformative."</p></blockquote>
             <footer class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">AI</div>
-              <div>
-                <strong>Adaeze Ifeoma</strong>
-                <span>Environmental Advocate &amp; NGO Lead</span>
-              </div>
+              <div><strong>Adaeze Ifeoma</strong><span>Environmental Advocate &amp; NGO Lead</span></div>
             </footer>
           </article>
-
           <article class="testimonial-card glass reveal-card" tabindex="0">
             <div class="quote-mark" aria-hidden="true">"</div>
-            <blockquote>
-              <p>"I came as a student and left with a startup idea, a mentor, and a grant application in progress. This event changes lives."</p>
-            </blockquote>
+            <blockquote><p>"I came as a student and left with a startup idea, a mentor, and a grant application in progress. This event changes lives."</p></blockquote>
             <footer class="testimonial-author">
               <div class="author-avatar" aria-hidden="true">CN</div>
-              <div>
-                <strong>Chidi Nwosu</strong>
-                <span>Student, Nnamdi Azikiwe University</span>
-              </div>
+              <div><strong>Chidi Nwosu</strong><span>Student, Nnamdi Azikiwe University</span></div>
             </footer>
           </article>
-
         </div>
+
       </div>
     </section>
 
-    <!-- ===== EXHIBITOR SECTION ===== -->
+    <!-- ===== GET INVOLVED ===== -->
+    <section id="get-involved" aria-labelledby="involved-title">
+      <div class="section-container">
+
+        <div class="section-header">
+          <span class="section-tag">Get Involved</span>
+          <h2 id="involved-title" class="section-title">Join the Movement</h2>
+          <p class="section-sub">Three ways to be part of Anambra's green transition</p>
+        </div>
+
+        <div class="involved-grid">
+          <div class="inv-card exhibit reveal-card">
+            <span class="inv-icon">🏪</span>
+            <h3>Exhibit</h3>
+            <p>Reserve an affordable booth to showcase your products to over 1,000 attendees, buyers, and investors in one place.</p>
+            <a href="mailto:info@anambragreenfest.ng?subject=Exhibitor%20Application%20%E2%80%94%20AnambraGreenFest%202026&body=Full%20Name%3A%0A%0AOrganization%2FBusiness%20Name%3A%0A%0AProduct%2FService%20Category%3A%0A%0APhone%20Number%3A%0A%0APreferred%20Booth%20Size%3A%0A%0AAnything%20else%3A" class="inv-btn" target="_blank">Apply for Booth →</a>
+          </div>
+          <div class="inv-card partner reveal-card">
+            <span class="inv-icon">🌐</span>
+            <h3>Partner</h3>
+            <p>Sponsor the event and align your brand with Anambra's sustainability agenda, gain visibility across all event materials and media.</p>
+            <a href="mailto:info@anambragreenfest.ng?subject=Partnership%20Enquiry%20%E2%80%94%20AnambraGreenFest%202026" class="inv-btn" target="_blank">Become a Partner →</a>
+          </div>
+          <div class="inv-card attend reveal-card">
+            <span class="inv-icon">🎟️</span>
+            <h3>Attend</h3>
+            <p>Join as a participant to learn, network, and find new business opportunities. Free admission, limited spots available.</p>
+            <a href="https://forms.gle/qYZwyTAoeqimoVk27" class="inv-btn" target="_blank" rel="noopener noreferrer">Register Free →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== EXHIBITOR CTA ===== -->
     <section id="exhibitor" aria-labelledby="exhibitor-title">
       <div class="section-container">
         <div class="exhibitor-card glass-green reveal-up">
-
           <div class="exhibitor-text">
             <span class="section-tag">For Businesses</span>
             <h2 id="exhibitor-title">Exhibit Your Green Brand</h2>
-            <p>Set up your booth among 2,000+ potential customers, partners, and investors. Limited exhibition spaces available — secure yours now.</p>
+            <p>Set up your booth among 2,000+ potential customers, partners, and investors. Limited exhibition spaces available, secure yours now.</p>
             <ul class="exhibitor-perks">
               <li>✅ Premium booth placement</li>
               <li>✅ Brand visibility on all event materials</li>
               <li>✅ Direct access to investors and buyers</li>
               <li>✅ Social media spotlight</li>
             </ul>
-            <a href="mailto:info@anambragreenfest.ng?subject=Exhibitor%20Application%20%E2%80%94%20AnambraGreenFest%202026&body=Full%20Name%3A%0A%0AOrganization%2FBusiness%20Name%3A%0A%0AProduct%2FService%20Category%3A%0A%0APhone%20Number%3A%0A%0APreferred%20Booth%20Size%3A%0A%0AAnything%20else%3A"
-               class="btn btn-primary"
-               target="_blank">
-              Become an Exhibitor
-            </a>
+            <a href="mailto:info@anambragreenfest.ng?subject=Exhibitor%20Application%20%E2%80%94%20AnambraGreenFest%202026&body=Full%20Name%3A%0A%0AOrganization%2FBusiness%20Name%3A%0A%0AProduct%2FService%20Category%3A%0A%0APhone%20Number%3A%0A%0APreferred%20Booth%20Size%3A%0A%0AAnything%20else%3A" class="btn btn-primary" target="_blank">Become an Exhibitor</a>
           </div>
-
           <div class="exhibitor-visual" aria-hidden="true">
             <div class="exhibitor-badge">
               <span class="big-icon">🏭</span>
@@ -511,7 +1430,6 @@
               <strong>Apply Now</strong>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -525,29 +1443,87 @@
       </div>
       <div class="section-container">
         <div class="cta-content reveal-up">
-
           <div class="ticket-badge" aria-label="Free ticket">🎟️</div>
           <h2 id="cta-title" class="cta-title">Limited Free Tickets Available 🎟️</h2>
           <p class="cta-sub">Secure your spot before registration closes on <strong>30th May 2026.</strong></p>
           <p class="cta-desc">Over 1,400 spots already claimed. Don't miss Nigeria's biggest green economy event of 2026.</p>
-
           <div class="urgency-bar" aria-label="Registration progress: 72% full">
             <div class="urgency-fill" style="width:72%"></div>
           </div>
           <p class="urgency-text">72% Full — Register before it's too late</p>
-
-          <a href="https://forms.gle/qYZwyTAoeqimoVk27"
-             class="btn btn-cta"
-             target="_blank"
-             rel="noopener noreferrer">
-            Register Now — It's Free 🚀
-          </a>
-
+          <a href="https://forms.gle/qYZwyTAoeqimoVk27" class="btn btn-cta" target="_blank" rel="noopener noreferrer">Register Now — It's Free 🚀</a>
           <div class="cta-meta">
             <span>📍 Awka, Anambra State</span>
             <span>📅 June 5, 2026</span>
             <span>⏰ 10:00 AM WAT</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact-section" aria-labelledby="contact-title">
+      <div class="section-container">
+
+        <div class="section-header">
+          <span class="section-tag">Contact Us</span>
+          <h2 id="contact-title" class="section-title">Get In Touch</h2>
+          <p class="section-sub">For partnerships, exhibition slots, and participation details</p>
+        </div>
+
+        <div class="contact-wrap">
+
+          <div class="contact-info-col reveal-up">
+            <p>Whether you want to exhibit, partner, or simply attend, we're here to help. Reach out via any of the channels below.</p>
+            <div class="contact-items">
+              <a href="mailto:info@sweepfoundation.org.ng" class="ci-item" target="_blank" rel="noopener">
+                <span class="ci-icon">✉️</span>
+                <div><strong>Email</strong><span>info@sweepfoundation.org.ng</span></div>
+              </a>
+              <a href="tel:+2348163193136" class="ci-item" target="_blank">
+                <span class="ci-icon">📞</span>
+                <div><strong>Phone / WhatsApp</strong><span>+234 816 319 3136</span></div>
+              </a>
+              <a href="https://wa.me/2348163193136" class="ci-item" target="_blank" rel="noopener noreferrer">
+                <span class="ci-icon">💬</span>
+                <div><strong>WhatsApp Direct</strong><span>Chat with us instantly</span></div>
+              </a>
+              <div class="ci-item" style="cursor:default;">
+                <span class="ci-icon">📍</span>
+                <div><strong>Venue</strong><span>Prof. Dora Akunyili Women Development Centre, Awka, Anambra State</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!--div class="contact-form-box reveal-card">
+            <h3>Send a Message</h3>
+            <div class="fg">
+              <label for="cf-name">Full Name</label>
+              <input type="text" id="cf-name" placeholder="Your full name" autocomplete="name" />
+            </div>
+            <div class="fg">
+              <label for="cf-email">Email Address</label>
+              <input type="email" id="cf-email" placeholder="your@email.com" autocomplete="email" />
+            </div>
+            <div class="fg">
+              <label for="cf-interest">I'm interested in</label>
+              <select id="cf-interest">
+                <option value="">Select an option</option>
+                <option value="exhibit">Exhibiting / Booth</option>
+                <option value="partner">Partnership / Sponsorship</option>
+                <option value="attend">Attending the Festival</option>
+                <option value="media">Media / Press</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" placeholder="Tell us about yourself or your inquiry..."></textarea>
+            </div>
+            <button class="form-submit" type="button" id="cfSubmit">Send Message 📩</button>
+            <!-- Invisible mailto anchor — populated by JS, clicked by user action -->
+            <!--a id="cfMailto" href="info@sweepfoundation.org.ng" style="display:none;" target="_blank" rel="noopener">_</a>
+          </div-->
 
         </div>
       </div>
@@ -558,91 +1534,205 @@
   <!-- ==================== FOOTER ==================== -->
   <footer id="footer" role="contentinfo">
     <div class="footer-container">
-
       <div class="footer-top">
 
-        <!-- Brand -->
         <div class="footer-brand">
-          <a href="#hero" class="footer-logo" aria-label="Anambra Green Fest Home">
+          <a href="#hero" class="footer-logo" target="_self" aria-label="Anambra Green Fest Home">
             <span>🌱</span> AnambraGreenFest
           </a>
           <p>Nigeria's premier circular economy event, celebrating sustainability, innovation, and green enterprise in the heart of Anambra State.</p>
-
-          <!-- Social links — uncomment when handles are confirmed
-          <div class="social-links" aria-label="Social media links">
-            <a href="https://twitter.com/AnambraGreenFest" target="_blank" rel="noopener noreferrer" aria-label="Twitter/X">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-            <a href="https://instagram.com/AnambraGreenFest" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            </a>
-            <a href="https://facebook.com/AnambraGreenFest" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-          </div>
-          -->
         </div>
 
-        <!-- Quick Links -->
         <div class="footer-col">
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="#why-attend">Why Attend</a></li>
-            <li><a href="#highlights">Event Highlights</a></li>
-            <li><a href="#who">Who Should Attend</a></li>
-            <li><a href="#partners">Partners &amp; Supporters</a></li>
-            <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#register">Register Free</a></li>
+            <li><a href="#about-sweep"     target="_self">About SWEEP</a></li>
+            <li><a href="#about-festival"  target="_self">About Festival</a></li>
+            <li><a href="#programs"        target="_self">Programs</a></li>
+            <li><a href="#why-attend"      target="_self">Why Attend</a></li>
+            <li><a href="#get-involved"    target="_self">Get Involved</a></li>
+            <li><a href="#partners"        target="_self">Partners</a></li>
+            <li><a href="#register"        target="_self">Register Free</a></li>
           </ul>
         </div>
 
-        <!-- Contact -->
         <div class="footer-col">
           <h4>Contact Us</h4>
           <ul class="contact-list">
-            <li>
-              <span aria-hidden="true">📞</span>
-              <a href="tel:+2348163193136" target="_blank">0816 319 3136</a>
-            </li>
-            <li>
-              <span aria-hidden="true">✉️</span>
-              <a href="mailto:info@anambragreenfest.ng"
-                 target="_blank"
-                 rel="noopener noreferrer">
-                info@anambragreenfest.ng
-              </a>
-            </li>
-            <li>
-              <span aria-hidden="true">📍</span>
-              <span>Prof. Dora Akunyili Women Development Centre, Awka, Anambra State</span>
-            </li>
+            <li><span aria-hidden="true">📞</span><a href="tel:+2348163193136" target="_blank">+234 816 319 3136</a></li>
+            <li><span aria-hidden="true">✉️</span><a href="mailto:info@sweepfoundation.org.ng" target="_blank" rel="noopener">info@sweepfoundation.org.ng</a></li>
+            <li><span aria-hidden="true">📍</span><span>Prof. Dora Akunyili Women Development Centre, Awka</span></li>
           </ul>
         </div>
 
-        <!-- Newsletter -->
         <div class="footer-col">
           <h4>Newsletter</h4>
           <p>Get event updates, speaker announcements, and sustainability tips.</p>
-          <a href="https://forms.gle/pWUEt9YfXSYFrp7u9"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="btn btn-primary"
-             style="display:inline-block; margin-top:0.5rem; font-size:0.88rem; padding:0.7rem 1.5rem; text-align:center;">
+          <a href="https://forms.gle/pWUEt9YfXSYFrp7u9" target="_blank" rel="noopener noreferrer"
+             class="btn btn-primary" style="display:inline-block;margin-top:0.5rem;font-size:0.88rem;padding:0.7rem 1.5rem;text-align:center;">
             ✉️ Subscribe for Updates
           </a>
         </div>
 
       </div>
-
-      <!-- Footer Bottom -->
       <div class="footer-bottom">
         <p>© 2026 Anambra Green Enterprise &amp; Circular Economy Festival. All rights reserved.</p>
         <p class="footer-handle">#AnambraGreenFest2026 &nbsp;·&nbsp; #CircularEconomy</p>
       </div>
-
     </div>
   </footer>
 
+  <!-- External script (countdown, stats counter, carousel from original) -->
   <script src="script.js"></script>
+
+  <script>
+  /* ================================================================
+     NAV — single click listener only, no pointerup, no double-fire
+  ================================================================ */
+  (function () {
+    'use strict';
+
+    var toggle = document.getElementById('navToggle');
+    var menu   = document.getElementById('navLinks');
+
+    if (!toggle || !menu) return;
+
+    function openMenu() {
+      menu.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close navigation menu');
+    }
+
+    function closeMenu() {
+      menu.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation menu');
+    }
+
+    function isMenuOpen() {
+      return menu.classList.contains('is-open');
+    }
+
+    // ---- Hamburger: plain click only (no pointerup, prevents double-fire) ----
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      isMenuOpen() ? closeMenu() : openMenu();
+    });
+
+    // ---- Keyboard support ----
+    toggle.addEventListener('keydown', function (e) {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        isMenuOpen() ? closeMenu() : openMenu();
+      }
+    });
+
+    // ---- Close menu when a nav link is clicked ----
+    menu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        closeMenu();
+      });
+    });
+
+    // ---- Close on outside click ----
+    document.addEventListener('click', function (e) {
+      if (isMenuOpen() && !menu.contains(e.target) && !toggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    // ---- Close on Escape ----
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isMenuOpen()) {
+        closeMenu();
+        toggle.focus();
+      }
+    });
+
+    // ---- Smooth scroll: offset for fixed navbar ----
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        // Close menu first, then scroll after the CSS transition (220ms)
+        var wasOpen = isMenuOpen();
+        if (wasOpen) closeMenu();
+        var delay = wasOpen ? 240 : 0;
+        setTimeout(function () {
+          var top = target.getBoundingClientRect().top + window.pageYOffset - 64;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }, delay);
+      });
+    });
+
+  }());
+
+  /* ================================================================
+     SCROLL REVEAL
+  ================================================================ */
+  (function () {
+    var items = document.querySelectorAll('.reveal-up, .reveal-card');
+    if (!window.IntersectionObserver) {
+      items.forEach(function (el) { el.classList.add('visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  }());
+
+  /* ================================================================
+     CONTACT FORM
+     Build mailto URL on every keystroke so the button itself IS
+     the mailto link — no programmatic .click(), no blocked popups.
+  ================================================================ */
+  (function () {
+    var nameEl     = document.getElementById('cf-name');
+    var emailEl    = document.getElementById('cf-email');
+    var interestEl = document.getElementById('cf-interest');
+    var msgEl      = document.getElementById('cf-message');
+    var btn        = document.getElementById('cfSubmit');
+
+    if (!btn || !nameEl) return;
+
+    function buildMailto() {
+      var name     = (nameEl.value     || '').trim();
+      var email    = (emailEl.value    || '').trim();
+      var interest = (interestEl.value || '').trim();
+      var message  = (msgEl.value      || '').trim();
+      var subject  = 'Festival Enquiry \u2014 ' + (interest || 'General');
+      var body     =
+        'Name: '     + (name     || 'Not provided') + '\n' +
+        'Email: '    + (email    || 'Not provided') + '\n' +
+        'Interest: ' + (interest || 'Not provided') + '\n\n' +
+        'Message:\n' + (message  || 'No message');
+      return 'mailto:info@sweepfoundation.org.ng' +
+             '?subject=' + encodeURIComponent(subject) +
+             '&body='    + encodeURIComponent(body);
+    }
+
+    btn.addEventListener('click', function () {
+      var name    = (nameEl.value  || '').trim();
+      var message = (msgEl.value   || '').trim();
+      if (!name || !message) {
+        alert('Please fill in your name and message before sending.');
+        return;
+      }
+      // Direct assignment inside the click handler is NOT a popup —
+      // it's a same-origin navigation, allowed on all mobile browsers.
+      window.location.href = buildMailto();
+    });
+  }());
+  </script>
+
 </body>
 </html>
