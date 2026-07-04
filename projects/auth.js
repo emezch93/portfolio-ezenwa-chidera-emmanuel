@@ -12,7 +12,12 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const googleProvider = new GoogleAuthProvider();
 
 
 // ══════════════════════════════════════════════════════════════
@@ -30,12 +35,21 @@ export async function logIn(email, password) {
   return cred.user;
 }
 
+export async function signInWithGoogle() {
+  const cred = await signInWithPopup(auth, googleProvider);
+  return cred.user;
+}
+
 export async function logOut() {
   await signOut(auth);
 }
 
 export function currentUser() {
   return auth.currentUser;
+}
+
+export async function resetPassword(email) {
+  await sendPasswordResetEmail(auth, email);
 }
 
 
@@ -84,6 +98,11 @@ export function friendlyError(code) {
     "auth/invalid-credential":     "Invalid email or password.",
     "auth/too-many-requests":      "Too many attempts. Please wait a moment.",
     "auth/network-request-failed": "Network error. Check your connection.",
+    "auth/missing-email":          "Please enter your email address.",
+    "auth/user-disabled":          "This account has been disabled.",
+    "auth/popup-closed-by-user":   "Sign-in popup was closed. Please try again.",
+    "auth/popup-blocked":          "Popup was blocked by your browser. Please allow popups.",
+    "auth/account-exists-with-different-credential": "An account already exists with this email using a different sign-in method.",
   };
   return map[code] || "Something went wrong. Please try again.";
 }
