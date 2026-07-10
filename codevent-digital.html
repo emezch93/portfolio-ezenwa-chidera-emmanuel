@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CodeVent Digital — Building Developers One Step at a Time</title>
   <meta name="description" content="CodeVent Digital — Building Developers One Step at a Time. Learn, Build, Validate, and Monetize your coding skills through structured courses, real projects, and a thriving community." />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#5b4cff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CodeVent" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icons/favicon.ico" sizes="32x32" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
@@ -178,10 +189,16 @@
       border: none;
       z-index: 1001;
       order: 3;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
     }
 
     .nav-auth-controls {
       order: 2;
+      flex-shrink: 0;
     }
 
     .logo { order: 1; }
@@ -860,7 +877,12 @@
       .footer-container { grid-template-columns: 1fr; gap: 2rem; }
       .footer-brand { grid-column: auto; }
       .copyright { flex-direction: column; text-align: center; }
-      .hamburger { display: none; }
+      .navbar { padding: 0.75rem 1rem; }
+      .navbar-container { gap: 0.5rem; }
+      .hamburger {
+        display: flex;
+        flex-shrink: 0;
+      }
       .nav-links {
         position: fixed;
         top: 0;
@@ -876,6 +898,7 @@
         transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
         gap: 0.25rem;
         z-index: 999;
+        
       }
       .nav-links.active { left: 0; box-shadow: 8px 0 32px rgba(0,0,0,0.5); }
       .nav-links a { font-size: 1rem; padding: 0.65rem 0.75rem; width: 100%; }
@@ -888,11 +911,20 @@
       }
       .nav-overlay.active { display: block; }
 
-      /* Fix 1 — user chip on mobile: shrink, truncate, never overflow */
+      /* Fix 1 — auth controls: constrained so they never push hamburger off screen */
       .nav-auth-controls {
-        max-width: calc(100vw - 200px);
+        max-width: calc(100vw - 160px);
         overflow: hidden;
+        flex-shrink: 1;
+        min-width: 0;
       }
+      .nav-auth-btn {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+      .nav-auth-btn i { display: none; }
+      /* Fix 1 — user chip on mobile: shrink, truncate, never overflow */
       .nav-user-chip {
         max-width: 100%;
         overflow: hidden;
@@ -904,11 +936,6 @@
         white-space: nowrap;
         display: inline-block;
       }
-      .nav-auth-btn {
-        padding: 0.35rem 0.65rem;
-        font-size: 0.78rem;
-      }
-      .nav-auth-btn i { display: none; }
     }
 
     @media (max-width: 520px) {
@@ -1168,6 +1195,119 @@
       transition: color 0.2s ease;
     }
     .pw-eye:hover { color: var(--text); }
+
+    /* ── Auth loading overlay ── */
+    .auth-loading {
+      position: fixed; inset: 0;
+      background: rgba(13,15,26,0.92);
+      backdrop-filter: blur(10px);
+      z-index: 8999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .auth-loading.show { opacity: 1; visibility: visible; }
+    .auth-loading-spinner {
+      width: 44px; height: 44px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .auth-loading-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* ── Google Sign-In button ── */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.1rem 0;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .btn-google {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.75rem 1rem;
+      background: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 0.6rem;
+      color: #3c4043;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.25);
+    }
+    .btn-google:hover { background: #f7f8f9; box-shadow: 0 3px 12px rgba(0,0,0,0.3); transform: translateY(-1px); }
+    .btn-google:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── Forgot password link ── */
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      padding: 0;
+      margin-top: 0.3rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: color 0.2s ease;
+    }
+    .forgot-link:hover { color: var(--primary); }
+
+    /* ── Logout toast ── */
+    .logout-toast {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark-2);
+      border: 1px solid rgba(0,229,160,0.35);
+      color: var(--accent);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .logout-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -1195,11 +1335,13 @@
             Log out
           </button>
         </li>
-        <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+        <li role="none"><a href="index.html" target="_self" role="menuitem">Home</a></li>
         <li role="none"><a href="learning.html" target="_self" role="menuitem">Learning</a></li>
         <li role="none"><a href="community.html" target="_self" role="menuitem">Community</a></li>
         <li role="none"><a href="testimonial.html" target="_self" role="menuitem">Testimonials</a></li>
-        <li role="none"><a href="shop.html" target="_blank" role="menuitem">Shop</a></li>
+        <li role="none"><a href="shop.html" target="_self" role="menuitem">Shop</a></li>
+        <li role="none"><a href="toolkit.html" target="_self" role="menuitem">Toolkit</a></li>
+        <li role="none"><a href="chat.html" target="_self" role="menuitem">AI Chat</a></li>
         <li role="none">
           <a href="learning.html" target="_self" class="nav-cta" role="menuitem">
             Start Free <i class="fas fa-arrow-right" aria-hidden="true"></i>
@@ -1213,9 +1355,9 @@
           <i class="fas fa-user" aria-hidden="true"></i> Sign In
         </button>
         <span class="nav-user-chip" id="navUserChip" aria-live="polite">
-          <i class="fas fa-circle-check" aria-hidden="true"></i>
-          <!--span id="navUserName"></span-->
-          <button class="nav-logout-btn" id="navLogoutBtn" aria-label="Log out">Log out</button>
+          <!--i class="fas fa-circle-check" aria-hidden="true"></i>
+          <span id="navUserName"></span-->
+          <!--button class="nav-logout-btn" id="navLogoutBtn" aria-label="Log out">Log out</button-->
         </span>
       </div>
     </div>
@@ -1251,7 +1393,7 @@
               Start Learning — It's Free
             </a>
             <!-- SECONDARY CTA -->
-            <a href="https://wa.me/2348185947780?text=Hello%20!%20I'm%20interested%20in%20CodeVent-Digital%20community%20my %20name%20is%20________________%20" target="_blank" r" target="_blank" rel="noopener" class="btn-secondary" aria-label="Join our WhatsApp community channel">
+            <a href="https://wa.me/2348185947780?text=Hello%20!%20I'm%20interested%20in%20codevent-digital%20community%20my%20name%20is%20________________%20" target="_blank" rel="noopener" class="btn-secondary" aria-label="Join our WhatsApp community channel">
               <i class="fab fa-whatsapp" aria-hidden="true"></i>
               Join Community
             </a>
@@ -1492,7 +1634,7 @@
   <footer class="footer" role="contentinfo">
     <div class="footer-container">
       <div class="footer-brand">
-        <a href="index.html" class="logo" style="margin-bottom:0.25rem;display:inline-flex;">
+        <a href="index.html" target="_self" class="logo" style="margin-bottom:0.25rem;display:inline-flex;">
           <span class="logo-icon" aria-hidden="true"><i class="fas fa-code"></i></span>
           CodeVent <span class="logo-word">Digital</span>
         </a>
@@ -1524,6 +1666,8 @@
           <li><a href="community.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Community</a></li>
           <li><a href="testimonial.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Testimonials</a></li>
           <li><a href="shop.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Shop</a></li>
+          <li><a href="toolkit.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Toolkit</a></li>
+          <li><a href="chat.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>AI Chat</a></li>
         </ul>
       </div>
 
@@ -1557,10 +1701,22 @@
     </div>
 
     <div class="copyright">
-      <span>&copy; 2025 CodeVent Digital. All rights reserved.</span>
+      <span>&copy; 2026 CodeVent Digital. All rights reserved.</span>
       <span style="color:var(--text-muted);font-size:0.75rem;">Building Developers One Step at a Time.</span>
     </div>
   </footer>
+
+  <!-- Auth loading overlay -->
+  <div class="auth-loading" id="authLoading">
+    <div class="auth-loading-spinner"></div>
+    <p class="auth-loading-text">Loading...</p>
+  </div>
+
+  <!-- Logout toast -->
+  <div class="logout-toast" id="logoutToast">
+    <i class="fas fa-circle-check" aria-hidden="true"></i>
+    You have successfully logged out.
+  </div>
 
   <!-- ══ AUTH MODAL ══════════════════════════════════════════ -->
   <div
@@ -1605,12 +1761,24 @@
                   <i class="fas fa-eye"></i>
                 </button>
               </div>
+              <button type="button" class="forgot-link" id="forgotPasswordBtn">Forgot password?</button>
             </div>
             <button type="submit" class="auth-submit" id="loginSubmitBtn">
               <i class="fas fa-arrow-right-to-bracket" aria-hidden="true"></i> Sign In
             </button>
             <p class="auth-msg" id="loginMsg" aria-live="polite"></p>
           </form>
+          <div class="auth-divider">or</div>
+          <button class="btn-google" id="googleLoginBtn" type="button" aria-label="Sign in with Google">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              <path fill="none" d="M0 0h48v48H0z"/>
+            </svg>
+            Continue with Google
+          </button>
           <p class="auth-switch">No account? <button id="switchToSignup">Create one free</button></p>
         </div>
 
@@ -1649,7 +1817,36 @@
             </button>
             <p class="auth-msg" id="signupMsg" aria-live="polite"></p>
           </form>
+          <div class="auth-divider">or</div>
+          <button class="btn-google" id="googleSignupBtn" type="button" aria-label="Sign up with Google">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              <path fill="none" d="M0 0h48v48H0z"/>
+            </svg>
+            Sign up with Google
+          </button>
           <p class="auth-switch">Have an account? <button id="switchToLogin">Sign in</button></p>
+        </div>
+
+        <!-- RESET PANEL -->
+        <div class="auth-panel" id="resetPanel" role="tabpanel">
+          <p style="font-size:0.83rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6;">
+            Enter your email and we'll send you a link to reset your password.
+          </p>
+          <form id="resetForm" novalidate>
+            <div class="auth-field">
+              <label for="resetEmail">Email</label>
+              <input id="resetEmail" type="email" placeholder="you@example.com" required autocomplete="email" />
+            </div>
+            <button type="submit" class="auth-submit" id="resetSubmitBtn">
+              <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Reset Link
+            </button>
+            <p class="auth-msg" id="resetMsg" aria-live="polite"></p>
+          </form>
+          <p class="auth-switch"><button id="backToLogin">← Back to Sign In</button></p>
         </div>
 
       </div>
@@ -1659,7 +1856,7 @@
   <!-- ══ JAVASCRIPT ═════════════════════════════════════════ -->
   <script type="module">
     // ── Import Firebase auth helpers ────────────────────────
-    import { signUp, logIn, logOut, onAuthChange, applyAuthGate, friendlyError }
+    import { signUp, logIn, logOut, onAuthChange, applyAuthGate, friendlyError, resetPassword, signInWithGoogle }
       from "./auth.js";
 
     // ════════════════════════════════════════════════════════
@@ -1728,6 +1925,7 @@
       const signupTabBtn   = document.getElementById('signupTabBtn');
       const loginPanel     = document.getElementById('loginPanel');
       const signupPanel    = document.getElementById('signupPanel');
+      const resetPanel     = document.getElementById('resetPanel');
 
       function openModal(tab = 'login') {
         backdrop.classList.add('open');
@@ -1745,20 +1943,25 @@
       }
 
       function switchTab(tab) {
-        const isLogin = tab === 'login';
+        const isLogin  = tab === 'login';
+        const isSignup = tab === 'signup';
+        const isReset  = tab === 'reset';
         loginTabBtn.classList.toggle('active', isLogin);
-        signupTabBtn.classList.toggle('active', !isLogin);
+        signupTabBtn.classList.toggle('active', isSignup);
         loginTabBtn.setAttribute('aria-selected', String(isLogin));
-        signupTabBtn.setAttribute('aria-selected', String(!isLogin));
-        loginPanel.classList.toggle('active', isLogin);
-        signupPanel.classList.toggle('active', !isLogin);
-        authTitle.textContent    = isLogin ? 'Welcome Back'    : 'Create Account';
-        authSubtitle.textContent = isLogin ? 'Sign in to your CodeVent account' : 'Join CodeVent Digital — free';
+        signupTabBtn.setAttribute('aria-selected', String(isSignup));
+        loginPanel.classList.toggle('active',  isLogin);
+        signupPanel.classList.toggle('active', isSignup);
+        resetPanel.classList.toggle('active',  isReset);
+        // Hide tabs row when on reset screen
+        document.querySelector('.auth-tabs').style.display = isReset ? 'none' : '';
+        authTitle.textContent    = isLogin ? 'Welcome Back'    : isSignup ? 'Create Account' : 'Reset Password';
+        authSubtitle.textContent = isLogin ? 'Sign in to your CodeVent account' : isSignup ? 'Join CodeVent Digital — free' : 'We\'ll email you a reset link';
         clearMsgs();
       }
 
       function clearMsgs() {
-        ['loginMsg','signupMsg'].forEach(id => {
+        ['loginMsg','signupMsg','resetMsg'].forEach(id => {
           const el = document.getElementById(id);
           if (el) { el.textContent = ''; el.className = 'auth-msg'; }
         });
@@ -1779,14 +1982,60 @@
       }
 
       // ── Triggers ──
-      document.getElementById('navSignInBtn')  ?.addEventListener('click', () => openModal('login'));
-      document.getElementById('heroSignInLink')?.addEventListener('click', () => openModal('login'));
+      const authLoading = document.getElementById('authLoading');
+      const logoutToast = document.getElementById('logoutToast');
+
+      function showLoader(text = 'Loading...') {
+        authLoading.querySelector('.auth-loading-text').textContent = text;
+        authLoading.classList.add('show');
+      }
+      function hideLoader() {
+        authLoading.classList.remove('show');
+      }
+
+      function showLogoutToast() {
+        logoutToast.classList.add('show');
+        setTimeout(() => logoutToast.classList.remove('show'), 2800);
+      }
+
+      document.getElementById('navSignInBtn')?.addEventListener('click', () => {
+        showLoader('Opening Sign In...');
+        setTimeout(() => { hideLoader(); openModal('login'); }, 2000);
+      });
+      document.getElementById('heroSignInLink')?.addEventListener('click', () => {
+        showLoader('Opening Sign In...');
+        setTimeout(() => { hideLoader(); openModal('login'); }, 2000);
+      });
       closeBtn.addEventListener('click', closeModal);
       backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
       loginTabBtn.addEventListener('click',  () => switchTab('login'));
       signupTabBtn.addEventListener('click', () => switchTab('signup'));
       document.getElementById('switchToSignup')?.addEventListener('click', () => switchTab('signup'));
       document.getElementById('switchToLogin') ?.addEventListener('click', () => switchTab('login'));
+      document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => switchTab('reset'));
+      document.getElementById('backToLogin')?.addEventListener('click', () => switchTab('login'));
+
+      // ── GOOGLE AUTH (shared handler for both login + signup buttons) ──
+      async function handleGoogleAuth(msgId) {
+        const btn = document.getElementById(msgId === 'loginMsg' ? 'googleLoginBtn' : 'googleSignupBtn');
+        const origHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Please wait…';
+        try {
+          const user = await signInWithGoogle();
+          showMsg(msgId, `Welcome, ${user.displayName || 'there'}! ✓`, 'success');
+          setTimeout(closeModal, 1500);
+        } catch (err) {
+          if (err.code !== 'auth/popup-closed-by-user') {
+            showMsg(msgId, friendlyError(err.code), 'error');
+          }
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = origHTML;
+        }
+      }
+      document.getElementById('googleLoginBtn') ?.addEventListener('click', () => handleGoogleAuth('loginMsg'));
+      document.getElementById('googleSignupBtn')?.addEventListener('click', () => handleGoogleAuth('signupMsg'));
 
       // Locked content → open modal on click
       document.addEventListener('click', e => {
@@ -1815,7 +2064,7 @@
         try {
           await logIn(email, password);
           showMsg('loginMsg', 'Signed in successfully ✓', 'success');
-          setTimeout(closeModal, 1000);
+          setTimeout(closeModal, 2000);
         } catch (err) {
           showMsg('loginMsg', friendlyError(err.code), 'error');
         } finally {
@@ -1840,7 +2089,7 @@
         try {
           await signUp(name, email, password);
           showMsg('signupMsg', `Welcome, ${name}! Account created 🎉`, 'success');
-          setTimeout(closeModal, 1400);
+          setTimeout(closeModal, 2000);
         } catch (err) {
           showMsg('signupMsg', friendlyError(err.code), 'error');
         } finally {
@@ -1848,16 +2097,42 @@
         }
       });
 
+      // ── RESET PASSWORD FORM ──
+      document.getElementById('resetForm')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn  = document.getElementById('resetSubmitBtn');
+        const orig = btn.innerHTML;
+        const email = document.getElementById('resetEmail').value.trim();
+        if (!email) return showMsg('resetMsg', 'Please enter your email address.', 'error');
+        setLoading(btn, true, orig);
+        try {
+          await resetPassword(email);
+          showMsg('resetMsg', 'Reset link sent! Check your inbox.', 'success');
+          setTimeout(() => switchTab('login'), 3000);
+        } catch (err) {
+          showMsg('resetMsg', friendlyError(err.code), 'error');
+        } finally {
+          setLoading(btn, false, orig);
+        }
+      });
+
       // ── LOGOUT ──
       document.getElementById('navLogoutBtn')?.addEventListener('click', async () => {
+        showLoader('Logging out...');
+        await new Promise(r => setTimeout(r, 1200));
         await logOut();
+        hideLoader();
+        showLogoutToast();
       });
 
       // Mobile logout button
       document.getElementById('mobileLogoutBtn')?.addEventListener('click', async () => {
-        const { logOut } = await import('./auth.js');
+        showLoader('Logging out...');
+        await new Promise(r => setTimeout(r, 1200));
         await logOut();
+        hideLoader();
         closeNav();
+        showLogoutToast();
       });
 
       // Fix 2 — show/hide password toggle
@@ -1900,8 +2175,6 @@
         if (nameEl)    nameEl.textContent = firstName;
         if (signInBtn) signInBtn.style.display = 'none';
         if (userChip)  userChip.classList.add('show');
-        // Mobile: show hamburger, hide Sign In
-        if (hamburger) hamburger.style.display = 'block';
         // Mobile menu greeting
         if (mobileNameEl)   mobileNameEl.textContent = user.displayName || user.email;
         if (mobileGreeting) mobileGreeting.style.display = '';
@@ -1909,11 +2182,15 @@
         // Logged out
         if (signInBtn) signInBtn.style.display = '';
         if (userChip)  userChip.classList.remove('show');
-        // Mobile: hide hamburger, show Sign In button instead
-        if (hamburger) hamburger.style.display = 'none';
         if (mobileGreeting) mobileGreeting.style.display = 'none';
       }
     });
+
+    // Register Service Worker (PWA)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/codevent-digital/sw.js');
+    }
   </script>
+  <script src="pwa-register.js"></script>
 </body>
 </html>
