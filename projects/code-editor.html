@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portable Code Editor — Case Study · Ezenwa Emmanuel</title>
-  <meta name="description" content="Case study: How I built a fully self-contained in-browser IDE with live preview for CodeVent Digital's curriculum." />
+  <meta name="description" content="Case study: a zero-install, browser-based HTML/CSS/JS editor built as the practice environment for CodeVent Digital's curriculum." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,10 +21,11 @@
     body{background:#0A0A0F;color:#F0EEE9;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
     body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.35}
     .grad{background:linear-gradient(135deg,#00E5A0 0%,#7B61FF 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .grad-green{background:linear-gradient(135deg,#A3E635 0%,#00E5A0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
     .orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
     .nav-blur{background:rgba(10,10,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
-    .btn-primary{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:linear-gradient(135deg,#00E5A0 0%,#7B61FF 100%);color:#0A0A0F;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;border-radius:10px;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 0 30px rgba(0,229,160,.25);text-decoration:none}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,229,160,.4)}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:linear-gradient(135deg,#7B61FF,#C084FC);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;border-radius:10px;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 0 30px rgba(123,97,255,.25);text-decoration:none}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(123,97,255,.4)}
     .btn-ghost{display:inline-flex;align-items:center;gap:10px;padding:13px 32px;border:1.5px solid rgba(240,238,233,.2);color:#F0EEE9;font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;border-radius:10px;transition:all .3s ease;text-decoration:none}
     .btn-ghost:hover{border-color:rgba(0,229,160,.5);color:#00E5A0;background:rgba(0,229,160,.05)}
     .nav-link{font-size:.875rem;font-weight:500;color:#9999AA;transition:color .2s;text-decoration:none}
@@ -33,20 +34,24 @@
     .reveal.visible{opacity:1;transform:translateY(0)}
     .section-label{display:inline-flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9999AA;margin-bottom:16px}
     .section-label::before{content:'';display:block;width:24px;height:1px;background:#9999AA}
-    /* Case study specific */
     .cs-block{background:#13131A;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:28px 32px}
-    .cs-block.jade-border{border-color:rgba(0,229,160,.15)}
-    .cs-block.lav-border{border-color:rgba(123,97,255,.15)}
+    .cs-block.green-border{border-color:rgba(0,229,160,.2)}
+    .cs-block.lav-border{border-color:rgba(123,97,255,.2)}
     .cs-block.amber-border{border-color:rgba(251,191,36,.15)}
     .stat-big{font-family:'Syne',sans-serif;font-weight:800;font-size:2.5rem;line-height:1;letter-spacing:-.03em}
     .screenshot{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.08);overflow:hidden}
     .screenshot img{width:100%;height:auto;display:block;transition:transform .5s ease}
     .screenshot:hover img{transform:scale(1.02)}
     .tag{display:inline-flex;padding:4px 14px;border-radius:999px;font-size:.78rem;font-weight:600;font-family:'Syne',sans-serif;letter-spacing:.04em}
-    .tag-jade{background:rgba(0,229,160,.1);color:#00E5A0;border:1px solid rgba(0,229,160,.2)}
+    .tag-green{background:rgba(0,229,160,.1);color:#00E5A0;border:1px solid rgba(0,229,160,.2)}
     .tag-lav{background:rgba(123,97,255,.1);color:#A78BFA;border:1px solid rgba(123,97,255,.2)}
     .breadcrumb-link{color:#9999AA;text-decoration:none;font-size:.875rem;transition:color .2s}
     .breadcrumb-link:hover{color:#F0EEE9}
+    .check{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;color:#9999AA;line-height:1.65}
+    .check i{color:#00E5A0;font-size:.75rem;margin-top:4px;flex-shrink:0}
+    .module-row{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.06);align-items:center}
+    .module-row:first-child{padding-top:0}
+    .module-row:last-child{border-bottom:none;padding-bottom:0}
     ::-webkit-scrollbar{width:6px}
     ::-webkit-scrollbar-track{background:#0A0A0F}
     ::-webkit-scrollbar-thumb{background:#2A2A3A;border-radius:3px}
@@ -82,9 +87,9 @@
 
 <!-- HERO -->
 <header class="relative pt-36 pb-12 px-6 overflow-hidden">
-  <div class="orb w-[500px] h-[500px] top-[-150px] right-[-100px]" style="background:#00E5A0;opacity:.06"></div>
+  <div class="orb w-[500px] h-[500px] top-[-150px] right-[-100px]" style="background:#00E5A0;opacity:.05"></div>
+  <div class="orb w-[400px] h-[400px] bottom-[-100px] left-[-80px]" style="background:#7B61FF;opacity:.06"></div>
   <div class="max-w-4xl mx-auto relative z-10">
-    <!-- Breadcrumb -->
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:2rem;font-size:.85rem">
       <a href="../projects.html" class="breadcrumb-link">Work</a>
       <i class="fas fa-chevron-right text-xs" style="color:#444455"></i>
@@ -92,21 +97,21 @@
     </div>
 
     <div class="flex flex-wrap gap-2 mb-5">
-      <span class="tag tag-jade">Developer Tool</span>
+      <span class="tag tag-green">Developer Tool</span>
       <span class="tag tag-lav">Open Source</span>
     </div>
 
     <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.2rem,5.5vw,3.8rem);line-height:1.08;letter-spacing:-.03em;margin-bottom:1.25rem">
-      Portable Code Editor:<br><span class="grad">A Browser IDE with Zero Setup</span>
+      Portable Code Editor:<br><span class="grad">A Zero-Install Browser IDE</span>
     </h1>
 
     <p style="color:#9999AA;font-size:1.05rem;line-height:1.75;max-width:580px;margin-bottom:2.5rem">
-      A fully self-contained, in-browser code editor with a live split-pane preview, built to remove every barrier between a learner and writing their first line of code.
+      A lightweight, browser-based HTML, CSS, and JavaScript editor with live preview, built so beginners can write and see real code the moment they land on the page, no installs, no setup.
     </p>
 
     <div class="flex flex-wrap gap-3">
-      <a href="https://emezch93.github.io/code-editor/" target="_blank" rel="noopener noreferrer" class="btn-primary">
-        <i class="fas fa-external-link-alt text-xs"></i> Open Live Editor
+      <a href="https://emezch93.github.io/Code-Editor-/" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        <i class="fas fa-external-link-alt text-xs"></i> View Live Editor
       </a>
       <a href="../projects.html" class="btn-ghost">
         <i class="fas fa-arrow-left text-xs"></i> All Projects
@@ -119,7 +124,7 @@
 <div class="px-6 pb-16">
   <div class="max-w-5xl mx-auto">
     <div class="screenshot reveal" style="box-shadow:0 40px 80px rgba(0,0,0,.6)">
-      <img src="../code-editor-live-preview.jpg" alt="Portable Code Editor — Live split-pane preview">
+      <img src="https://placehold.co/1200x680/0D1117/00E5A0?text=Portable+Code+Editor&font=syne" alt="Portable Code Editor — three-pane HTML, CSS, JS editor with live preview">
     </div>
   </div>
 </div>
@@ -130,34 +135,48 @@
 
     <!-- Quick Stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 reveal">
-      <div class="cs-block jade-border text-center">
+      <div class="cs-block green-border text-center">
         <p class="stat-big" style="color:#00E5A0">0</p>
-        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">Dependencies</p>
+        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">Install Required</p>
       </div>
       <div class="cs-block text-center">
         <p class="stat-big" style="color:#F0EEE9">3</p>
-        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">Editor Panes</p>
+        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">HTML · CSS · JS Panes</p>
       </div>
-      <div class="cs-block jade-border text-center">
+      <div class="cs-block green-border text-center">
         <p class="stat-big" style="color:#00E5A0">Live</p>
-        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">Preview Mode</p>
+        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">Instant Preview</p>
       </div>
       <div class="cs-block text-center">
-        <p class="stat-big" style="color:#F0EEE9">Any</p>
-        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">Device / Browser</p>
+        <p class="stat-big" style="color:#F0EEE9">Free</p>
+        <p style="color:#9999AA;font-size:.8rem;margin-top:6px">Open Access</p>
+      </div>
+    </div>
+
+    <!-- Context -->
+    <div class="mb-14 reveal">
+      <div class="section-label">The Context</div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1.5rem">The Swift Web Dev Course taught concepts, but students had nowhere to immediately try them</h2>
+      <div class="cs-block lav-border">
+        <p style="color:#9999AA;line-height:1.8;font-size:.95rem">
+          Every lesson in CodeVent Digital's curriculum introduces a new HTML, CSS, or JavaScript concept, but reading about a concept and actually writing it are two different things. Sending beginners off to install a code editor and set up a local dev environment before they've written a single line of code was exactly the kind of friction the curriculum was designed to avoid.
+        </p>
+        <p style="color:#9999AA;line-height:1.8;font-size:.95rem;margin-top:1rem">
+          The Portable Code Editor was built to close that gap, a practice environment students could open directly from a lesson page, write code in, and see the result instantly, with nothing to configure first.
+        </p>
       </div>
     </div>
 
     <!-- Problem -->
     <div class="mb-14 reveal">
       <div class="section-label">The Problem</div>
-      <h2 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem">Learners were losing momentum before writing a single line of code</h2>
-      <div class="cs-block jade-border" style="margin-top:1.5rem">
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1.5rem">Local dev environments are the single biggest drop-off point for beginners</h2>
+      <div class="cs-block green-border">
         <p style="color:#9999AA;line-height:1.8;font-size:.95rem">
-          When CodeVent Digital's students started learning HTML and CSS, they faced an immediate friction point: setting up a local development environment. Installing VS Code, configuring file paths, understanding how to open a browser, all before touching a single HTML tag. Many dropped off right here.
+          Installing a code editor, configuring extensions, and figuring out how to preview an HTML file in a browser is trivial for an experienced developer and genuinely intimidating for someone on day one. A meaningful share of beginners abandon a course at this exact step, before they've written any real code at all.
         </p>
         <p style="color:#9999AA;line-height:1.8;font-size:.95rem;margin-top:1rem">
-          Existing online editors like CodePen and JSFiddle were either too feature-heavy for beginners, required accounts, or loaded slowly on low-bandwidth connections common in Nigeria. The goal was something immediate, distraction-free, and fully offline-capable.
+          The brief was simple to state and harder to build: <em style="color:#F0EEE9">give a complete beginner a working HTML, CSS, and JavaScript environment in one click, with zero prior setup.</em>
         </p>
       </div>
     </div>
@@ -165,39 +184,70 @@
     <!-- Solution -->
     <div class="mb-14 reveal">
       <div class="section-label">The Solution</div>
-      <h2 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem">Build the editor into the browser itself — no installs, no accounts, no friction</h2>
-      <p style="color:#9999AA;line-height:1.8;font-size:.95rem;margin-bottom:1.5rem">I designed and built a single HTML file that is itself a working IDE. Using pure HTML, CSS, and JavaScript, no frameworks, no build tools, it renders three independent editor panes (HTML, CSS, JS) and updates a live preview iframe in real time as the user types.</p>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem">A three-pane editor with an instant live preview, running entirely in the browser</h2>
+      <p style="color:#9999AA;line-height:1.8;font-size:.95rem;margin-bottom:2rem">No backend, no build step, no account. The editor renders HTML, CSS, and JavaScript together in a live preview pane as the student types, the same feedback loop a professional dev environment gives, stripped down to what a beginner actually needs.</p>
 
-      <div class="grid md:grid-cols-3 gap-4 mb-6">
-        <div class="cs-block" style="text-align:center">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,229,160,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i class="fas fa-columns" style="color:#00E5A0;font-size:.9rem"></i></div>
-          <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:4px">Split-Pane Layout</p>
-          <p style="color:#9999AA;font-size:.8rem;line-height:1.5">HTML, CSS, JS panes side-by-side with live iframe output</p>
-        </div>
-        <div class="cs-block" style="text-align:center">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,229,160,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i class="fas fa-wifi-slash" style="color:#00E5A0;font-size:.9rem"></i></div>
-          <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:4px">Offline-Capable</p>
-          <p style="color:#9999AA;font-size:.8rem;line-height:1.5">Works with no internet after initial load, saves as a file</p>
-        </div>
-        <div class="cs-block" style="text-align:center">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,229,160,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i class="fas fa-mobile-alt" style="color:#00E5A0;font-size:.9rem"></i></div>
-          <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:4px">Any Device</p>
-          <p style="color:#9999AA;font-size:.8rem;line-height:1.5">Runs on phone browsers including Chrome Android</p>
+      <!-- Feature structure -->
+      <div class="cs-block" style="margin-bottom:1.5rem">
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:1.25rem;color:#00E5A0">How It Works</h3>
+        <div>
+          <div class="module-row">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,229,160,.1);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:#00E5A0;font-size:.9rem;flex-shrink:0">01</div>
+            <div>
+              <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:3px">Three editable panes</p>
+              <p style="color:#9999AA;font-size:.85rem;line-height:1.6">Separate HTML, CSS, and JavaScript panels, so students can see exactly which language controls what, instead of one tangled file.</p>
+            </div>
+          </div>
+          <div class="module-row">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,229,160,.1);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:#00E5A0;font-size:.9rem;flex-shrink:0">02</div>
+            <div>
+              <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:3px">Live preview pane</p>
+              <p style="color:#9999AA;font-size:.85rem;line-height:1.6">Code renders as the student types, an immediate cause and effect loop that makes abstract syntax feel concrete right away.</p>
+            </div>
+          </div>
+          <div class="module-row">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,229,160,.1);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:#00E5A0;font-size:.9rem;flex-shrink:0">03</div>
+            <div>
+              <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:3px">Nothing to lose on refresh</p>
+              <p style="color:#9999AA;font-size:.85rem;line-height:1.6">Work is kept in the browser as students go, so accidentally closing a tab mid-lesson doesn't mean starting over.</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <p style="color:#9999AA;line-height:1.8;font-size:.95rem">The technical approach was deliberate: using <code style="background:#1E1E2A;padding:2px 8px;border-radius:4px;color:#00E5A0;font-size:.88rem">srcdoc</code> on an iframe element to inject editor content as a live document, debounced with <code style="background:#1E1E2A;padding:2px 8px;border-radius:4px;color:#00E5A0;font-size:.88rem">requestAnimationFrame</code> for smooth real-time updates without performance degradation on slower devices.</p>
+      <!-- Design decisions -->
+      <div class="cs-block green-border">
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:1.25rem;color:#00E5A0">Key Design Decisions</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="check"><i class="fas fa-check"></i><span><strong style="color:#F0EEE9">No account, no install</strong>, the editor opens directly from a link, matching the zero-friction principle behind the whole curriculum.</span></div>
+          <div class="check"><i class="fas fa-check"></i><span><strong style="color:#F0EEE9">Deliberately minimal toolbar</strong>, only the controls a beginner actually needs, nothing borrowed from professional IDEs that would add confusion.</span></div>
+          <div class="check"><i class="fas fa-check"></i><span><strong style="color:#F0EEE9">Mobile-usable</strong>, built to work on a phone screen, since a large share of CodeVent's students learn primarily on mobile.</span></div>
+          <div class="check"><i class="fas fa-check"></i><span><strong style="color:#F0EEE9">Standalone by design</strong>, the editor works on its own as a public tool, not locked behind the curriculum, so it's useful to any developer who just needs a fast scratchpad.</span></div>
+        </div>
+      </div>
     </div>
-
-
 
     <!-- Outcome -->
     <div class="mb-14 reveal">
       <div class="section-label">The Outcome</div>
-      <h2 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem">Students now code on day one, not day five</h2>
-      <div class="cs-block amber-border" style="margin-top:1.5rem">
-        <p style="color:#9999AA;line-height:1.8;font-size:.95rem">The editor became the interactive environment embedded into CodeVent Digital's entire curriculum. Students click a link and immediately begin writing real code, no account required, no install, no friction. The drop-off at the "setup" stage of the learning path went to zero.</p>
-        <p style="color:#9999AA;line-height:1.8;font-size:.95rem;margin-top:1rem">It also serves as a standalone shareable tool, students send it to friends as a "starter kit," generating organic word-of-mouth for the platform.</p>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1.5rem">Now the interactive practice environment inside every lesson of CodeVent Digital's curriculum</h2>
+      <div class="cs-block amber-border">
+        <p style="color:#9999AA;line-height:1.8;font-size:.95rem">
+          Every concept page in the Swift Web Dev Course links directly to the editor, closing the gap between reading about a concept and actually writing it. Students go from lesson to practice in a single click, with zero setup friction, exactly the outcome the course itself was designed around.
+        </p>
+        <p style="color:#9999AA;line-height:1.8;font-size:.95rem;margin-top:1rem">
+          Because it doesn't depend on the curriculum to be useful, it also functions as a small, standalone open source tool, a fast way for any developer to test an idea without opening a local project.
+        </p>
+      </div>
+    </div>
+
+    <!-- What This Shows Clients -->
+    <div class="mb-14 reveal">
+      <div class="section-label">What This Shows Clients</div>
+      <div class="cs-block lav-border">
+        <p style="color:#9999AA;line-height:1.8;font-size:.95rem">
+          Building a code editor from scratch, live preview, multi-pane state, in-browser rendering, is a different kind of technical problem than a marketing site or a landing page. It's a real sign of frontend depth: understanding how to build tools, not just interfaces, and shipping something that has to just work with no backend to fall back on.
+        </p>
       </div>
     </div>
 
@@ -218,8 +268,12 @@
           <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem">Vanilla JavaScript</span>
         </div>
         <div class="cs-block" style="padding:16px 22px;display:inline-flex;align-items:center;gap:10px">
-          <i class="fas fa-code" style="color:#00E5A0"></i>
-          <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem">iframe srcdoc API</span>
+          <i class="fas fa-window-restore" style="color:#00E5A0"></i>
+          <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem">iframe Live Preview</span>
+        </div>
+        <div class="cs-block" style="padding:16px 22px;display:inline-flex;align-items:center;gap:10px">
+          <i class="fas fa-mobile-alt" style="color:#A78BFA"></i>
+          <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem">Mobile-Usable</span>
         </div>
         <div class="cs-block" style="padding:16px 22px;display:inline-flex;align-items:center;gap:10px">
           <i class="fab fa-github" style="color:#F0EEE9"></i>
@@ -230,23 +284,25 @@
 
     <!-- Hire CTA -->
     <div class="reveal">
-      <div class="cs-block" style="background:linear-gradient(135deg,rgba(0,229,160,.08),rgba(123,97,255,.08));border-color:rgba(0,229,160,.2);text-align:center;padding:48px 40px">
+      <div class="cs-block" style="background:linear-gradient(135deg,rgba(0,229,160,.07),rgba(123,97,255,.08));border-color:rgba(0,229,160,.2);text-align:center;padding:48px 40px">
         <h3 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.75rem">
-          Need a similar tool built?
+          Need a tool your users can start using instantly?
         </h3>
-        <p style="color:#9999AA;font-size:.95rem;line-height:1.7;max-width:420px;margin:0 auto 2rem">Whether it's a browser-based tool, a learning platform, or a developer utility, let's build it together.</p>
+        <p style="color:#9999AA;font-size:.95rem;line-height:1.7;max-width:460px;margin:0 auto 2rem">Whether it's an in-browser tool, a learning environment, or a product feature that needs to just work with no setup, I'll build it properly.</p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
           <a href="../contact.html" class="btn-primary"><i class="fas fa-paper-plane"></i> Start a Project</a>
-          <a href="https://wa.me/+2348185947780?text=Hi%20Emmanuel%2C%20I%20saw%20the%20Code%20Editor%20project%20and%20want%20something%20similar" target="_blank" rel="noopener noreferrer" class="btn-ghost"><i class="fab fa-whatsapp"></i> WhatsApp Me</a>
+          <a href="https://wa.me/+2348185947780?text=Hi%20Emmanuel%2C%20I%20saw%20the%20Code%20Editor%20project%20and%20want%20to%20discuss%20something%20similar" target="_blank" rel="noopener noreferrer" class="btn-ghost"><i class="fab fa-whatsapp"></i> WhatsApp Me</a>
         </div>
       </div>
     </div>
 
     <!-- Project Navigation -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.07);gap:16px">
-      <span style="color:#666677;font-size:.85rem">Next Project</span>
+      <a href="swift-course.html" class="btn-ghost text-sm py-2.5 px-5">
+        <i class="fas fa-arrow-left text-xs"></i> Swift Web Dev Course
+      </a>
       <a href="fashion-website.html" class="btn-ghost text-sm py-2.5 px-5">
-        Samuel Fashion Website <i class="fas fa-arrow-right text-xs"></i>
+        Fashion Website <i class="fas fa-arrow-right text-xs"></i>
       </a>
     </div>
 
