@@ -1,6 +1,6 @@
 # Ezenwa Chidera Emmanuel — Portfolio
 
-Personal portfolio of Ezenwa Chidera Emmanuel, frontend developer and founder of CodeVent Digital.
+Personal portfolio of Ezenwa Chidera Emmanuel, Frontend Developer, AI-automationist, Digital Product Entrepreneur and Founder of CodeVent Digital.
 
 **Live site:** https://emezch93.github.io/portfolio-ezenwa-chidera-emmanuel/
 
@@ -42,13 +42,6 @@ Multi-page portfolio showcasing frontend, AI integration, and automation work, p
 
 Mixing these two conventions is the most common source of broken links in this repo.
 
-## Known Housekeeping
-
-Not yet resolved, flagging rather than fixing silently:
-
-- `code-editor.html`, `fashion-website.html`, `educommex.html`, and `swift-course.html` currently exist at **both** the repo root and inside `/projects/`. The root pages point to the `/projects/` copies, so the root-level duplicates look like leftovers, worth confirming and removing.
-- `projects/README.md` currently documents an unrelated project (a quote site), not this repo. Needs replacing.
-- A number of loose images sit at repo root with no page currently referencing them. Worth an audit before the next cleanup pass.
 
 ## Deployment
 
