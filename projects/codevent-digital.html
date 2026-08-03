@@ -239,15 +239,19 @@
     }
 
     .hero-container {
-      max-width: 1200px;
+      max-width: 780px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
       position: relative;
       z-index: 2;
     }
+    .hero-badge { margin-left: auto; margin-right: auto; }
+    .hero-sub { max-width: 100%; margin-left: auto; margin-right: auto; }
+    .cta-row { justify-content: center; }
+    .trust-line { justify-content: center; }
 
     /* PILL badge */
     .hero-badge {
@@ -1307,6 +1311,50 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+    /* ══ TOAST NOTIFICATIONS ══ */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 320px;
+    }
+    .toast {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: auto;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: #fff; font-size: 0.8rem;
+    }
+    .toast-body { flex: 1; }
+    .toast-title { font-weight: 700; font-size: 0.82rem; color: var(--text); margin-bottom: 2px; }
+    .toast-sub { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
+    .toast-close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 0.85rem; padding: 2px; flex-shrink: 0;
+    }
+    .toast-close:hover { color: var(--text); }
+    @media (max-width: 640px) {
+      .toast-container { left: 12px; right: 12px; bottom: 12px; max-width: none; }
+    }
   </style>
 </head>
 <body>
@@ -1336,6 +1384,7 @@
         </li>
         <li role="none"><a href="codevent-digital.html" target="_self" role="menuitem">Home</a></li>
         <li role="none"><a href="learning.html" target="_self" role="menuitem">Learning</a></li>
+        <li role="none"><a href="https://codeventdigital.site/blog/index.html" target="_blank" rel="noopener noreferrer" role="menuitem">Blog</a></li>
         <li role="none"><a href="community.html" target="_self" role="menuitem">Community</a></li>
         <li role="none"><a href="testimonial.html" target="_self" role="menuitem">Testimonials</a></li>
         <li role="none"><a href="shop.html" target="_self" role="menuitem">Shop</a></li>
@@ -1420,83 +1469,6 @@
             <i class="fas fa-circle-check" aria-hidden="true"></i>
             You're logged in — full access unlocked.
           </p>
-        </div>
-      </div>
-
-      <!-- RIGHT: Interactive Visual Card -->
-      <div class="hero-visual" aria-hidden="true">
-        <!-- Floating chips -->
-        <div class="stat-chip chip-top">
-          <div class="chip-icon chip-icon-green"><i class="fas fa-bolt"></i></div>
-          <div>
-            <div class="chip-num">12+</div>
-            <div class="chip-desc">Active Courses</div>
-          </div>
-        </div>
-
-        <div class="visual-card">
-          <!-- macOS-style header -->
-          <div class="card-header">
-            <span class="dot-r"></span>
-            <span class="dot-y"></span>
-            <span class="dot-g"></span>
-            <span class="card-file">journey.js</span>
-          </div>
-
-          <!-- Fake code block -->
-          <div class="code-block" role="presentation">
-            <div><span class="code-kw">const</span> <span class="code-fn">developer</span> = {</div>
-            <div>&nbsp;&nbsp;name: <span class="code-str">"You"</span>,</div>
-            <div>&nbsp;&nbsp;level: <span class="code-str">"beginner"</span>,</div>
-            <div>&nbsp;&nbsp;path: <span class="code-acc">CodeVent</span>.<span class="code-fn">learn</span>(),</div>
-            <div>&nbsp;&nbsp;goal: <span class="code-str">"industry-ready"</span></div>
-            <div>};</div>
-            <div style="margin-top:0.5rem;"><span class="code-comment">// Your journey starts now ✓</span></div>
-          </div>
-
-          <!-- Pipeline steps -->
-          <div class="pipeline" role="list">
-            <div class="pipeline-step done" role="listitem">
-              <div class="step-icon icon-learn"><i class="fas fa-book-open"></i></div>
-              <div>
-                <div class="step-text">Learn</div>
-                <div class="step-sub">Free structured courses</div>
-              </div>
-              <span class="step-badge badge-free">Free</span>
-            </div>
-            <div class="pipeline-step active" role="listitem">
-              <div class="step-icon icon-build"><i class="fas fa-hammer"></i></div>
-              <div>
-                <div class="step-text">Build</div>
-                <div class="step-sub">Real-world projects</div>
-              </div>
-              <span class="step-badge badge-active">Active</span>
-            </div>
-            <div class="pipeline-step" role="listitem">
-              <div class="step-icon icon-valid"><i class="fas fa-check-circle"></i></div>
-              <div>
-                <div class="step-text">Validate</div>
-                <div class="step-sub">Peer reviews & feedback</div>
-              </div>
-              <span class="step-badge badge-soon">Next</span>
-            </div>
-            <div class="pipeline-step" role="listitem">
-              <div class="step-icon icon-earn"><i class="fas fa-coins"></i></div>
-              <div>
-                <div class="step-text">Monetize</div>
-                <div class="step-sub">Shop, mentorship & jobs</div>
-              </div>
-              <span class="step-badge badge-soon">Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="stat-chip chip-bottom">
-          <div class="chip-icon chip-icon-blue"><i class="fas fa-users"></i></div>
-          <div>
-            <div class="chip-num">500+</div>
-            <div class="chip-desc">Community Members</div>
-          </div>
         </div>
       </div>
 
@@ -1707,6 +1679,7 @@
         <ul class="footer-links">
           <li><a href="codevent-digital.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Home</a></li>
           <li><a href="learning.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Learning</a></li>
+          <li><a href="https://codeventdigital.site/blog/index.html" target="_blank" rel="noopener noreferrer"><i class="fas fa-chevron-right" aria-hidden="true"></i>Blog</a></li>
           <li><a href="community.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Community</a></li>
           <li><a href="testimonial.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Testimonials</a></li>
           <li><a href="shop.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Shop</a></li>
@@ -2237,5 +2210,47 @@
     }
   </script>
   <script src="pwa-register.js"></script>
+
+  <!-- ══ TOAST NOTIFICATIONS ══ -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+  <script>
+    const toastMessages = [
+      { icon: 'fa-user-plus', title: 'Chioma just joined', sub: 'From Abuja, Nigeria — welcome!' },
+      { icon: 'fa-code', title: 'New project shipped', sub: 'A learner just deployed their first site.' },
+      { icon: 'fa-comments', title: 'Active in Community', sub: 'Someone answered a question 2 minutes ago.' },
+      { icon: 'fa-graduation-cap', title: 'Module completed', sub: 'A student just finished the JavaScript basics module.' }
+    ];
+    function showToast({ icon, title, sub }) {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = `
+        <div class="toast-icon"><i class="fas ${icon}" aria-hidden="true"></i></div>
+        <div class="toast-body">
+          <div class="toast-title">${title}</div>
+          <div class="toast-sub">${sub}</div>
+        </div>
+        <button class="toast-close" aria-label="Dismiss notification">&times;</button>
+      `;
+      container.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show'));
+      const dismiss = () => {
+        el.classList.remove('show');
+        setTimeout(() => el.remove(), 350);
+      };
+      el.querySelector('.toast-close').addEventListener('click', dismiss);
+      setTimeout(dismiss, 6000);
+    }
+    let toastIndex = 0;
+    setTimeout(() => {
+      showToast(toastMessages[toastIndex % toastMessages.length]);
+      toastIndex++;
+      setInterval(() => {
+        showToast(toastMessages[toastIndex % toastMessages.length]);
+        toastIndex++;
+      }, 9000);
+    }, 4000);
+  </script>
 </body>
 </html>

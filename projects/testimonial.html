@@ -950,6 +950,50 @@
       opacity: 1;
       transform: translateY(0);
     }
+    /* ══ TOAST NOTIFICATIONS ══ */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 320px;
+    }
+    .toast {
+      background: var(--dark-3);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: auto;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: #fff; font-size: 0.8rem;
+    }
+    .toast-body { flex: 1; }
+    .toast-title { font-weight: 700; font-size: 0.82rem; color: var(--text); margin-bottom: 2px; }
+    .toast-sub { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
+    .toast-close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 0.85rem; padding: 2px; flex-shrink: 0;
+    }
+    .toast-close:hover { color: var(--text); }
+    @media (max-width: 640px) {
+      .toast-container { left: 12px; right: 12px; bottom: 12px; max-width: none; }
+    }
   </style>
 </head>
 <body>
@@ -969,6 +1013,7 @@
       <ul class="nav-links" id="navLinks" role="menubar">
         <li role="none"><a href="codevent-digital.html" target="_self" role="menuitem">Home</a></li>
         <li role="none"><a href="learning.html" target="_self" role="menuitem">Learning</a></li>
+        <li role="none"><a href="https://codeventdigital.site/blog/index.html" target="_blank" rel="noopener noreferrer" role="menuitem">Blog</a></li>
         <li role="none"><a href="community.html" target="_self" role="menuitem">Community</a></li>
         <li role="none"><a href="testimonial.html" target="_self" role="menuitem" class="active">Testimonials</a></li>
         <li role="none"><a href="shop.html" target="_self" role="menuitem">Shop</a></li>
@@ -1466,5 +1511,47 @@
     })();
   </script>
 <script src="pwa-register.js"></script>
+
+  <!-- ══ TOAST NOTIFICATIONS ══ -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+  <script>
+    const toastMessages = [
+      { icon: 'fa-trophy', title: 'Ibrahim landed a role', sub: 'Junior Developer, Port Harcourt.' },
+      { icon: 'fa-star', title: 'New 5-star review', sub: 'From a learner in Kano.' },
+      { icon: 'fa-briefcase', title: 'First freelance client', sub: 'Chioma just closed her first paid project.' },
+      { icon: 'fa-code-branch', title: 'Project deployed', sub: 'Another portfolio site went live this week.' }
+    ];
+    function showToast({ icon, title, sub }) {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = `
+        <div class="toast-icon"><i class="fas ${icon}" aria-hidden="true"></i></div>
+        <div class="toast-body">
+          <div class="toast-title">${title}</div>
+          <div class="toast-sub">${sub}</div>
+        </div>
+        <button class="toast-close" aria-label="Dismiss notification">&times;</button>
+      `;
+      container.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show'));
+      const dismiss = () => {
+        el.classList.remove('show');
+        setTimeout(() => el.remove(), 350);
+      };
+      el.querySelector('.toast-close').addEventListener('click', dismiss);
+      setTimeout(dismiss, 6000);
+    }
+    let toastIndex = 0;
+    setTimeout(() => {
+      showToast(toastMessages[toastIndex % toastMessages.length]);
+      toastIndex++;
+      setInterval(() => {
+        showToast(toastMessages[toastIndex % toastMessages.length]);
+        toastIndex++;
+      }, 9000);
+    }, 4000);
+  </script>
 </body>
 </html>
