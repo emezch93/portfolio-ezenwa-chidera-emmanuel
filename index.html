@@ -71,6 +71,8 @@
     .section-label{display:inline-flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9999AA;margin-bottom:20px}
     .section-label::before{content:'';display:block;width:24px;height:1px;background:#9999AA}
     .hero-headline{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.6rem,6.5vw,5.2rem);line-height:1.05;letter-spacing:-.03em}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#8B8DA3;margin-bottom:18px}
+    .eyebrow::before{content:'';display:block;width:16px;height:1px;background:#8B8DA3}
     .nav-link{position:relative;font-size:.875rem;font-weight:500;color:#9999AA;transition:color .2s;letter-spacing:.02em;text-decoration:none}
     .nav-link:hover{color:#F0EEE9}
     .nav-link.active{color:#00E5A0}
@@ -97,6 +99,36 @@
     ::-webkit-scrollbar{width:6px}
     ::-webkit-scrollbar-track{background:#0A0A0F}
     ::-webkit-scrollbar-thumb{background:#2A2A3A;border-radius:3px}
+
+        
+    /* ═ Signature: automation pipeline ═ */
+    .pipeline-panel{background:#101016;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:28px 22px 22px}
+    .pipeline-track{position:relative;display:flex;justify-content:space-between;align-items:center;padding:0 4px;margin-bottom:6px}
+    .pipeline-track::before{
+      content:'';position:absolute;top:26px;left:34px;right:34px;height:2px;z-index:0;
+      background-image:repeating-linear-gradient(90deg,#00E6A8 0 7px,transparent 7px 15px);
+      animation:flowDash 0.9s linear infinite;
+    }
+    @keyframes flowDash{to{background-position:22px 0}}
+    @media (prefers-reduced-motion:reduce){ .pipeline-track::before{animation:none} }
+    .pnode{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;width:33%}
+    .pnode-icon{
+      width:52px;height:52px;border-radius:50%;background:#101016;border:1.5px solid rgba(255,255,255,.14);
+      display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#00E6A8;flex-shrink:0;
+    }
+    .pnode:nth-child(2) .pnode-icon{color:#6D5AFF}
+    .pnode:nth-child(3) .pnode-icon{color:#25D366}
+    .pnode-label{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;text-align:center}
+    .pnode-sub{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:#8B8DA3;text-align:center}
+    .pipeline-log{
+      margin-top:20px;padding:12px 14px;background:#0A0A10;border:1px solid rgba(255,255,255,.06);border-radius:10px;
+      font-family:'JetBrains Mono',monospace;font-size:.74rem;color:#00E6A8;min-height:20px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .pipeline-log .dot{width:6px;height:6px;border-radius:50%;background:#00E6A8;flex-shrink:0;animation:pulseDot 1.6s ease infinite}
+    @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.3}}
+    @media (prefers-reduced-motion:reduce){ .pipeline-log .dot{animation:none} }
+
   </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
@@ -169,6 +201,38 @@
     </div>
   </div>
 </header>
+
+     
+     <div class="pipeline-panel">
+       <div class="eyebrow" style="margin-bottom:16px">what i actually build</div>
+       <div class="pipeline-track">
+         <div class="pnode">
+           <div class="pnode-icon"><i class="fas fa-file-lines" aria-hidden="true"></i></div>
+           <div class="pnode-label">Website Form</div>
+           <div class="pnode-sub">POST /lead</div>
+         </div>
+         <div class="pnode">
+           <div class="pnode-icon"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i></div>
+           <div class="pnode-label">Gemini</div>
+           <div class="pnode-sub">generate()</div>
+         </div>
+         <div class="pnode">
+           <div class="pnode-icon"><i class="fab fa-whatsapp" aria-hidden="true"></i></div>
+           <div class="pnode-label">Customer</div>
+           <div class="pnode-sub">200 OK</div>
+         </div>
+       </div>
+       <div class="pipeline-log">
+         <span class="dot" aria-hidden="true"></span>
+         <span id="pipelineLogText">→ reply delivered in 1.8s</span>
+       </div>
+     </div>
+     <p style="color:#8B8DA3;font-size:.82rem;margin-top:14px;text-align:center">
+       This is the actual system behind my AI automation work.
+       <a href="https://emezch93.github.io/riverside-dental-care/" target="_blank" rel="noopener noreferrer" style="color:#00E6A8;text-decoration:none;border-bottom:1px solid rgba(0,230,168,.3)">See it live &rarr;</a>
+     </p>
+   </div>
+
 
 <!-- ═══════════ FEATURED PROJECTS ═══════════ -->
 <section id="work" class="py-24 px-6">
@@ -632,6 +696,27 @@
   window.addEventListener('scroll',()=>{ const s=window.scrollY>600;stb.style.opacity=s?'1':'0';stb.style.pointerEvents=s?'auto':'none' });
   stb.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
   document.querySelectorAll('.nav-link').forEach(l=>{ if(l.getAttribute('href')===window.location.pathname.split('/').pop()||window.location.pathname==='/'&&l.getAttribute('href')==='index.html'){ l.classList.add('active') } });
+    /* Pipeline log rotator */
+  const pipelineLogs = [
+    '→ reply delivered in 1.8s',
+    '→ lead captured: Chioma A.',
+    '→ WhatsApp message sent',
+    '→ Gemini drafted reply in 0.9s'
+  ];
+  let logIndex = 0;
+  const logEl = document.getElementById('pipelineLogText');
+  if (logEl) {
+    setInterval(() => {
+      logIndex = (logIndex + 1) % pipelineLogs.length;
+      logEl.style.opacity = '0';
+      setTimeout(() => {
+        logEl.textContent = pipelineLogs[logIndex];
+        logEl.style.opacity = '1';
+      }, 250);
+    }, 3200);
+    logEl.style.transition = 'opacity .25s ease';
+  }
+  
 </script>
 </body>
 </html>
