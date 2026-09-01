@@ -65,7 +65,6 @@
     .service-card:hover{border-color:rgba(123,97,255,.3);background:#1a1a24}
     .contact-link{display:flex;align-items:center;gap:16px;padding:20px 28px;background:#13131A;border:1px solid rgba(255,255,255,.07);border-radius:14px;transition:all .3s ease;text-decoration:none;color:#F0EEE9}
     .contact-link:hover{border-color:rgba(0,229,160,.3);background:#1a1a22;transform:translateX(4px)}
-    .marquee-track{display:flex;gap:40px;animation:marquee 35s linear infinite}
     .proof-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:999px;font-size:.8rem;color:#9999AA;white-space:nowrap}
     .proof-pill strong{color:#F0EEE9;font-weight:600}
     .section-label{display:inline-flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9999AA;margin-bottom:20px}
@@ -128,6 +127,23 @@
     .pipeline-log .dot{width:6px;height:6px;border-radius:50%;background:#00E6A8;flex-shrink:0;animation:pulseDot 1.6s ease infinite}
     @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.3}}
     @media (prefers-reduced-motion:reduce){ .pipeline-log .dot{animation:none} }
+  .marquee-scroll{
+  display:flex;
+  gap:32px;
+  width:max-content;
+  animation:scrollX 35s linear infinite;
+  will-change:transform;
+}
+
+@keyframes scrollX{
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(-50%);
+  }
+}
 
   </style>
 </head>
@@ -434,7 +450,7 @@
     <span style="color:#00E5A0">✦</span>
     <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Firebase Auth</span>
     <span style="color:#00E5A0">✦</span>
-    <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Clouflare D1</span>
+    <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Cloudflare D1</span>
     <span style="color:#00E5A0">✦</span>
     <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Cloudflare KV</span>
     <span style="color:#00E5A0">✦</span>
@@ -483,7 +499,7 @@
     <span style="color:#00E5A0">✦</span>
     <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Firebase Auth</span>
     <span style="color:#00E5A0">✦</span>
-    <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Clouflare D1</span>
+    <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Cloudflare D1</span>
     <span style="color:#00E5A0">✦</span>
     <span style="color:#9999AA;font-family:'Syne',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.07em;white-space:nowrap">Cloudflare KV</span>
     <span style="color:#00E5A0">✦</span>
