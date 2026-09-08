@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CodeVent Digital — Building Developers One Step at a Time</title>
-  <meta name="description" content="CodeVent Digital — Building Developers One Step at a Time. Learn, Build, Validate, and Monetize your coding skills through structured courses, real projects, and a thriving community." />
-
+  <title>CodeVent Digital — Building the Digital Future</title>
+  <meta name="description" content="CodeVent Digital is a technology and digital skills ecosystem helping people learn, build, and create with modern web development, AI automation, and machine learning." />
+  <link rel="canonical" href="https://codeventdigital.site/" />
+  
   <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#5b4cff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="CodeVent" />
-  <link rel="icon" href="codevent-icon.svg" type="image/svg+xml" sizes="96x96" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icons/favicon.ico" sizes="32x32" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109"
+     crossorigin="anonymous"></script>
 
   <style>
     /* ─── TOKENS ─────────────────────────────────────────── */
@@ -239,19 +245,17 @@
     }
 
     .hero-container {
-      max-width: 780px;
+      max-width: 720px;
       margin: 0 auto;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
       align-items: center;
-      text-align: center;
       position: relative;
       z-index: 2;
+      text-align: center;
     }
-    .hero-badge { margin-left: auto; margin-right: auto; }
-    .hero-sub { max-width: 100%; margin-left: auto; margin-right: auto; }
-    .cta-row { justify-content: center; }
-    .trust-line { justify-content: center; }
+    .hero-content { text-align: left; }
 
     /* PILL badge */
     .hero-badge {
@@ -368,28 +372,11 @@
     .trust-line {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.6rem;
       font-size: 0.82rem;
       color: var(--text-muted);
     }
-    .trust-avatars {
-      display: flex;
-    }
-    .trust-avatars span {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      border: 2px solid var(--dark);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-left: -8px;
-    }
-    .trust-avatars span:first-child { margin-left: 0; }
-    .av1 { background: #ff6b6b; color: white; }
-    .av2 { background: #ffa94d; color: white; }
-    .av3 { background: #69db7c; color: white; }
-    .av4 { background: var(--primary); color: white; }
-    .trust-stars { color: #ffd43b; letter-spacing: -2px; font-size: 0.75rem; }
+    .trust-line i { color: var(--accent); }
 
     /* ─── HERO RIGHT — VISUAL CARD ──────────────────────── */
     .hero-visual {
@@ -485,7 +472,7 @@
     .step-sub  { font-size: 0.72rem; color: var(--text-muted); }
     .step-badge {
       margin-left: auto;
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -642,7 +629,7 @@
     .journey-tag {
       display: inline-block;
       margin-top: 0.85rem;
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -687,49 +674,56 @@
       background: var(--border);
     }
 
-    /* ─── SOCIAL PROOF ───────────────────────────────────── */
-    .social-proof {
+    /* ─── PLATFORM ───────────────────────────────────────── */
+    .platform {
       position: relative;
       z-index: 1;
       padding: 5rem 2rem;
     }
-    .testimonial-grid {
-      max-width: 960px;
+    .platform-grid {
+      max-width: 1000px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.25rem;
     }
-    .testimonial-card {
+    .platform-card {
       background: var(--dark-2);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
       padding: 1.5rem;
       transition: var(--transition);
+      text-decoration: none;
+      display: block;
     }
-    .testimonial-card:hover {
+    .platform-card:hover {
       border-color: rgba(91,76,255,0.4);
       transform: translateY(-3px);
     }
-    .test-stars { color: #ffd43b; font-size: 0.75rem; margin-bottom: 0.75rem; }
-    .test-text {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 1rem;
-      font-style: italic;
-    }
-    .test-author { display: flex; align-items: center; gap: 0.6rem; }
-    .test-avatar {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      font-size: 0.78rem;
-      font-weight: 700;
+    .platform-icon-wrap {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      margin-bottom: 0.9rem;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      font-size: 1.05rem;
     }
-    .test-name  { font-size: 0.82rem; font-weight: 700; color: white; }
-    .test-role  { font-size: 0.72rem; color: var(--text-muted); }
+    .pi-1 { background: rgba(91,76,255,0.18);  color: #a5b4fc; }
+    .pi-2 { background: rgba(82,170,255,0.15); color: #93c5fd; }
+    .pi-3 { background: rgba(0,229,160,0.12);  color: var(--accent); }
+    .pi-4 { background: rgba(255,189,77,0.15); color: #fbbf24; }
+    .pi-5 { background: rgba(255,107,107,0.15); color: #ff8787; }
+    .pi-6 { background: rgba(105,219,124,0.15); color: #69db7c; }
+    .platform-card h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.4rem;
+    }
+    .platform-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
 
     /* ─── CTA SECTION ────────────────────────────────────── */
     .cta-section {
@@ -860,8 +854,7 @@
     @media (max-width: 1024px) {
       .journey-grid { grid-template-columns: repeat(2, 1fr); }
       .journey-grid::before { display: none; }
-      .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
-      .testimonial-card:last-child { display: none; }
+      .platform-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-container { grid-template-columns: 1fr 1fr; }
       .footer-brand { grid-column: 1/-1; }
     }
@@ -875,8 +868,7 @@
       .cta-row { justify-content: center; }
       .trust-line { justify-content: center; }
       .stat-chip { display: none; }
-      .testimonial-grid { grid-template-columns: 1fr; }
-      .testimonial-card:last-child { display: block; }
+      .platform-grid { grid-template-columns: 1fr; }
       .footer-container { grid-template-columns: 1fr; gap: 2rem; }
       .footer-brand { grid-column: auto; }
       .copyright { flex-direction: column; text-align: center; }
@@ -1311,50 +1303,6 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-    /* ══ TOAST NOTIFICATIONS ══ */
-    .toast-container {
-      position: fixed;
-      bottom: 24px;
-      left: 24px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-width: 320px;
-    }
-    .toast {
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
-      pointer-events: auto;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
-    .toast-icon {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; color: #fff; font-size: 0.8rem;
-    }
-    .toast-body { flex: 1; }
-    .toast-title { font-weight: 700; font-size: 0.82rem; color: var(--text); margin-bottom: 2px; }
-    .toast-sub { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
-    .toast-close {
-      background: none; border: none; color: var(--text-muted);
-      cursor: pointer; font-size: 0.85rem; padding: 2px; flex-shrink: 0;
-    }
-    .toast-close:hover { color: var(--text); }
-    @media (max-width: 640px) {
-      .toast-container { left: 12px; right: 12px; bottom: 12px; max-width: none; }
-    }
   </style>
 </head>
 <body>
@@ -1363,7 +1311,7 @@
   <nav class="navbar" aria-label="Main navigation">
     <div class="navbar-container">
       <a href="codevent-digital.html" target="_self" class="logo" aria-label="CodeVent Digital — Home">
-        <span class="logo-icon" aria-hidden="true"><img src="codevent-icon.svg" width="96" height="96" alt="CodeVent Digital" style="width:100%;height:100%;object-fit:contain"></span>
+        <img src="icons/icon-192x192.png" alt="" class="logo-icon" aria-hidden="true">
         CodeVent <span class="logo-word">Digital</span>
       </a>
 
@@ -1384,14 +1332,14 @@
         </li>
         <li role="none"><a href="codevent-digital.html" target="_self" role="menuitem">Home</a></li>
         <li role="none"><a href="learning.html" target="_self" role="menuitem">Learning</a></li>
-        <li role="none"><a href="https://codeventdigital.site/blog/index.html" target="_blank" rel="noopener noreferrer" role="menuitem">Blog</a></li>
+        <li role="none"><a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener" target="_self" role="menuitem">Blog</a></li>
         <li role="none"><a href="community.html" target="_self" role="menuitem">Community</a></li>
-        <li role="none"><a href="testimonial.html" target="_self" role="menuitem">Testimonials</a></li>
         <li role="none"><a href="shop.html" target="_self" role="menuitem">Shop</a></li>
         <li role="none"><a href="toolkit.html" target="_self" role="menuitem">Toolkit</a></li>
+        <li role="none"><a href="codevent-code-editor.html" target="_self" role="menuitem">Code Editor</a></li>
         <li role="none"><a href="chat.html" target="_self" role="menuitem">AI Chat</a></li>
         <li role="none">
-          <a href="learning.html" target="_self" class="nav-cta" role="menuitem">
+          <a href="#" data-enroll-link class="nav-cta" role="menuitem">
             Start Free <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
         </li>
@@ -1420,28 +1368,35 @@
       <div class="hero-content">
         <div class="hero-badge">
           <span class="dot" aria-hidden="true"></span>
-          Now Enrolling — Free Entry
+          Build Your Digital Future
         </div>
 
         <h1 class="hero-tagline">
-          Building Developers<br>
-          <em>One Step at a Time</em>
+          Building the Digital Future<br>
         </h1>
 
+        <p class="hero-sub" style="margin-bottom:0.9rem;">
+          CodeVent Digital is a technology and digital skills ecosystem focused on helping people learn, build, and create with modern technology.
+        </p>
+        <p class="hero-sub" style="margin-bottom:0.9rem;">
+          We combine practical learning, real world projects, digital products, and technology solutions to help individuals and businesses develop valuable digital capabilities and turn ideas into working solutions.
+        </p>
+        <p class="hero-sub" style="margin-bottom:0.9rem;">
+          From web development and software engineering to AI automation, machine learning, digital tools, and modern web technologies, we make it easier to understand technology, apply it in practice, and build with confidence.
+        </p>
         <p class="hero-sub">
-          Learn to code for free. Follow a structured path. Ship real projects. 
-          Turn your skills into income,  all inside one growing community.
+          Whether you are developing your skills, building a digital product, improving a business process, or exploring new opportunities in technology, CodeVent Digital provides practical knowledge and solutions designed for the real world.
         </p>
 
         <div class="hero-cta-group">
           <div class="cta-row">
             <!-- PRIMARY CTA -->
-            <a href="learning.html" target="_self" class="btn-primary" aria-label="Start learning for free">
+            <a href="#" data-enroll-link class="btn-primary" aria-label="Start learning for free">
               <i class="fas fa-rocket" aria-hidden="true"></i>
               Start Learning — It's Free
             </a>
             <!-- SECONDARY CTA -->
-            <a href="community.html" target="_self" class="btn-secondary" aria-label="Join our community">
+            <a href="https://wa.me/2348185947780?text=Hello%20!%20I'm%20interested%20in%20codevent-digital%20community%20my%20name%20is%20________________%20" target="_blank" rel="noopener" class="btn-secondary" aria-label="Join our WhatsApp community channel">
               <i class="fab fa-whatsapp" aria-hidden="true"></i>
               Join Community
             </a>
@@ -1449,14 +1404,8 @@
 
           <!-- Trust line -->
           <div class="trust-line">
-            <div class="trust-avatars" aria-hidden="true">
-              <span class="av1">C</span>
-              <span class="av2">C</span>
-             
-              <span class="av4">E</span>
-            </div>
-            <span class="trust-stars" aria-hidden="true">★★★★★</span>
-            <span>Trusted by <strong style="color:var(--text)">500+ learners</strong> across Lagos & beyond</span>
+            <i class="fas fa-circle-check" aria-hidden="true"></i>
+            <span>Free to start — no credit card required</span>
           </div>
           <!-- Auth nudge -->
           <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.85rem;" data-auth="logged-out">
@@ -1465,87 +1414,64 @@
               Sign in here
             </button>
           </p>
-          <p style="font-size:0.8rem;color:var(--accent);margin-top:0.85rem;display:none;" data-auth="logged-in">
+          <!--p style="font-size:0.8rem;color:var(--accent);margin-top:0.85rem;display:none;" data-auth="logged-in">
             <i class="fas fa-circle-check" aria-hidden="true"></i>
             You're logged in — full access unlocked.
-          </p>
+        </p-->
         </div>
       </div>
-
     </div>
   </section>
+  
+  <!--script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109"
+     crossorigin="anonymous"></script-->
+<!-- codeventdigital ad unit -->
+<!--ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1629598637562109"
+     data-ad-slot="2198694017"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script-->
 
   <!-- ══ STATS BAR ═════════════════════════════════════════ -->
   <div class="stats-bar" aria-label="Platform statistics">
     <div class="stats-inner">
       <div class="stat-item">
-        <span class="stat-num">500+</span>
-        <span class="stat-label">Learners Enrolled</span>
-      </div>
-      <div class="stat-divider" aria-hidden="true"></div>
-      <div class="stat-item">
-        <span class="stat-num">12+</span>
+        <span class="stat-num" data-count-to="7" data-suffix="+">7+</span>
         <span class="stat-label">Structured Courses</span>
       </div>
       <div class="stat-divider" aria-hidden="true"></div>
       <div class="stat-item">
-        <span class="stat-num">100%</span>
+        <span class="stat-num" data-count-to="100" data-suffix="%">100%</span>
         <span class="stat-label">Free to Start</span>
       </div>
       <div class="stat-divider" aria-hidden="true"></div>
       <div class="stat-item">
-        <span class="stat-num">Lagos</span>
-        <span class="stat-label">Based, Global Vision</span>
+        <span class="stat-num">Online</span>
+        <span class="stat-label">Global, Digital-First</span>
       </div>
     </div>
   </div>
 
-  <!-- ══ JOURNEY SECTION ═══════════════════════════════════ -->
-  <section class="journey" id="features" aria-labelledby="features-title">
-    <p class="section-label">Inside The Platform</p>
-    <h2 class="section-title" id="features-title">Everything You Get, One Login</h2>
-    <p class="section-sub">A full learning ecosystem, not a single course page.</p>
-
-    <div class="journey-grid">
-      <div class="journey-card fade-up">
-        <div class="journey-icon-wrap ji-1"><i class="fas fa-graduation-cap"></i></div>
-        <h3>Curriculum</h3>
-        <p>Structured HTML, CSS, and JavaScript modules that take beginners from zero to a working portfolio.</p>
-        <span class="journey-tag jt-free">Free</span>
-      </div>
-      <div class="journey-card fade-up" style="transition-delay:0.1s">
-        <div class="journey-icon-wrap ji-2"><i class="fas fa-comments"></i></div>
-        <h3>AI Study Assistant</h3>
-        <p>A Gemini-powered mentor that answers questions and tracks topics as you learn, available any time.</p>
-        <span class="journey-tag jt-path">AI Powered</span>
-      </div>
-      <div class="journey-card fade-up" style="transition-delay:0.2s">
-        <div class="journey-icon-wrap ji-3"><i class="fas fa-people-group"></i></div>
-        <h3>Community</h3>
-        <p>Submit projects for feedback, connect with other learners, and get reviewed by real developers.</p>
-        <span class="journey-tag jt-proj">Peer Review</span>
-      </div>
-      <div class="journey-card fade-up" style="transition-delay:0.3s">
-        <div class="journey-icon-wrap ji-4"><i class="fas fa-toolbox"></i></div>
-        <h3>Developer Toolkit</h3>
-        <p>A single reference covering cheat sheets, checklists, career tools, and project ideas for every stage.</p>
-        <span class="journey-tag jt-earn">Premium</span>
-      </div>
-      <div class="journey-card fade-up" style="transition-delay:0.4s">
-        <div class="journey-icon-wrap ji-1"><i class="fas fa-bag-shopping"></i></div>
-        <h3>Shop</h3>
-        <p>Digital products and guides for developers, secure checkout and instant download after purchase.</p>
-        <span class="journey-tag jt-free">Paystack</span>
-      </div>
-      <div class="journey-card fade-up" style="transition-delay:0.5s">
-        <div class="journey-icon-wrap ji-2"><i class="fas fa-mobile-screen-button"></i></div>
-        <h3>Installable App</h3>
-        <p>Add CodeVent Digital to your home screen and keep learning with offline support built in.</p>
-        <span class="journey-tag jt-path">PWA</span>
-      </div>
-    </div>
+  <!-- ══ MISSION / WHO WE ARE ══════════════════════════════ -->
+  <section class="platform" aria-labelledby="mission-title" style="padding-bottom:0;">
+    <p class="section-label">Who We Are</p>
+    <h2 class="section-title" id="mission-title">Learn technology. Build solutions. Create value.</h2>
+    <p class="section-sub" style="max-width:760px;margin:0 auto 1rem;">
+      CodeVent Digital brings together digital skills, practical learning, technology solutions, and digital products in one ecosystem.
+    </p>
+    <p class="section-sub" style="max-width:760px;margin:0 auto 1rem;">
+      We provide structured learning experiences and practical projects across web development, software engineering, AI automation, machine learning, and other emerging areas of technology. We also build digital solutions that help individuals, businesses, and organizations solve real problems and operate more effectively.
+    </p>
+    <p class="section-sub" style="max-width:760px;margin:0 auto 3.5rem;">
+      Our goal is simple: make modern technology more accessible, practical, and useful. Whether you are learning a new skill, developing a product, automating a process, or looking for a better way to use technology, CodeVent Digital is built to help you move from knowledge to action.
+    </p>
   </section>
 
+  <!-- ══ JOURNEY SECTION ═══════════════════════════════════ -->
   <section class="journey" id="journey" aria-labelledby="journey-title">
     <p class="section-label">Your Roadmap</p>
     <h2 class="section-title" id="journey-title">Four Stages. One Clear Path.</h2>
@@ -1556,73 +1482,70 @@
         <div class="journey-num">01 / ENTRY</div>
         <div class="journey-icon-wrap ji-1"><i class="fas fa-book-open"></i></div>
         <h3>Learn</h3>
-        <p>Access free beginner-friendly courses. HTML, CSS, JavaScript, and beyond, in structured bitesize modules.</p>
+        <p>Access free beginner-friendly courses. HTML, CSS, JavaScript, and beyond, in structured bitesize modules. Each lesson builds on the last, so you never have to guess what comes next.</p>
         <span class="journey-tag jt-free">Free Access</span>
       </div>
       <div class="journey-card fade-up" style="transition-delay:0.1s">
         <div class="journey-num">02 / STRUCTURE</div>
         <div class="journey-icon-wrap ji-2"><i class="fas fa-sitemap"></i></div>
         <h3>Build</h3>
-        <p>Follow a structured learning path. Complete guided projects that grow from simple pages to full web apps.</p>
+        <p>Follow a structured learning path. Complete guided projects that grow from simple pages to full web apps. You practice the same skills employers and clients actually look for.</p>
         <span class="journey-tag jt-path">Guided Path</span>
       </div>
       <div class="journey-card fade-up" style="transition-delay:0.2s">
         <div class="journey-num">03 / VALIDATION</div>
         <div class="journey-icon-wrap ji-3"><i class="fas fa-clipboard-check"></i></div>
         <h3>Validate</h3>
-        <p>Submit projects for community feedback. Get reviewed, iterate, and build a portfolio that proves your skills.</p>
+        <p>Submit projects for community feedback. Get reviewed, iterate, and build a portfolio that proves your skills. Real critique from real developers, not just automated checks.</p>
         <span class="journey-tag jt-proj">Projects</span>
       </div>
       <div class="journey-card fade-up" style="transition-delay:0.3s" data-auth="protected">
         <div class="journey-num">04 / INCOME</div>
         <div class="journey-icon-wrap ji-4"><i class="fas fa-coins"></i></div>
         <h3>Monetize</h3>
-        <p>Unlock the Shop, connect with mentors, and land real-world opportunities using your validated skills.</p>
+        <p>Unlock the Shop, connect with mentors, and land real-world opportunities using your validated skills. This is where learning turns into income.</p>
         <span class="journey-tag jt-earn">Earn</span>
       </div>
     </div>
   </section>
 
-  <!-- ══ SOCIAL PROOF ═══════════════════════════════════════ -->
-  <section class="social-proof" aria-labelledby="proof-title">
-    <p class="section-label">Community Voices</p>
-    <h2 class="section-title" id="proof-title">Real People. Real Progress.</h2>
-    <p class="section-sub">Hear from learners who've taken the first step.</p>
+  <!-- ══ PLATFORM ══════════════════════════════════════════ -->
+  <section class="platform" aria-labelledby="platform-title">
+    <p class="section-label">The Ecosystem</p>
+    <h2 class="section-title" id="platform-title">Everything You Need, In One Place</h2>
+    <p class="section-sub">Not just courses — a full toolkit for learning, building, and shipping.</p>
 
-    <div class="testimonial-grid">
-      <div class="testimonial-card fade-up">
-        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <p class="test-text">"CodeVent turned my confusion into clarity. The structured path meant I always knew what to do next. I shipped my first project in 6 weeks."</p>
-        <div class="test-author">
-          <div class="test-avatar" style="background:#5b4cff;color:white">CN</div>
-          <div>
-            <div class="test-name">Chisom N.</div>
-            <div class="test-role">Frontend Developer</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-up" style="transition-delay:0.1s">
-        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <p class="test-text">"The community alone is worth it. I asked questions at midnight and got answers. The mentorship energy in this group is unmatched."</p>
-        <div class="test-author">
-          <div class="test-avatar" style="background:#00e5a0;color:#0d0f1a">CA</div>
-          <div>
-            <div class="test-name">Caleb A.</div>
-            <div class="test-role">Web Dev Student</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-up" style="transition-delay:0.2s">
-        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <p class="test-text">"Starting for free with zero pressure was the nudge I needed. Three months later, I landed my first freelance client through the network here."</p>
-        <div class="test-author">
-          <div class="test-avatar" style="background:#ffa94d;color:white">EO</div>
-          <div>
-            <div class="test-name">Ego O.</div>
-            <div class="test-role">Freelance Developer</div>
-          </div>
-        </div>
-      </div>
+    <div class="platform-grid">
+      <a href="learning.html" target="_self" class="platform-card fade-up">
+        <div class="platform-icon-wrap pi-1"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
+        <h3>Structured Learning</h3>
+        <p>Bitesize HTML, CSS, and JavaScript modules that build on each other, from first principles to real projects.</p>
+      </a>
+      <a href="codevent-code-editor.html" target="_self" class="platform-card fade-up" style="transition-delay:0.05s">
+        <div class="platform-icon-wrap pi-2"><i class="fas fa-code" aria-hidden="true"></i></div>
+        <h3>In-Browser Code Editor</h3>
+        <p>Write, run, and test code directly on the platform — no local setup required to start building.</p>
+      </a>
+      <a href="chat.html" target="_self" class="platform-card fade-up" style="transition-delay:0.1s">
+        <div class="platform-icon-wrap pi-3"><i class="fas fa-robot" aria-hidden="true"></i></div>
+        <h3>CodeVent AI</h3>
+        <p>An AI web dev mentor to help you debug, explain concepts, and get unstuck while you learn.</p>
+      </a>
+      <a href="community.html" target="_self" class="platform-card fade-up" style="transition-delay:0.15s">
+        <div class="platform-icon-wrap pi-4"><i class="fas fa-people-group" aria-hidden="true"></i></div>
+        <h3>Community</h3>
+        <p>Ask questions, share progress, and get feedback from other learners and mentors along the way.</p>
+      </a>
+      <a href="toolkit.html" target="_self" class="platform-card fade-up" style="transition-delay:0.2s">
+        <div class="platform-icon-wrap pi-5"><i class="fas fa-toolbox" aria-hidden="true"></i></div>
+        <h3>Developer Toolkit</h3>
+        <p>Practical checklists and utilities for the everyday work of building and shipping digital products.</p>
+      </a>
+      <a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener" target="_self" class="platform-card fade-up" style="transition-delay:0.25s">
+        <div class="platform-icon-wrap pi-6"><i class="fas fa-newspaper" aria-hidden="true"></i></div>
+        <h3>Blog & Guides</h3>
+        <p>In-depth tutorials on HTML, CSS, and JavaScript for beginners who want the "why," not just the "how."</p>
+      </a>
     </div>
   </section>
 
@@ -1638,7 +1561,7 @@
           Start Learning Now
         </a>
         <!-- TERTIARY — shop -->
-        <a href="shop.html" target="_blank" class="btn-secondary" aria-label="Browse the CodeVent shop">
+        <a href="shop.html" target="_self" class="btn-secondary" aria-label="Browse the CodeVent shop">
           <i class="fas fa-store" aria-hidden="true"></i>
           Explore Shop
         </a>
@@ -1651,10 +1574,10 @@
     <div class="footer-container">
       <div class="footer-brand">
         <a href="codevent-digital.html" target="_self" class="logo" style="margin-bottom:0.25rem;display:inline-flex;">
-          <span class="logo-icon" aria-hidden="true"><img src="codevent-icon.svg" width="96" height="96" alt="CodeVent Digital" style="width:100%;height:100%;object-fit:contain"></span>
+          <img src="icons/icon-192x192.png" alt="" class="logo-icon" aria-hidden="true">
           CodeVent <span class="logo-word">Digital</span>
         </a>
-        <p>Empowering the next generation of developers through structured learning, real projects, and community collaboration.</p>
+        <p>Making modern technology more accessible through practical learning, innovative solutions, and digital products built for the real world.</p>
         <div class="social-links" aria-label="Social media links">
           <a href="https://www.facebook.com/profile.php?id=61575448417610" target="_blank" rel="noopener" aria-label="Facebook">
             <i class="fab fa-facebook-f" aria-hidden="true"></i>
@@ -1662,8 +1585,8 @@
           <a href="https://github.com/emezch93" target="_blank" rel="noopener" aria-label="GitHub">
             <i class="fab fa-github" aria-hidden="true"></i>
           </a>
-          <a href="https://www.instagram.com/chidera_emmanuel93?igsh=MTU0N2VuZ3JmYjNzMg==" target="_blank" rel="noopener" aria-label="Instagram">
-            <i class="fab fa-instagram" aria-hidden="true"></i>
+          <a href="https://youtube.com/@codeventdigital" target="_blank" rel="noopener" aria-label="CodeVent Digital on YouTube">
+            <i class="fab fa-youtube" aria-hidden="true"></i>
           </a>
           <a href="https://wa.me/2348185947780?text=Hello%20!%20I'm%20interested%20in%20CodeVent%20and%20would%20love%20to%20know%20more" target="_blank" rel="noopener" aria-label="WhatsApp">
             <i class="fab fa-whatsapp" aria-hidden="true"></i>
@@ -1679,11 +1602,12 @@
         <ul class="footer-links">
           <li><a href="codevent-digital.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Home</a></li>
           <li><a href="learning.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Learning</a></li>
-          <li><a href="https://codeventdigital.site/blog/index.html" target="_blank" rel="noopener noreferrer"><i class="fas fa-chevron-right" aria-hidden="true"></i>Blog</a></li>
+          <li><a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Blog</a></li>
           <li><a href="community.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Community</a></li>
-          <li><a href="testimonial.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Testimonials</a></li>
           <li><a href="shop.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Shop</a></li>
           <li><a href="toolkit.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Toolkit</a></li>
+          <li><a href="https://codeventdigital.site/verify-certificate.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Verify Certificate</a></li>
+          <li><a href="codevent-code-editor.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Code Editor</a></li>
           <li><a href="chat.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>AI Chat</a></li>
         </ul>
       </div>
@@ -1692,6 +1616,12 @@
         <h4>Contact</h4>
         <ul class="footer-links">
           <li>
+            <a href="mailto:hello@codeventdigital.site" target="_blank">
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              hello@codeventdigital.site
+            </a>
+          </li>
+          <li style="font-size:0.85em;opacity:0.75;">
             <a href="mailto:codeventdigitalinfo@gmail.com" target="_blank">
               <i class="fas fa-envelope" aria-hidden="true"></i>
               codeventdigitalinfo@gmail.com
@@ -1710,17 +1640,17 @@
             </a>
           </li>
           <li style="color:var(--text-muted);font-size:0.875rem;padding-top:0.1rem;">
-            <i class="fas fa-map-marker-alt" style="color:var(--primary);font-size:0.75rem;" aria-hidden="true"></i>
-            Surulere, Lagos
+            <i class="fas fa-globe" style="color:var(--primary);font-size:0.75rem;" aria-hidden="true"></i>
+            Online, Worldwide
           </li>
         </ul>
       </div>
     </div>
 
-<div class="copyright">
+    <div class="copyright">
       <span>&copy; 2026 CodeVent Digital. All rights reserved.</span>
-      <span style="color:var(--text-muted);font-size:0.75rem;">Building Developers One Step at a Time.</span>
-      <span class="legal-links"><a href="privacy.html" target="_self">Privacy</a> · <a href="terms.html" target="_self">Terms</a> · <a href="contact.html" target="_self">Contact</a></span>
+      <span style="color:var(--text-muted);font-size:0.75rem;">Building the Digital Future.</span>
+      <span class="legal-links"><a href="privacy.html" target="_self">Privacy</a> · <a href="terms.html" target="_self">Terms</a> · <a href="contact.html" target="_self">Contact</a> . <a href="codevent-about.html" target="_self">About</a></span>
     </div>
   </footer>
 
@@ -1872,11 +1802,10 @@
   </div>
 
   <!-- ══ JAVASCRIPT ═════════════════════════════════════════ -->
-  <script type="module">
+<script type="module">
     // ── Import Firebase auth helpers ────────────────────────
-    import { signUp, logIn, logOut, onAuthChange, applyAuthGate, friendlyError, resetPassword, signInWithGoogle }
+    import { signUp, logIn, logOut, onAuthChange, applyAuthGate, friendlyError, resetPassword, signInWithGoogle, checkGoogleRedirectResult }
       from "./auth.js";
-
     // ════════════════════════════════════════════════════════
     // EXISTING SITE JS (preserved exactly)
     // ════════════════════════════════════════════════════════
@@ -2036,20 +1965,13 @@
       // ── GOOGLE AUTH (shared handler for both login + signup buttons) ──
       async function handleGoogleAuth(msgId) {
         const btn = document.getElementById(msgId === 'loginMsg' ? 'googleLoginBtn' : 'googleSignupBtn');
-        const origHTML = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Please wait…';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Redirecting…';
         try {
-          const user = await signInWithGoogle();
-          showMsg(msgId, `Welcome, ${user.displayName || 'there'}! ✓`, 'success');
-          setTimeout(closeModal, 1500);
+          await signInWithGoogle(); // page navigates to Google here
         } catch (err) {
-          if (err.code !== 'auth/popup-closed-by-user') {
-            showMsg(msgId, friendlyError(err.code), 'error');
-          }
-        } finally {
+          showMsg(msgId, friendlyError(err.code), 'error');
           btn.disabled = false;
-          btn.innerHTML = origHTML;
         }
       }
       document.getElementById('googleLoginBtn') ?.addEventListener('click', () => handleGoogleAuth('loginMsg'));
@@ -2177,6 +2099,11 @@
     // AUTH STATE — runs outside DOMContentLoaded so it fires
     // as early as possible with the persisted session
     // ════════════════════════════════════════════════════════
+    checkGoogleRedirectResult().then(user => {
+      if (user) {
+        console.log('Signed in via Google:', user.displayName || user.email);
+      }
+    });
     onAuthChange(user => {
       applyAuthGate(user);
 
@@ -2203,54 +2130,8 @@
         if (mobileGreeting) mobileGreeting.style.display = 'none';
       }
     });
-
-    // Register Service Worker (PWA)
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/codevent-digital/sw.js');
-    }
   </script>
-  <script src="pwa-register.js"></script>
-
-  <!-- ══ TOAST NOTIFICATIONS ══ -->
-  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
-  <script>
-    const toastMessages = [
-      { icon: 'fa-user-plus', title: 'Chioma just joined', sub: 'From Abuja, Nigeria — welcome!' },
-      { icon: 'fa-code', title: 'New project shipped', sub: 'A learner just deployed their first site.' },
-      { icon: 'fa-comments', title: 'Active in Community', sub: 'Someone answered a question 2 minutes ago.' },
-      { icon: 'fa-graduation-cap', title: 'Module completed', sub: 'A student just finished the JavaScript basics module.' }
-    ];
-    function showToast({ icon, title, sub }) {
-      const container = document.getElementById('toastContainer');
-      if (!container) return;
-      const el = document.createElement('div');
-      el.className = 'toast';
-      el.innerHTML = `
-        <div class="toast-icon"><i class="fas ${icon}" aria-hidden="true"></i></div>
-        <div class="toast-body">
-          <div class="toast-title">${title}</div>
-          <div class="toast-sub">${sub}</div>
-        </div>
-        <button class="toast-close" aria-label="Dismiss notification">&times;</button>
-      `;
-      container.appendChild(el);
-      requestAnimationFrame(() => el.classList.add('show'));
-      const dismiss = () => {
-        el.classList.remove('show');
-        setTimeout(() => el.remove(), 350);
-      };
-      el.querySelector('.toast-close').addEventListener('click', dismiss);
-      setTimeout(dismiss, 6000);
-    }
-    let toastIndex = 0;
-    setTimeout(() => {
-      showToast(toastMessages[toastIndex % toastMessages.length]);
-      toastIndex++;
-      setInterval(() => {
-        showToast(toastMessages[toastIndex % toastMessages.length]);
-        toastIndex++;
-      }, 9000);
-    }, 4000);
-  </script>
+<script src="enroll-config.js"></script>
+  <script src="counter.js"></script>
 </body>
 </html>

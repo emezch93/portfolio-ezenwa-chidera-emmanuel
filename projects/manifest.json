@@ -1,29 +1,46 @@
 {
-  "name": "Ezenwa Chidera Emmanuel — Philosophical Quotes",
-  "short_name": "ECE Quotes",
-  "description": "Original philosophical quotes by Ezenwa Chidera Emmanuel. Nothing in life delays, only our readiness does.",
-  "start_url": "/quote-site-ezenwa-chidera-emmanuel/",
-  "scope": "/quote-site-ezenwa-chidera-emmanuel/",
+  "name": "CodeVent Digital",
+  "short_name": "CodeVent",
+  "description": "CodeVent Digital — a technology and digital skills ecosystem for learning, building, and creating with modern technology.",
+  "start_url": "/?utm_source=pwa",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#080A0F",
-  "theme_color": "#080A0F",
+  "orientation": "portrait-primary",
+  "background_color": "#0d0f1a",
+  "theme_color": "#5b4cff",
   "lang": "en",
+  "categories": ["education", "developer tools"],
   "icons": [
+    { "src": "icons/icon-72x72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-96x96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-128x128.png","sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-144x144.png","sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-152x152.png","sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192x192.png","sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-384x384.png","sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512x512.png","sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192x192-maskable.png","sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512x512-maskable.png","sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
     {
-      "src": "favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "name": "Start Learning",
+      "short_name": "Learn",
+      "url": "/learning?utm_source=pwa_shortcut",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "name": "Community",
+      "short_name": "Community",
+      "url": "/community?utm_source=pwa_shortcut",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "name": "Shop",
+      "short_name": "Shop",
+      "url": "/shop?utm_source=pwa_shortcut",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }

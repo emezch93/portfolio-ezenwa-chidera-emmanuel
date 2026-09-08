@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — CodeVent Digital</title>
   <meta name="description" content="How CodeVent Digital collects, uses, and protects your information across our learning platform, shop, community, and AI chat." />
+  <link rel="canonical" href="https://codeventdigital.site/privacy" />
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
@@ -12,11 +13,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="CodeVent" />
-  <link rel="icon" href="codevent-icon.svg" type="image/svg+xml" sizes="96x96" />
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icons/favicon.ico" sizes="32x32" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109"
+     crossorigin="anonymous"></script>
 
   <style>
     :root {
@@ -338,8 +344,8 @@
   <!-- ══ NAVBAR ════════════════════════════════════════ -->
   <nav class="navbar" aria-label="Main navigation">
     <div class="navbar-container">
-      <a href="codevent-digital.html" class="logo" aria-label="CodeVent Digital — Home">
-        <span class="logo-icon" aria-hidden="true"><img src="codevent-icon.svg" width="96" height="96" alt="CodeVent Digital" style="width:100%;height:100%;object-fit:contain"></span>
+      <a href="codevent-digital.html" target="_self" class="logo" aria-label="CodeVent Digital — Home">
+        <img src="icons/icon-192x192.png" alt="" class="logo-icon" aria-hidden="true">
         CodeVent <span class="logo-word">Digital</span>
       </a>
       <button class="hamburger" id="hamburger" aria-label="Open navigation" aria-expanded="false">
@@ -348,10 +354,11 @@
       <ul class="nav-links" id="navLinks" role="menubar">
         <li role="none"><a href="codevent-digital.html" target="_self" role="menuitem">Home</a></li>
         <li role="none"><a href="learning.html" target="_self" role="menuitem">Learning</a></li>
+        <li role="none"><a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener" target="_self" role="menuitem">Blog</a></li>
         <li role="none"><a href="community.html" target="_self" role="menuitem">Community</a></li>
-        <li role="none"><a href="testimonial.html" target="_self" role="menuitem">Testimonials</a></li>
         <li role="none"><a href="shop.html" target="_self" role="menuitem">Shop</a></li>
         <li role="none"><a href="toolkit.html" target="_self" role="menuitem">Toolkit</a></li>
+        <li role="none"><a href="codevent-code-editor.html" target="_self" role="menuitem">Code Editor</a></li>
         <li role="none"><a href="chat.html" target="_self" role="menuitem">AI Chat</a></li>
         <li role="none">
           <a href="learning.html" target="_self" class="nav-cta" role="menuitem">
@@ -418,9 +425,21 @@
 
     <h2>5. Cookies &amp; Local Storage</h2>
     <p>
-      We use minimal cookies and browser storage — mainly to keep you signed in and to remember basic
-      preferences (like offline access via our PWA service worker). We don't use invasive tracking or
-      advertising cookies.
+      We use cookies and browser storage for a few purposes: to keep you signed in, to remember basic
+      preferences (like offline access via our PWA service worker), and — where advertising is enabled
+      on the site — to support Google AdSense.
+    </p>
+    <p>
+      We and third-party vendors, including Google, use cookies to serve ads based on a user's prior
+      visits to this or other websites. Google's use of advertising cookies enables it and its partners
+      to serve ads based on your visit to this site and/or other sites on the internet. You can opt out
+      of personalized advertising by visiting
+      <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a>,
+      and you can learn more about how Google uses data at
+      <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a>.
+      Third-party vendors, including Google, may also use cookies to serve ads based on your past visits
+      to our site. You may opt out of interest-based advertising by visiting
+      <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener">aboutads.info/choices</a>.
     </p>
 
     <h2>6. Children's Privacy</h2>
@@ -448,7 +467,8 @@
     <h2>9. Contact Us</h2>
     <p>
       Questions about this policy? Email us at
-      <a class="inline-link" href="mailto:codeventdigitalinfo@gmail.com" target="_blank">codeventdigitalinfo@gmail.com</a>
+      <a class="inline-link" href="mailto:hello@codeventdigital.site" target="_blank">hello@codeventdigital.site</a>
+      (or <a class="inline-link" href="mailto:codeventdigitalinfo@gmail.com" target="_blank">codeventdigitalinfo@gmail.com</a>)
       or visit our <a class="inline-link" href="contact.html" target="_self">Contact page</a>.
     </p>
 
@@ -460,10 +480,10 @@
 
       <div class="footer-brand">
         <a href="codevent-digital.html" target="_self" class="logo" style="display:inline-flex;">
-          <span class="logo-icon" aria-hidden="true"><img src="codevent-icon.svg" width="96" height="96" alt="CodeVent Digital" style="width:100%;height:100%;object-fit:contain"></span>
+          <img src="icons/icon-192x192.png" alt="" class="logo-icon" aria-hidden="true">
           CodeVent <span class="logo-word">Digital</span>
         </a>
-        <p>Empowering the next generation of developers through structured learning and community collaboration.</p>
+        <p>Making modern technology more accessible through practical learning, innovative solutions, and digital products built for the real world.</p>
         <div class="social-links" aria-label="Social media links">
           <a href="https://www.facebook.com/profile.php?id=61575448417610" target="_blank" rel="noopener" aria-label="Facebook">
             <i class="fab fa-facebook-f" aria-hidden="true"></i>
@@ -471,8 +491,8 @@
           <a href="https://github.com/emezch93" target="_blank" rel="noopener" aria-label="GitHub">
             <i class="fab fa-github" aria-hidden="true"></i>
           </a>
-          <a href="https://www.instagram.com/chidera_emmanuel93?igsh=MTU0N2VuZ3JmYjNzMg==" target="_blank" rel="noopener" aria-label="Instagram">
-            <i class="fab fa-instagram" aria-hidden="true"></i>
+          <a href="https://youtube.com/@codeventdigital" target="_blank" rel="noopener" aria-label="CodeVent Digital on YouTube">
+            <i class="fab fa-youtube" aria-hidden="true"></i>
           </a>
           <a href="https://wa.me/2348185947780?text=Hello!%20I%27m%20interested%20in%20CodeVent" target="_blank" rel="noopener" aria-label="WhatsApp">
             <i class="fab fa-whatsapp" aria-hidden="true"></i>
@@ -485,10 +505,12 @@
         <ul class="footer-links">
           <li><a href="codevent-digital.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Home</a></li>
           <li><a href="learning.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Learning</a></li>
+          <li><a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Blog</a></li>
           <li><a href="community.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Community</a></li>
-          <li><a href="testimonial.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Testimonials</a></li>
           <li><a href="shop.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Shop</a></li>
           <li><a href="toolkit.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Toolkit</a></li>
+          <li><a href="https://codeventdigital.site/verify-certificate.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Verify Certificate</a></li>
+          <li><a href="codevent-code-editor.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>Code Editor</a></li>
           <li><a href="chat.html" target="_self"><i class="fas fa-chevron-right" aria-hidden="true"></i>AI Chat</a></li>
         </ul>
       </div>
@@ -496,10 +518,11 @@
       <div class="footer-col">
         <h4>Contact</h4>
         <ul class="footer-links">
-          <li><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:codeventdigitalinfo@gmail.com" target="_blank">codeventdigitalinfo@gmail.com</a></li>
+          <li><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:hello@codeventdigital.site" target="_blank">hello@codeventdigital.site</a></li>
+          <li style="font-size:0.85em;opacity:0.75;"><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:codeventdigitalinfo@gmail.com" target="_blank">codeventdigitalinfo@gmail.com</a></li>
           <li><i class="fas fa-phone" aria-hidden="true"></i><a href="tel:+2348185947780" target="_blank">+234 818 594 7780</a></li>
           <li><i class="fab fa-whatsapp" aria-hidden="true"></i><a href="https://wa.me/2348185947780" target="_blank" rel="noopener">Chat on WhatsApp</a></li>
-          <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i>Surulere, Lagos</li>
+          <li><i class="fas fa-globe" aria-hidden="true"></i>Online, Worldwide</li>
         </ul>
       </div>
 
@@ -508,7 +531,7 @@
     <div class="copyright">
       <span>&copy; 2026 CodeVent Digital. All rights reserved.</span>
       <span class="legal-links">
-        <a href="privacy.html" target="_self">Privacy</a><span>·</span><a href="terms.html" target="_self">Terms</a><span>·</span><a href="contact.html" target="_self">Contact</a>
+        <a href="privacy.html" target="_self">Privacy</a><span>·</span><a href="terms.html" target="_self">Terms</a><span>·</span><a href="contact.html" target="_self">Contact</a><span>.</span><a href="codevent-about.html" target="_self">About</a>
       </span>
     </div>
   </footer>
@@ -547,6 +570,5 @@
       });
     })();
   </script>
-  <script src="pwa-register.js"></script>
 </body>
 </html>

@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Master HTML5, CSS & JavaScript with interactive lessons, a sandboxed live editor, quizzes, and curated resources. CodeVent Digital — Building Developers One Step at a Time." />
-  <title>HTML · CSS · JS Learning — CodeVent Digital</title>
-  <link rel="icon" href="codevent-icon.svg" type="image/svg+xml" sizes="96x96" />
+  <meta name="description" content="Interactive HTML5, CSS & JavaScript lessons with a live editor and quizzes, plus guided tracks into machine learning and AI automation." />
+  <link rel="canonical" href="https://codeventdigital.site/learning" />
+  <title>Learning Tracks — Web Dev, Python, ML & AI Automation — CodeVent Digital</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109"
+     crossorigin="anonymous"></script>
 
   <style>
     /* ═══════════════════════════════════════
@@ -272,7 +275,7 @@
       border-color: rgba(0,229,160,0.3);
       color: var(--accent);
     }
-    .step-pill i { font-size: 0.65rem; }
+    .step-pill i { font-size: 0.75rem; }
 
     /* ═══════════════════════════════════════
        PAGE INTRO BANNER
@@ -301,7 +304,7 @@
       background: radial-gradient(circle, var(--primary-glow), transparent 70%);
       pointer-events: none;
     }
-    .intro-banner h2 {
+    .intro-banner h1 {
       font-family: var(--font-display);
       font-size: 1.6rem;
       color: white;
@@ -372,7 +375,7 @@
     }
 
     .lesson-badge {
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -899,7 +902,98 @@
       flex: 1;
     }
 
-    /* Pro tip box */
+    /* Track section divider */
+    .track-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.25rem 0 1.4rem;
+    }
+    .track-divider span {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .track-divider::before,
+    .track-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .track-card {
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .track-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
+    }
+    .ri-purple { background: rgba(91,76,255,0.15);  color: #a5b4fc; }
+    .ri-red    { background: rgba(255,107,107,0.15); color: #ff8787; }
+    .ri-teal   { background: rgba(105,219,124,0.15); color: #69db7c; }
+
+    .track-card h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: white;
+    }
+    .track-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .track-covers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: -0.25rem;
+    }
+    .track-covers span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.22rem 0.65rem;
+    }
+    .track-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: auto;
+      padding-top: 0.4rem;
+    }
+    .track-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .track-link:hover { text-decoration: underline; }
+    .track-link i { font-size: 0.7rem; }
+
+
     .pro-tip {
       background: var(--dark-3);
       border: 1px dashed rgba(251,191,36,0.25);
@@ -990,7 +1084,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="codevent-digital.html" target="_self" class="logo-link" aria-label="CodeVent Digital — Home">
-        <span class="logo-icon" aria-hidden="true"><img src="codevent-icon.svg" width="96" height="96" alt="CodeVent Digital" style="width:100%;height:100%;object-fit:contain"></span>
+        <img src="icons/icon-192x192.png" alt="" class="logo-icon" aria-hidden="true">
         CodeVent <span class="logo-accent">Digital</span>
       </a>
 
@@ -1045,15 +1139,17 @@
     <section id="lesson" class="tab-section active" aria-label="Lessons">
 
       <div class="intro-banner">
-        <h2><i class="fas fa-graduation-cap" aria-hidden="true" style="color:var(--accent);margin-right:0.5rem;"></i>Start Your HTML5 Journey</h2>
-        <p>Work through the lessons below, then head to the <strong style="color:var(--text);">Resources</strong> tab for external materials from W3Schools, MDN, and FreeCodeCamp. Use the <strong style="color:var(--text);">Editor</strong> to practice live as you learn.</p>
+        <h1><i class="fas fa-graduation-cap" aria-hidden="true" style="color:var(--accent);margin-right:0.5rem;"></i>Your Learning Tracks</h1>
+        <p>Start with <strong style="color:var(--text);">HTML5 Basics</strong> below, built right into this page with hands-on lessons. Then follow the other tracks out to CodeVent's full guides and reference material. Use the <strong style="color:var(--text);">Editor</strong> tab to practice as you go, and the <strong style="color:var(--text);">Quiz</strong> tab to check yourself.</p>
         <div class="intro-meta">
-          <span class="meta-chip"><i class="fas fa-bolt"></i> 2 Lessons</span>
-          <span class="meta-chip"><i class="fas fa-clock"></i> ~20 min</span>
+          <span class="meta-chip"><i class="fas fa-layer-group"></i> 9 Tracks</span>
           <span class="meta-chip"><i class="fas fa-lock-open"></i> Free Access</span>
-          <span class="meta-chip"><i class="fas fa-certificate"></i> HTML5 · CSS · JS</span>
+          <span class="meta-chip"><i class="fas fa-certificate"></i> HTML5 · CSS · JS · Git · Python · ML · AI Automation</span>
         </div>
       </div>
+
+      <div class="track-divider"><span>Track 1 — HTML5 Basics</span></div>
+      <p style="font-size:0.83rem;color:var(--text-muted);margin:-0.5rem 0 1.1rem;">2 lessons · ~20 min · built into this page</p>
 
       <div class="lessons-list" id="lessonsList">
 
@@ -1158,6 +1254,121 @@
 
       </div><!-- /lessons-list -->
 
+      <!-- HTML5 Go Deeper -->
+      <div class="track-links" style="margin:-0.4rem 0 0.5rem;">
+        <a href="https://codeventdigital.site/blog/html-for-beginners-complete-guide" target="_blank" rel="noopener" target="_self" class="track-link"><i class="fas fa-arrow-right" aria-hidden="true"></i> Read the full HTML5 guide on the Blog</a>
+        <a href="toolkit.html#sec-html" target="_self" class="track-link"><i class="fas fa-arrow-right" aria-hidden="true"></i> Open the HTML Reference in Toolkit</a>
+      </div>
+
+      <div class="track-divider"><span>Tracks 2–9 — Keep Going</span></div>
+      <p style="font-size:0.83rem;color:var(--text-muted);margin:-0.5rem 0 1.1rem;">Each track below points to a real CodeVent guide or reference — read it, then come back to practice in the Editor.</p>
+
+      <div class="tracks-grid">
+
+        <div class="track-card">
+          <div class="resource-icon ri-blue"><i class="fas fa-palette" aria-hidden="true"></i></div>
+          <h3>CSS Fundamentals</h3>
+          <p>Style what you just structured — selectors, the box model, colors, typography, and CSS variables.</p>
+          <div class="track-covers">
+            <span>Selectors</span><span>Box Model</span><span>Variables</span>
+          </div>
+          <div class="track-links">
+            <a href="toolkit.html#sec-css" target="_self" class="track-link"><i class="fas fa-book" aria-hidden="true"></i> CSS Reference — Toolkit</a>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="resource-icon ri-purple"><i class="fas fa-table-cells" aria-hidden="true"></i></div>
+          <h3>CSS Layouts — Flexbox & Grid</h3>
+          <p>Move from single elements to full page layouts with two of the most-used CSS layout tools.</p>
+          <div class="track-covers">
+            <span>Flexbox</span><span>Grid</span><span>Responsive Patterns</span>
+          </div>
+          <div class="track-links">
+            <a href="https://codeventdigital.site/blog/css-flexbox-tutorial" target="_blank" rel="noopener" target="_self" class="track-link"><i class="fas fa-newspaper" aria-hidden="true"></i> Flexbox Guide — Blog</a>
+            <a href="https://codeventdigital.site/blog/css-grid-layout-guide" target="_blank" rel="noopener" target="_self" class="track-link"><i class="fas fa-newspaper" aria-hidden="true"></i> Grid Guide — Blog</a>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="resource-icon ri-orange"><i class="fab fa-square-js" aria-hidden="true"></i></div>
+          <h3>JavaScript Fundamentals</h3>
+          <p>Variables, functions, array methods, and control flow — the building blocks of interactive pages.</p>
+          <div class="track-covers">
+            <span>Variables</span><span>Functions</span><span>Arrays</span>
+          </div>
+          <div class="track-links">
+            <a href="toolkit.html#sec-javascript" target="_self" class="track-link"><i class="fas fa-book" aria-hidden="true"></i> JS Playground — Toolkit</a>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="resource-icon ri-green"><i class="fas fa-arrow-pointer" aria-hidden="true"></i></div>
+          <h3>DOM & Interactivity</h3>
+          <p>Make your pages respond to clicks and input by selecting, changing, and creating elements with JavaScript.</p>
+          <div class="track-covers">
+            <span>Selecting Elements</span><span>Events</span><span>DOM Updates</span>
+          </div>
+          <div class="track-links">
+            <a href="https://codeventdigital.site/blog/javascript-dom-manipulation-guide" target="_blank" rel="noopener" target="_self" class="track-link"><i class="fas fa-newspaper" aria-hidden="true"></i> DOM Guide — Blog</a>
+            <a href="toolkit.html#sec-dom" target="_self" class="track-link"><i class="fas fa-book" aria-hidden="true"></i> DOM Reference — Toolkit</a>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="resource-icon ri-red"><i class="fas fa-cloud-arrow-down" aria-hidden="true"></i></div>
+          <h3>Working with APIs</h3>
+          <p>Fetch real data from the web and handle it with async/await — the skill behind every dynamic app.</p>
+          <div class="track-covers">
+            <span>Fetch API</span><span>Async/Await</span><span>JSON</span>
+          </div>
+          <div class="track-links">
+            <a href="https://codeventdigital.site/blog/javascript-fetch-api-tutorial" target="_blank" rel="noopener" target="_self" class="track-link"><i class="fas fa-newspaper" aria-hidden="true"></i> Fetch API Guide — Blog</a>
+            <a href="toolkit.html#sec-javascript" target="_self" class="track-link"><i class="fas fa-book" aria-hidden="true"></i> Fetch Reference — Toolkit</a>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="resource-icon ri-teal"><i class="fas fa-code-branch" aria-hidden="true"></i></div>
+          <h3>Git, GitHub & Shipping</h3>
+          <p>Track your changes, work with branches, and take your first project from local files to a live site.</p>
+          <div class="track-covers">
+            <span>Git Basics</span><span>Branches</span><span>Going Live</span>
+          </div>
+          <div class="track-links">
+            <a href="toolkit.html#sec-git" target="_self" class="track-link"><i class="fas fa-book" aria-hidden="true"></i> Git & GitHub — Toolkit</a>
+            <a href="toolkit.html#sec-launch" target="_self" class="track-link"><i class="fas fa-rocket" aria-hidden="true"></i> Launch Checklist — Toolkit</a>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="resource-icon ri-blue"><i class="fas fa-brain" aria-hidden="true"></i></div>
+          <h3>Python & Machine Learning</h3>
+          <p>Move from the browser into Python, then learn how models actually learn from data with pandas, numpy, and scikit-learn.</p>
+          <div class="track-covers">
+            <span>Python Basics</span><span>Pandas & NumPy</span><span>Train/Test Models</span>
+          </div>
+          <div class="track-links">
+            <a href="https://codeventdigital.site/blog/machine-learning-for-beginners" target="_blank" rel="noopener" target="_self" class="track-link"><i class="fas fa-newspaper" aria-hidden="true"></i> ML for Beginners — Blog</a>
+            <a href="toolkit.html#sec-ml" target="_self" class="track-link"><i class="fas fa-book" aria-hidden="true"></i> Machine Learning Reference — Toolkit</a>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="resource-icon ri-purple"><i class="fas fa-network-wired" aria-hidden="true"></i></div>
+          <h3>AI Automation</h3>
+          <p>Wire large language models into real workflows: triggers, LLM steps, and actions, the same pattern behind this site's own AI Chat.</p>
+          <div class="track-covers">
+            <span>LLM APIs</span><span>Webhooks</span><span>Workflow Design</span>
+          </div>
+          <div class="track-links">
+            <a href="https://codeventdigital.site/blog/ai-automation-explained" target="_blank" rel="noopener" target="_self" class="track-link"><i class="fas fa-newspaper" aria-hidden="true"></i> AI Automation Explained — Blog</a>
+            <a href="toolkit.html#sec-aiautomation" target="_self" class="track-link"><i class="fas fa-book" aria-hidden="true"></i> AI Automation Reference — Toolkit</a>
+          </div>
+        </div>
+
+      </div>
+
       <!-- Community CTA -->
       <div class="community-box">
         <div class="community-box-icon" aria-hidden="true"><i class="fab fa-whatsapp"></i></div>
@@ -1165,7 +1376,7 @@
           <strong>Stuck? Join the Community</strong>
           <span>Get live help, code reviews, and mentorship from fellow learners and instructors.</span>
         </div>
-        <a href="https://chat.whatsapp.com/ECGzdZA28hd7Y6hNomo3I4?s=cl&p=a&ilr=4&amv=2" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Join CodeVent WhatsApp community">
+        <a href="https://chat.whatsapp.com/ECGzdZA28hd7Y6hNomo3I4" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Join CodeVent WhatsApp community">
           <i class="fab fa-whatsapp" aria-hidden="true"></i> Join Free
         </a>
       </div>
@@ -1186,7 +1397,19 @@
       </div>
 
     </section>
-
+    
+<!--script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109"
+     crossorigin="anonymous"></script-->
+<!-- codeventdigital ad unit -->
+<!--ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1629598637562109"
+     data-ad-slot="2198694017"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+  </script-->
 
     <!-- ══════════════════════════════════════
          EDITOR TAB
@@ -1371,7 +1594,7 @@
           <button class="btn-primary" onclick="showTab('resources')">
             <i class="fas fa-layer-group" aria-hidden="true"></i> Browse Resources
           </button>
-          <a href="https://chat.whatsapp.com/ECGzdZA28hd7Y6hNomo3I4?s=cl&p=a&ilr=4&amv=2" target="_blank" rel="noopener" class="btn-whatsapp">
+          <a href="https://chat.whatsapp.com/ECGzdZA28hd7Y6hNomo3I4" target="_blank" rel="noopener" class="btn-whatsapp">
             <i class="fab fa-whatsapp" aria-hidden="true"></i> Join Community
           </a>
         </div>
@@ -1443,7 +1666,7 @@
           <a href="shop.html" target="_self" class="btn-primary" aria-label="Visit CodeVent Digital shop">
             <i class="fas fa-store" aria-hidden="true"></i> Explore Shop
           </a>
-          <a href="https://chat.whatsapp.com/ECGzdZA28hd7Y6hNomo3I4?s=cl&p=a&ilr=4&amv=2" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Join the community">
+          <a href="https://chat.whatsapp.com/ECGzdZA28hd7Y6hNomo3I4" target="_blank" rel="noopener" class="btn-whatsapp" aria-label="Join the community">
             <i class="fab fa-whatsapp" aria-hidden="true"></i> Join Community
           </a>
         </div>
@@ -1458,15 +1681,16 @@
     <div class="footer-logo">CodeVent <span>Digital</span></div>
     <div class="footer-links">
       <a href="codevent-digital.html" target="_self">Home</a>
+      <a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener" target="_self">Blog</a>
       <a href="toolkit.html" target="_self">Toolkit</a>
+      <a href="codevent-code-editor.html" target="_self">Code Editor</a>
       <a href="chat.html" target="_self">AI Chat</a>
       <a href="shop.html" target="_self">Shop</a>
     </div>
-     <p>&copy; 2026 CodeVent Digital. All rights reserved.</p>
-    <p class="footer-tagline">Building Developers One Step at a Time.</p>
-    <p style="margin-top:0.5rem;font-size:0.78rem;"><a href="privacy.html" target="_self">Privacy</a> · <a href="terms.html" target="_self">Terms</a> · <a href="contact.html" target="_self">Contact</a></p>
+    <p>&copy; 2026 CodeVent Digital. All rights reserved.</p>
+    <p class="footer-tagline">Building the Digital Future.</p>
+    <p style="margin-top:0.5rem;font-size:0.78rem;"><a href="privacy.html" target="_self">Privacy</a> · <a href="terms.html" target="_self">Terms</a> · <a href="contact.html" target="_self">Contact</a> . <a href="codevent-about.html" target="_self">About</a></p>
   </footer>
-  
   
 
 
@@ -1691,6 +1915,5 @@
 
   })();
   </script>
-  <script src="pwa-register.js"></script>
 </body>
 </html>
