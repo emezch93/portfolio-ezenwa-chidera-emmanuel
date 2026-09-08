@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
   GoogleAuthProvider,
   signInWithPopup,
+  getRedirectResult,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const googleProvider = new GoogleAuthProvider();
@@ -31,6 +32,11 @@ export async function logIn(email, password) {
 export async function signInWithGoogle() {
   const cred = await signInWithPopup(auth, googleProvider);
   return cred.user;
+}
+
+export async function checkGoogleRedirectResult() {
+  const result = await getRedirectResult(auth);
+  return result ? result.user : null;
 }
 
 export async function logOut() {
