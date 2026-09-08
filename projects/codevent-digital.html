@@ -1130,14 +1130,6 @@
     }
     .nav-user-chip.show { display: inline-flex; }
 
-    .nav-logout-btn {
-      background: none; border: none; padding: 0;
-      color: var(--text-muted); font-size: 0.75rem;
-      cursor: pointer; transition: var(--transition);
-      font-family: var(--font-body);
-    }
-    .nav-logout-btn:hover { color: #f87171; }
-
     /* ── Protected content lock ── */
     .auth-locked {
       position: relative;
@@ -1350,9 +1342,6 @@
         <button class="nav-auth-btn" id="navSignInBtn" aria-label="Sign in or create account">
           <i class="fas fa-user" aria-hidden="true"></i> Sign In
         </button>
-        <span class="nav-user-chip" id="navUserChip" aria-live="polite">
-          <button class="nav-logout-btn" id="navLogoutBtn" aria-label="Log out">Log out</button>
-        </span>
       </div>
     </div>
   </nav>
@@ -2050,15 +2039,6 @@
         }
       });
 
-      // ── LOGOUT ──
-      document.getElementById('navLogoutBtn')?.addEventListener('click', async () => {
-        showLoader('Logging out...');
-        await new Promise(r => setTimeout(r, 1200));
-        await logOut();
-        hideLoader();
-        showLogoutToast();
-      });
-
       // Mobile logout button
       document.getElementById('mobileLogoutBtn')?.addEventListener('click', async () => {
         showLoader('Logging out...');
@@ -2102,22 +2082,18 @@
       applyAuthGate(user);
 
       const signInBtn      = document.getElementById('navSignInBtn');
-      const userChip       = document.getElementById('navUserChip');
       const hamburger      = document.getElementById('hamburger');
       const mobileGreeting = document.getElementById('mobileUserGreeting');
       const mobileNameEl   = document.getElementById('mobileUserName');
 
       if (user) {
-        // Desktop chip
         if (signInBtn) signInBtn.style.display = 'none';
-        if (userChip)  userChip.classList.add('show');
         // Mobile menu greeting
         if (mobileNameEl)   mobileNameEl.textContent = user.displayName || user.email;
         if (mobileGreeting) mobileGreeting.style.display = '';
       } else {
         // Logged out
         if (signInBtn) signInBtn.style.display = '';
-        if (userChip)  userChip.classList.remove('show');
         if (mobileGreeting) mobileGreeting.style.display = 'none';
       }
     });
