@@ -2103,13 +2103,6 @@
         console.log('Signed in via Google:', user.displayName || user.email);
       }
     });
-  onAuthChange(user => {
-  console.log("PORTFOLIO FIREBASE USER:", user);
-
-  applyAuthGate(user);
-
-  // existing code...
-});
     onAuthChange(user => {
       applyAuthGate(user);
 
