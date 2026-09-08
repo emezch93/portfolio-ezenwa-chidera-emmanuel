@@ -1801,336 +1801,1311 @@
   </div>
 
   <!-- ══ JAVASCRIPT ═════════════════════════════════════════ -->
-<script type="module">
-    // ── Import Firebase auth helpers ────────────────────────
-    import { signUp, logIn, logOut, onAuthChange, applyAuthGate, friendlyError, resetPassword, signInWithGoogle, checkGoogleRedirectResult }
-      from "./auth.js";
-    // ════════════════════════════════════════════════════════
-    // EXISTING SITE JS (preserved exactly)
-    // ════════════════════════════════════════════════════════
-    document.addEventListener('DOMContentLoaded', () => {
 
-      // Mobile nav
-      const hamburger  = document.getElementById('hamburger');
-      const navLinks   = document.getElementById('navLinks');
-      const navOverlay = document.getElementById('navOverlay');
+  <script type="module">
 
-      function openNav() {
-        navLinks.classList.add('active');
-        navOverlay.classList.add('active');
-        hamburger.setAttribute('aria-expanded', 'true');
-        hamburger.setAttribute('aria-label', 'Close navigation menu');
-        hamburger.querySelector('i').className = 'fas fa-times';
-        document.body.style.overflow = 'hidden';
-      }
-      function closeNav() {
-        navLinks.classList.remove('active');
-        navOverlay.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', 'false');
-        hamburger.setAttribute('aria-label', 'Open navigation menu');
-        hamburger.querySelector('i').className = 'fas fa-bars';
-        document.body.style.overflow = '';
-      }
-      hamburger.addEventListener('click', () => navLinks.classList.contains('active') ? closeNav() : openNav());
-      navOverlay.addEventListener('click', closeNav);
-      navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-          if (navLinks.classList.contains('active')) closeNav();
-          if (backdrop.classList.contains('open'))   closeModal();
-        }
-      });
-
-      // Scroll fade-up
-      const fadeEls  = document.querySelectorAll('.fade-up');
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      fadeEls.forEach(el => observer.observe(el));
-
-      // Navbar scroll shadow
-      const navbar = document.querySelector('.navbar');
-      window.addEventListener('scroll', () => {
-        navbar.style.boxShadow = window.scrollY > 20 ? '0 4px 32px rgba(0,0,0,0.4)' : 'none';
-      }, { passive: true });
+import {
+  signUp,
+  logIn,
+  logOut,
+  onAuthChange,
+  applyAuthGate,
+  friendlyError,
+  resetPassword,
+  signInWithGoogle,
+  checkGoogleRedirectResult
+} from "./auth.js";
 
 
-      // ════════════════════════════════════════════════════
-      // AUTH MODAL
-      // ════════════════════════════════════════════════════
-      const backdrop       = document.getElementById('authBackdrop');
-      const authTitle      = document.getElementById('authTitle');
-      const authSubtitle   = document.getElementById('authSubtitle');
-      const closeBtn       = document.getElementById('authCloseBtn');
-      const loginTabBtn    = document.getElementById('loginTabBtn');
-      const signupTabBtn   = document.getElementById('signupTabBtn');
-      const loginPanel     = document.getElementById('loginPanel');
-      const signupPanel    = document.getElementById('signupPanel');
-      const resetPanel     = document.getElementById('resetPanel');
+document.addEventListener("DOMContentLoaded", () => {
 
-      function openModal(tab = 'login') {
-        backdrop.classList.add('open');
-        backdrop.removeAttribute('aria-hidden');
-        document.body.style.overflow = 'hidden';
-        switchTab(tab);
-        setTimeout(() => backdrop.querySelector('.auth-panel.active input')?.focus(), 150);
-      }
+  /* ======================================================
+     MOBILE NAVIGATION
+  ====================================================== */
 
-      function closeModal() {
-        backdrop.classList.remove('open');
-        backdrop.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        clearMsgs();
-      }
+  const hamburger = document.getElementById("hamburger");
+  const navLinks = document.getElementById("navLinks");
+  const navOverlay = document.getElementById("navOverlay");
 
-      function switchTab(tab) {
-        const isLogin  = tab === 'login';
-        const isSignup = tab === 'signup';
-        const isReset  = tab === 'reset';
-        loginTabBtn.classList.toggle('active', isLogin);
-        signupTabBtn.classList.toggle('active', isSignup);
-        loginTabBtn.setAttribute('aria-selected', String(isLogin));
-        signupTabBtn.setAttribute('aria-selected', String(isSignup));
-        loginPanel.classList.toggle('active',  isLogin);
-        signupPanel.classList.toggle('active', isSignup);
-        resetPanel.classList.toggle('active',  isReset);
-        // Hide tabs row when on reset screen
-        document.querySelector('.auth-tabs').style.display = isReset ? 'none' : '';
-        authTitle.textContent    = isLogin ? 'Welcome Back'    : isSignup ? 'Create Account' : 'Reset Password';
-        authSubtitle.textContent = isLogin ? 'Sign in to your CodeVent account' : isSignup ? 'Join CodeVent Digital — free' : 'We\'ll email you a reset link';
-        clearMsgs();
-      }
+  function openNav() {
 
-      function clearMsgs() {
-        ['loginMsg','signupMsg','resetMsg'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) { el.textContent = ''; el.className = 'auth-msg'; }
-        });
-      }
+    if (!navLinks || !navOverlay || !hamburger) {
+      return;
+    }
 
-      function showMsg(id, text, type) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.textContent = text;
-        el.className   = `auth-msg ${type}`;
-      }
+    navLinks.classList.add("active");
+    navOverlay.classList.add("active");
 
-      function setLoading(btn, loading, original) {
-        btn.disabled   = loading;
-        btn.innerHTML  = loading
-          ? '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Please wait…'
-          : original;
-      }
+    hamburger.setAttribute("aria-expanded", "true");
+    hamburger.setAttribute(
+      "aria-label",
+      "Close navigation menu"
+    );
 
-      // ── Triggers ──
-      const authLoading = document.getElementById('authLoading');
-      const logoutToast = document.getElementById('logoutToast');
+    const icon = hamburger.querySelector("i");
 
-      function showLoader(text = 'Loading...') {
-        authLoading.querySelector('.auth-loading-text').textContent = text;
-        authLoading.classList.add('show');
-      }
-      function hideLoader() {
-        authLoading.classList.remove('show');
-      }
+    if (icon) {
+      icon.className = "fas fa-times";
+    }
 
-      function showLogoutToast() {
-        logoutToast.classList.add('show');
-        setTimeout(() => logoutToast.classList.remove('show'), 2800);
+    document.body.style.overflow = "hidden";
+  }
+
+
+  function closeNav() {
+
+    if (!navLinks || !navOverlay || !hamburger) {
+      return;
+    }
+
+    navLinks.classList.remove("active");
+    navOverlay.classList.remove("active");
+
+    hamburger.setAttribute("aria-expanded", "false");
+    hamburger.setAttribute(
+      "aria-label",
+      "Open navigation menu"
+    );
+
+    const icon = hamburger.querySelector("i");
+
+    if (icon) {
+      icon.className = "fas fa-bars";
+    }
+
+    document.body.style.overflow = "";
+  }
+
+
+  hamburger?.addEventListener("click", () => {
+
+    if (navLinks?.classList.contains("active")) {
+      closeNav();
+    } else {
+      openNav();
+    }
+
+  });
+
+
+  navOverlay?.addEventListener("click", closeNav);
+
+
+  navLinks?.querySelectorAll("a").forEach(link => {
+
+    link.addEventListener("click", closeNav);
+
+  });
+
+
+  /* ======================================================
+     AUTH ELEMENTS
+  ====================================================== */
+
+  const backdrop = document.getElementById("authBackdrop");
+  const authTitle = document.getElementById("authTitle");
+  const authSubtitle = document.getElementById("authSubtitle");
+
+  const closeBtn = document.getElementById("authCloseBtn");
+
+  const loginTabBtn = document.getElementById("loginTabBtn");
+  const signupTabBtn = document.getElementById("signupTabBtn");
+
+  const loginPanel = document.getElementById("loginPanel");
+  const signupPanel = document.getElementById("signupPanel");
+  const resetPanel = document.getElementById("resetPanel");
+
+  const authTabs = document.querySelector(".auth-tabs");
+
+  const authLoading = document.getElementById("authLoading");
+  const logoutToast = document.getElementById("logoutToast");
+
+
+  /* ======================================================
+     AUTH MESSAGES
+  ====================================================== */
+
+  function clearMsgs() {
+
+    [
+      "loginMsg",
+      "signupMsg",
+      "resetMsg"
+    ].forEach(id => {
+
+      const element = document.getElementById(id);
+
+      if (element) {
+        element.textContent = "";
+        element.className = "auth-msg";
       }
 
-      document.getElementById('navSignInBtn')?.addEventListener('click', () => {
-        showLoader('Opening Sign In...');
-        setTimeout(() => { hideLoader(); openModal('login'); }, 2000);
-      });
-      document.getElementById('heroSignInLink')?.addEventListener('click', () => {
-        showLoader('Opening Sign In...');
-        setTimeout(() => { hideLoader(); openModal('login'); }, 2000);
-      });
-      closeBtn.addEventListener('click', closeModal);
-      backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
-      loginTabBtn.addEventListener('click',  () => switchTab('login'));
-      signupTabBtn.addEventListener('click', () => switchTab('signup'));
-      document.getElementById('switchToSignup')?.addEventListener('click', () => switchTab('signup'));
-      document.getElementById('switchToLogin') ?.addEventListener('click', () => switchTab('login'));
-      document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => switchTab('reset'));
-      document.getElementById('backToLogin')?.addEventListener('click', () => switchTab('login'));
-
-      // ── GOOGLE AUTH (shared handler for both login + signup buttons) ──
-      async function handleGoogleAuth(msgId) {
-        const btn = document.getElementById(msgId === 'loginMsg' ? 'googleLoginBtn' : 'googleSignupBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Redirecting…';
-        try {
-          await signInWithGoogle(); // page navigates to Google here
-        } catch (err) {
-          showMsg(msgId, friendlyError(err.code), 'error');
-          btn.disabled = false;
-        }
-      }
-      document.getElementById('googleLoginBtn') ?.addEventListener('click', () => handleGoogleAuth('loginMsg'));
-      document.getElementById('googleSignupBtn')?.addEventListener('click', () => handleGoogleAuth('signupMsg'));
-
-      // Locked content → open modal on click
-      document.addEventListener('click', e => {
-        if (e.target.closest('.auth-locked')) openModal('signup');
-      });
-
-      // ── Password strength ──
-      document.getElementById('signupPassword')?.addEventListener('input', function () {
-        const bar = document.getElementById('pwStrength');
-        if (!bar) return;
-        const v = this.value;
-        if (v.length === 0)      { bar.className = 'pw-strength'; bar.style.width='0'; }
-        else if (v.length < 6)   bar.className = 'pw-strength weak';
-        else if (v.length < 10)  bar.className = 'pw-strength medium';
-        else                     bar.className = 'pw-strength strong';
-      });
-
-      // ── LOGIN FORM ──
-      document.getElementById('loginForm')?.addEventListener('submit', async e => {
-        e.preventDefault();
-        const btn  = document.getElementById('loginSubmitBtn');
-        const orig = btn.innerHTML;
-        setLoading(btn, true, orig);
-        const email    = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        try {
-          await logIn(email, password);
-          showMsg('loginMsg', 'Signed in successfully ✓', 'success');
-          setTimeout(closeModal, 2000);
-        } catch (err) {
-          showMsg('loginMsg', friendlyError(err.code), 'error');
-        } finally {
-          setLoading(btn, false, orig);
-        }
-      });
-
-      // ── SIGNUP FORM ──
-      document.getElementById('signupForm')?.addEventListener('submit', async e => {
-        e.preventDefault();
-        const btn  = document.getElementById('signupSubmitBtn');
-        const orig = btn.innerHTML;
-        const name     = document.getElementById('signupName').value.trim();
-        const email    = document.getElementById('signupEmail').value.trim();
-        const password = document.getElementById('signupPassword').value;
-        const confirm  = document.getElementById('confirmPassword').value;
-
-        if (!name)               return showMsg('signupMsg', 'Please enter your name.', 'error');
-        if (password !== confirm) return showMsg('signupMsg', 'Passwords do not match.', 'error');
-
-        setLoading(btn, true, orig);
-        try {
-          await signUp(name, email, password);
-          showMsg('signupMsg', `Welcome, ${name}! Account created 🎉`, 'success');
-          setTimeout(closeModal, 2000);
-        } catch (err) {
-          showMsg('signupMsg', friendlyError(err.code), 'error');
-        } finally {
-          setLoading(btn, false, orig);
-        }
-      });
-
-      // ── RESET PASSWORD FORM ──
-      document.getElementById('resetForm')?.addEventListener('submit', async e => {
-        e.preventDefault();
-        const btn  = document.getElementById('resetSubmitBtn');
-        const orig = btn.innerHTML;
-        const email = document.getElementById('resetEmail').value.trim();
-        if (!email) return showMsg('resetMsg', 'Please enter your email address.', 'error');
-        setLoading(btn, true, orig);
-        try {
-          await resetPassword(email);
-          showMsg('resetMsg', 'Reset link sent! Check your inbox.', 'success');
-          setTimeout(() => switchTab('login'), 3000);
-        } catch (err) {
-          showMsg('resetMsg', friendlyError(err.code), 'error');
-        } finally {
-          setLoading(btn, false, orig);
-        }
-      });
-
-      // ── LOGOUT ──
-      document.getElementById('navLogoutBtn')?.addEventListener('click', async () => {
-        showLoader('Logging out...');
-        await new Promise(r => setTimeout(r, 1200));
-        await logOut();
-        hideLoader();
-        showLogoutToast();
-      });
-
-      // Mobile logout button
-      document.getElementById('mobileLogoutBtn')?.addEventListener('click', async () => {
-        showLoader('Logging out...');
-        await new Promise(r => setTimeout(r, 1200));
-        await logOut();
-        hideLoader();
-        closeNav();
-        showLogoutToast();
-      });
-
-      // Fix 2 — show/hide password toggle
-      document.querySelectorAll('.pw-eye').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const input = document.getElementById(btn.dataset.target);
-          const icon  = btn.querySelector('i');
-          if (input.type === 'password') {
-            input.type   = 'text';
-            icon.className = 'fas fa-eye-slash';
-            btn.setAttribute('aria-label', 'Hide password');
-          } else {
-            input.type   = 'password';
-            icon.className = 'fas fa-eye';
-            btn.setAttribute('aria-label', 'Show password');
-          }
-        });
-      });
-
-    }); // end DOMContentLoaded
-
-
-    // ════════════════════════════════════════════════════════
-    // AUTH STATE — runs outside DOMContentLoaded so it fires
-    // as early as possible with the persisted session
-    // ════════════════════════════════════════════════════════
-    checkGoogleRedirectResult().then(user => {
-      if (user) {
-        console.log('Signed in via Google:', user.displayName || user.email);
-      }
     });
-    onAuthChange(user => {
-      applyAuthGate(user);
 
-      const signInBtn      = document.getElementById('navSignInBtn');
-      const userChip       = document.getElementById('navUserChip');
-      const nameEl         = document.getElementById('navUserName');
-      const hamburger      = document.getElementById('hamburger');
-      const mobileGreeting = document.getElementById('mobileUserGreeting');
-      const mobileNameEl   = document.getElementById('mobileUserName');
+  }
 
-      if (user) {
-        const firstName = (user.displayName || user.email).split(' ')[0];
-        // Desktop chip
-        if (nameEl)    nameEl.textContent = firstName;
-        if (signInBtn) signInBtn.style.display = 'none';
-        if (userChip)  userChip.classList.add('show');
-        // Mobile menu greeting
-        if (mobileNameEl)   mobileNameEl.textContent = user.displayName || user.email;
-        if (mobileGreeting) mobileGreeting.style.display = '';
+
+  function showMsg(id, text, type) {
+
+    const element = document.getElementById(id);
+
+    if (!element) {
+      return;
+    }
+
+    element.textContent = text;
+    element.className = `auth-msg ${type}`;
+
+  }
+
+
+  /* ======================================================
+     LOADING
+  ====================================================== */
+
+  function showLoader(text = "Loading...") {
+
+    if (!authLoading) {
+      return;
+    }
+
+    const textElement =
+      authLoading.querySelector(".auth-loading-text");
+
+    if (textElement) {
+      textElement.textContent = text;
+    }
+
+    authLoading.classList.add("show");
+  }
+
+
+  function hideLoader() {
+
+    authLoading?.classList.remove("show");
+
+  }
+
+
+  function showLogoutToast() {
+
+    if (!logoutToast) {
+      return;
+    }
+
+    logoutToast.classList.add("show");
+
+    setTimeout(() => {
+      logoutToast.classList.remove("show");
+    }, 2800);
+
+  }
+
+
+  /* ======================================================
+     AUTH MODAL
+  ====================================================== */
+
+  function openModal(tab = "login") {
+
+    if (!backdrop) {
+      return;
+    }
+
+    backdrop.classList.add("open");
+    backdrop.removeAttribute("aria-hidden");
+
+    document.body.style.overflow = "hidden";
+
+    switchTab(tab);
+
+    setTimeout(() => {
+
+      backdrop
+        .querySelector(".auth-panel.active input")
+        ?.focus();
+
+    }, 150);
+
+  }
+
+
+  function closeModal() {
+
+    if (!backdrop) {
+      return;
+    }
+
+    backdrop.classList.remove("open");
+    backdrop.setAttribute("aria-hidden", "true");
+
+    document.body.style.overflow = "";
+
+    clearMsgs();
+
+  }
+
+
+  function switchTab(tab = "login") {
+
+    const isLogin = tab === "login";
+    const isSignup = tab === "signup";
+    const isReset = tab === "reset";
+
+    loginTabBtn?.classList.toggle("active", isLogin);
+    signupTabBtn?.classList.toggle("active", isSignup);
+
+    loginTabBtn?.setAttribute(
+      "aria-selected",
+      String(isLogin)
+    );
+
+    signupTabBtn?.setAttribute(
+      "aria-selected",
+      String(isSignup)
+    );
+
+    loginPanel?.classList.toggle(
+      "active",
+      isLogin
+    );
+
+    signupPanel?.classList.toggle(
+      "active",
+      isSignup
+    );
+
+    resetPanel?.classList.toggle(
+      "active",
+      isReset
+    );
+
+
+    if (authTabs) {
+      authTabs.style.display =
+        isReset ? "none" : "";
+    }
+
+
+    if (authTitle) {
+
+      authTitle.textContent =
+        isLogin
+          ? "Welcome Back"
+          : isSignup
+            ? "Create Account"
+            : "Reset Password";
+
+    }
+
+
+    if (authSubtitle) {
+
+      authSubtitle.textContent =
+        isLogin
+          ? "Sign in to your CodeVent account"
+          : isSignup
+            ? "Join CodeVent Digital free"
+            : "We'll email you a reset link";
+
+    }
+
+
+    clearMsgs();
+
+  }
+
+
+  closeBtn?.addEventListener(
+    "click",
+    closeModal
+  );
+
+
+  backdrop?.addEventListener("click", event => {
+
+    if (event.target === backdrop) {
+      closeModal();
+    }
+
+  });
+
+
+  loginTabBtn?.addEventListener(
+    "click",
+    () => switchTab("login")
+  );
+
+
+  signupTabBtn?.addEventListener(
+    "click",
+    () => switchTab("signup")
+  );
+
+
+  document
+    .getElementById("switchToSignup")
+    ?.addEventListener(
+      "click",
+      () => switchTab("signup")
+    );
+
+
+  document
+    .getElementById("switchToLogin")
+    ?.addEventListener(
+      "click",
+      () => switchTab("login")
+    );
+
+
+  document
+    .getElementById("forgotPasswordBtn")
+    ?.addEventListener(
+      "click",
+      () => switchTab("reset")
+    );
+
+
+  document
+    .getElementById("backToLogin")
+    ?.addEventListener(
+      "click",
+      () => switchTab("login")
+    );
+
+
+  /* ======================================================
+     ESCAPE KEY
+  ====================================================== */
+
+  document.addEventListener("keydown", event => {
+
+    if (event.key !== "Escape") {
+      return;
+    }
+
+    if (navLinks?.classList.contains("active")) {
+      closeNav();
+    }
+
+    if (backdrop?.classList.contains("open")) {
+      closeModal();
+    }
+
+  });
+
+
+  /* ======================================================
+     SIGN IN BUTTONS
+  ====================================================== */
+
+  document
+    .getElementById("navSignInBtn")
+    ?.addEventListener("click", () => {
+
+      showLoader("Opening Sign In...");
+
+      setTimeout(() => {
+
+        hideLoader();
+        openModal("login");
+
+      }, 500);
+
+    });
+
+
+  document
+    .getElementById("heroSignInLink")
+    ?.addEventListener("click", event => {
+
+      event.preventDefault();
+
+      showLoader("Opening Sign In...");
+
+      setTimeout(() => {
+
+        hideLoader();
+        openModal("login");
+
+      }, 500);
+
+    });
+
+
+  /* ======================================================
+     GOOGLE AUTH
+  ====================================================== */
+
+  async function handleGoogleAuth(messageId) {
+
+    const button =
+      document.getElementById(
+        messageId === "loginMsg"
+          ? "googleLoginBtn"
+          : "googleSignupBtn"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    const originalHTML = button.innerHTML;
+
+    button.disabled = true;
+
+    button.innerHTML =
+      '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Redirecting...';
+
+
+    try {
+
+      await signInWithGoogle();
+
+    } catch (error) {
+
+      console.error(
+        "Google authentication error:",
+        error
+      );
+
+      showMsg(
+        messageId,
+        friendlyError(error.code),
+        "error"
+      );
+
+      button.disabled = false;
+      button.innerHTML = originalHTML;
+
+    }
+
+  }
+
+
+  document
+    .getElementById("googleLoginBtn")
+    ?.addEventListener(
+      "click",
+      () => handleGoogleAuth("loginMsg")
+    );
+
+
+  document
+    .getElementById("googleSignupBtn")
+    ?.addEventListener(
+      "click",
+      () => handleGoogleAuth("signupMsg")
+    );
+
+
+  /* ======================================================
+     PASSWORD STRENGTH
+  ====================================================== */
+
+  document
+    .getElementById("signupPassword")
+    ?.addEventListener("input", function () {
+
+      const bar =
+        document.getElementById("pwStrength");
+
+      if (!bar) {
+        return;
+      }
+
+      const value = this.value;
+
+      if (value.length === 0) {
+
+        bar.className = "pw-strength";
+        bar.style.width = "0";
+
+      } else if (value.length < 6) {
+
+        bar.className = "pw-strength weak";
+
+      } else if (value.length < 10) {
+
+        bar.className = "pw-strength medium";
+
       } else {
-        // Logged out
-        if (signInBtn) signInBtn.style.display = '';
-        if (userChip)  userChip.classList.remove('show');
-        if (mobileGreeting) mobileGreeting.style.display = 'none';
+
+        bar.className = "pw-strength strong";
+
       }
+
     });
-  </script>
-<script src="enroll-config.js"></script>
-  <script src="counter.js"></script>
-</body>
-</html>
+
+
+  /* ======================================================
+     LOGIN
+  ====================================================== */
+
+  document
+    .getElementById("loginForm")
+    ?.addEventListener("submit", async event => {
+
+      event.preventDefault();
+
+      const button =
+        document.getElementById("loginSubmitBtn");
+
+      if (!button) {
+        return;
+      }
+
+      const originalHTML = button.innerHTML;
+
+      const email =
+        document
+          .getElementById("loginEmail")
+          ?.value
+          .trim();
+
+      const password =
+        document
+          .getElementById("loginPassword")
+          ?.value;
+
+
+      if (!email) {
+
+        showMsg(
+          "loginMsg",
+          "Please enter your email address.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!password) {
+
+        showMsg(
+          "loginMsg",
+          "Please enter your password.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.innerHTML =
+        '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Signing in...';
+
+
+      try {
+
+        const user =
+          await logIn(email, password);
+
+
+        console.log(
+          "LOGIN SUCCESS",
+          user
+        );
+
+
+        console.log(
+          "UID:",
+          user?.uid
+        );
+
+
+        console.log(
+          "EMAIL:",
+          user?.email
+        );
+
+
+        console.log(
+          "DISPLAY NAME:",
+          user?.displayName
+        );
+
+
+        showMsg(
+          "loginMsg",
+          "Signed in successfully",
+          "success"
+        );
+
+
+        setTimeout(() => {
+
+          closeModal();
+
+        }, 800);
+
+
+      } catch (error) {
+
+        console.error(
+          "LOGIN ERROR:",
+          error
+        );
+
+
+        showMsg(
+          "loginMsg",
+          friendlyError(
+            error?.code
+          ),
+          "error"
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+        button.innerHTML = originalHTML;
+
+      }
+
+    });
+
+
+  /* ======================================================
+     SIGN UP
+  ====================================================== */
+
+  document
+    .getElementById("signupForm")
+    ?.addEventListener("submit", async event => {
+
+      event.preventDefault();
+
+      const button =
+        document.getElementById("signupSubmitBtn");
+
+      if (!button) {
+        return;
+      }
+
+      const originalHTML = button.innerHTML;
+
+
+      const name =
+        document
+          .getElementById("signupName")
+          ?.value
+          .trim();
+
+
+      const email =
+        document
+          .getElementById("signupEmail")
+          ?.value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("signupPassword")
+          ?.value;
+
+
+      const confirm =
+        document
+          .getElementById("confirmPassword")
+          ?.value;
+
+
+      if (!name) {
+
+        showMsg(
+          "signupMsg",
+          "Please enter your name.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!email) {
+
+        showMsg(
+          "signupMsg",
+          "Please enter your email address.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!password || password.length < 6) {
+
+        showMsg(
+          "signupMsg",
+          "Password must be at least 6 characters.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (password !== confirm) {
+
+        showMsg(
+          "signupMsg",
+          "Passwords do not match.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.innerHTML =
+        '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Creating account...';
+
+
+      try {
+
+        const user =
+          await signUp(
+            name,
+            email,
+            password
+          );
+
+
+        console.log(
+          "SIGNUP SUCCESS",
+          user
+        );
+
+
+        console.log(
+          "UID:",
+          user?.uid
+        );
+
+
+        console.log(
+          "EMAIL:",
+          user?.email
+        );
+
+
+        console.log(
+          "DISPLAY NAME:",
+          user?.displayName
+        );
+
+
+        showMsg(
+          "signupMsg",
+          `Welcome, ${name}! Account created`,
+          "success"
+        );
+
+
+        setTimeout(() => {
+
+          closeModal();
+
+        }, 800);
+
+
+      } catch (error) {
+
+        console.error(
+          "SIGNUP ERROR:",
+          error
+        );
+
+
+        showMsg(
+          "signupMsg",
+          friendlyError(
+            error?.code
+          ),
+          "error"
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+        button.innerHTML = originalHTML;
+
+      }
+
+    });
+
+
+  /* ======================================================
+     PASSWORD RESET
+  ====================================================== */
+
+  document
+    .getElementById("resetForm")
+    ?.addEventListener("submit", async event => {
+
+      event.preventDefault();
+
+      const button =
+        document.getElementById("resetSubmitBtn");
+
+      if (!button) {
+        return;
+      }
+
+      const originalHTML = button.innerHTML;
+
+      const email =
+        document
+          .getElementById("resetEmail")
+          ?.value
+          .trim();
+
+
+      if (!email) {
+
+        showMsg(
+          "resetMsg",
+          "Please enter your email address.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.innerHTML =
+        '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Sending...';
+
+
+      try {
+
+        await resetPassword(email);
+
+
+        showMsg(
+          "resetMsg",
+          "Reset link sent. Check your inbox.",
+          "success"
+        );
+
+
+        setTimeout(() => {
+
+          switchTab("login");
+
+        }, 2000);
+
+
+      } catch (error) {
+
+        console.error(
+          "RESET ERROR:",
+          error
+        );
+
+
+        showMsg(
+          "resetMsg",
+          friendlyError(
+            error?.code
+          ),
+          "error"
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+        button.innerHTML = originalHTML;
+
+      }
+
+    });
+
+
+  /* ======================================================
+     LOGOUT
+  ====================================================== */
+
+  document
+    .getElementById("navLogoutBtn")
+    ?.addEventListener("click", async () => {
+
+      try {
+
+        showLoader("Logging out...");
+
+        await logOut();
+
+        hideLoader();
+
+        showLogoutToast();
+
+      } catch (error) {
+
+        hideLoader();
+
+        console.error(
+          "LOGOUT ERROR:",
+          error
+        );
+
+      }
+
+    });
+
+
+  document
+    .getElementById("mobileLogoutBtn")
+    ?.addEventListener("click", async () => {
+
+      try {
+
+        showLoader("Logging out...");
+
+        await logOut();
+
+        hideLoader();
+
+        closeNav();
+
+        showLogoutToast();
+
+      } catch (error) {
+
+        hideLoader();
+
+        console.error(
+          "LOGOUT ERROR:",
+          error
+        );
+
+      }
+
+    });
+
+
+  /* ======================================================
+     PASSWORD VISIBILITY
+  ====================================================== */
+
+  document
+    .querySelectorAll(".pw-eye")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const input =
+          document.getElementById(
+            button.dataset.target
+          );
+
+        const icon =
+          button.querySelector("i");
+
+
+        if (!input) {
+          return;
+        }
+
+
+        if (input.type === "password") {
+
+          input.type = "text";
+
+          if (icon) {
+            icon.className =
+              "fas fa-eye-slash";
+          }
+
+          button.setAttribute(
+            "aria-label",
+            "Hide password"
+          );
+
+        } else {
+
+          input.type = "password";
+
+          if (icon) {
+            icon.className =
+              "fas fa-eye";
+          }
+
+          button.setAttribute(
+            "aria-label",
+            "Show password"
+          );
+
+        }
+
+      });
+
+    });
+
+
+  /* ======================================================
+     PROTECTED CONTENT
+  ====================================================== */
+
+  document.addEventListener("click", event => {
+
+    const lockedElement =
+      event.target.closest(".auth-locked");
+
+    if (!lockedElement) {
+      return;
+    }
+
+    openModal("signup");
+
+  });
+
+
+  /* ======================================================
+     FIREBASE AUTH STATE
+  ====================================================== */
+
+  onAuthChange(user => {
+
+    console.log(
+      "================================="
+    );
+
+    console.log(
+      "FIREBASE AUTH STATE CHANGED"
+    );
+
+    console.log(
+      "USER:",
+      user
+    );
+
+    console.log(
+      "UID:",
+      user?.uid
+    );
+
+    console.log(
+      "EMAIL:",
+      user?.email
+    );
+
+    console.log(
+      "DISPLAY NAME:",
+      user?.displayName
+    );
+
+    console.log(
+      "================================="
+    );
+
+
+    /* Apply protected content state */
+
+    applyAuthGate(user);
+
+
+    /* Navbar elements */
+
+    const signInBtn =
+      document.getElementById(
+        "navSignInBtn"
+      );
+
+    const userChip =
+      document.getElementById(
+        "navUserChip"
+      );
+
+    const nameEl =
+      document.getElementById(
+        "navUserName"
+      );
+
+
+    /* Mobile elements */
+
+    const mobileGreeting =
+      document.getElementById(
+        "mobileUserGreeting"
+      );
+
+    const mobileNameEl =
+      document.getElementById(
+        "mobileUserName"
+      );
+
+
+    if (user) {
+
+      const displayName =
+        user.displayName ||
+        user.email ||
+        "User";
+
+
+      const firstName =
+        displayName
+          .trim()
+          .split(/\s+/)[0];
+
+
+      console.log(
+        "DISPLAYING USER:",
+        displayName
+      );
+
+
+      /* Desktop */
+
+      if (nameEl) {
+
+        nameEl.textContent =
+          firstName;
+
+      }
+
+
+      if (signInBtn) {
+
+        signInBtn.style.display =
+          "none";
+
+      }
+
+
+      if (userChip) {
+
+        userChip.classList.add(
+          "show"
+        );
+
+      }
+
+
+      /* Mobile */
+
+      if (mobileNameEl) {
+
+        mobileNameEl.textContent =
+          displayName;
+
+      }
+
+
+      if (mobileGreeting) {
+
+        mobileGreeting.style.display =
+          "";
+
+      }
+
+    } else {
+
+      console.log(
+        "NO AUTHENTICATED USER"
+      );
+
+
+      /* Desktop */
+
+      if (nameEl) {
+
+        nameEl.textContent =
+          "";
+
+      }
+
+
+      if (signInBtn) {
+
+        signInBtn.style.display =
+          "";
+
+      }
+
+
+      if (userChip) {
+
+        userChip.classList.remove(
+          "show"
+        );
+
+      }
+
+
+      /* Mobile */
+
+      if (mobileGreeting) {
+
+        mobileGreeting.style.display =
+          "none";
+
+      }
+
+    }
+
+  });
+
+
+  /* ======================================================
+     GOOGLE REDIRECT RESULT
+  ====================================================== */
+
+  checkGoogleRedirectResult()
+    .then(user => {
+
+      if (user) {
+
+        console.log(
+          "GOOGLE SIGN IN SUCCESS:",
+          user
+        );
+
+      }
+
+    })
+    .catch(error => {
+
+      console.error(
+        "GOOGLE REDIRECT ERROR:",
+        error
+      );
+
+    });
+
+
+  /* ======================================================
+     INITIAL AUTH GATE
+  ====================================================== */
+
+  const protectedElements =
+    document.querySelectorAll(
+      '[data-auth="protected"]'
+    );
+
+
+  console.log(
+    "Protected elements found:",
+    protectedElements.length
+  );
+
+
+});
+ <script src="enroll-config.js"></script>
+<script src="counter.js"></script>   
+</script>
