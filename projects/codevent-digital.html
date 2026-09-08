@@ -21,7 +21,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109"
+     crossorigin="anonymous"></script>
 
   <style>
     /* ─── TOKENS ─────────────────────────────────────────── */
@@ -141,7 +142,6 @@
       align-items: center;
       gap: 0.6rem;
       flex-shrink: 0;
-      order: 1;
     }
     .logo .logo-icon {
       width: 34px; height: 34px;
@@ -154,6 +154,7 @@
     }
     .logo-word { color: var(--accent); }
 
+    /* nav links — slim, purposeful */
     .nav-links {
       display: flex;
       list-style: none;
@@ -171,6 +172,7 @@
     }
     .nav-links a:hover { color: white; background: var(--card-bg); }
 
+    /* Single high-signal CTA in nav */
     .nav-cta {
       background: var(--primary) !important;
       color: white !important;
@@ -202,68 +204,9 @@
     .nav-auth-controls {
       order: 2;
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
     }
 
-    .nav-auth-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: transparent;
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      border: 1px solid var(--card-border);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .nav-auth-btn:hover {
-      border-color: var(--primary);
-      color: white;
-      background: var(--primary-glow);
-    }
-
-    .nav-user-chip {
-      display: none;
-      align-items: center;
-      gap: 0.6rem;
-      background: var(--dark-3);
-      border: 1px solid var(--card-border);
-      border-radius: 100px;
-      padding: 0.4rem 0.85rem 0.4rem 0.6rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      animation: fadeIn 0.3s ease;
-    }
-    .nav-user-chip.show {
-      display: inline-flex;
-    }
-    .nav-user-chip i {
-      color: var(--accent);
-      font-size: 0.9rem;
-    }
-    .nav-logout-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      transition: var(--transition);
-      margin-left: 0.25rem;
-    }
-    .nav-logout-btn:hover {
-      color: #ff5f57;
-      background: rgba(255, 95, 87, 0.1);
-    }
+    .logo { order: 1; }
 
     /* ─── HERO ───────────────────────────────────────────── */
     .hero {
@@ -276,6 +219,7 @@
       overflow: hidden;
     }
 
+    /* Radial glows behind hero */
     .hero::before {
       content: '';
       position: absolute;
@@ -313,6 +257,7 @@
     }
     .hero-content { text-align: left; }
 
+    /* PILL badge */
     .hero-badge {
       display: inline-flex;
       align-items: center;
@@ -362,6 +307,7 @@
       line-height: 1.75;
     }
 
+    /* CTA GROUP */
     .hero-cta-group {
       display: flex;
       flex-direction: column;
@@ -375,6 +321,7 @@
       align-items: center;
     }
 
+    /* Primary — maximum weight */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -398,6 +345,7 @@
       box-shadow: 0 8px 32px rgba(91,76,255,0.45);
     }
 
+    /* Secondary — ghost */
     .btn-secondary {
       display: inline-flex;
       align-items: center;
@@ -420,6 +368,7 @@
       background: var(--primary-glow);
     }
 
+    /* Social proof trust line */
     .trust-line {
       display: flex;
       align-items: center;
@@ -429,11 +378,13 @@
     }
     .trust-line i { color: var(--accent); }
 
+    /* ─── HERO RIGHT — VISUAL CARD ──────────────────────── */
     .hero-visual {
       position: relative;
       z-index: 2;
     }
 
+    /* Main card */
     .visual-card {
       background: var(--dark-2);
       border: 1px solid var(--card-border);
@@ -462,6 +413,7 @@
     .dot-g { width: 11px; height: 11px; border-radius: 50%; background: #28c840; }
     .card-file { margin-left: auto; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
 
+    /* Code snippet */
     .code-block {
       font-family: var(--font-mono);
       font-size: 0.82rem;
@@ -480,6 +432,7 @@
     .code-acc  { color: var(--accent); }
     .code-comment { color: #546e7a; font-style: italic; }
 
+    /* Progress pipeline inside card */
     .pipeline {
       display: flex;
       flex-direction: column;
@@ -530,6 +483,7 @@
     .badge-active  { background: var(--primary-glow); color: #a5b4fc; }
     .badge-soon    { background: rgba(255,255,255,0.06); color: var(--text-muted); }
 
+    /* Floating stat chips */
     .stat-chip {
       position: absolute;
       background: var(--dark-2);
@@ -609,6 +563,7 @@
       position: relative;
     }
 
+    /* Connector line between cards */
     .journey-grid::before {
       content: '';
       position: absolute;
@@ -895,398 +850,6 @@
       gap: 0.5rem;
     }
 
-    /* ─── AUTH LOCKED ───────────────────────────────────── */
-    .auth-locked {
-      opacity: 0.6;
-      position: relative;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .auth-locked:hover {
-      opacity: 0.8;
-    }
-    .auth-locked::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(13, 15, 26, 0.5);
-      border-radius: inherit;
-      z-index: 1;
-      pointer-events: none;
-    }
-    .auth-locked::after {
-      content: '🔒 Sign in to access';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--dark-2);
-      border: 1px solid var(--card-border);
-      color: var(--accent);
-      padding: 0.5rem 1rem;
-      border-radius: var(--radius);
-      font-size: 0.8rem;
-      font-weight: 600;
-      z-index: 2;
-      pointer-events: none;
-      white-space: nowrap;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    /* ─── AUTH MODAL & LOADING ──────────────────────────── */
-    .auth-loading {
-      position: fixed;
-      inset: 0;
-      background: rgba(13, 15, 26, 0.9);
-      backdrop-filter: blur(8px);
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .auth-loading.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .auth-loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--card-border);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    .auth-loading-text {
-      color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-
-    .logout-toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--dark-2);
-      border: 1px solid var(--card-border);
-      color: var(--accent);
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease;
-      z-index: 2000;
-    }
-    .logout-toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .auth-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
-      z-index: 1500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .auth-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .auth-modal {
-      background: var(--dark-2);
-      border: 1px solid var(--card-border);
-      border-radius: 1.25rem;
-      width: 100%;
-      max-width: 440px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-      transform: scale(0.95);
-      transition: transform 0.3s ease;
-    }
-    .auth-backdrop.open .auth-modal {
-      transform: scale(1);
-    }
-    .auth-modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 1.5rem 1.5rem 0;
-    }
-    .auth-modal-head h2 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: white;
-      margin-bottom: 0.25rem;
-    }
-    .auth-modal-head p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .auth-close {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.2rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: var(--transition);
-    }
-    .auth-close:hover {
-      background: var(--card-bg);
-      color: white;
-    }
-    .auth-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin: 1.25rem 1.5rem 0;
-    }
-    .auth-tab {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 0.75rem;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: var(--transition);
-    }
-    .auth-tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-    .auth-body {
-      padding: 1.5rem;
-    }
-    .auth-panel {
-      display: none;
-    }
-    .auth-panel.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-    .auth-field {
-      margin-bottom: 1rem;
-    }
-    .auth-field label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
-    .auth-field input {
-      width: 100%;
-      background: var(--dark-3);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      transition: var(--transition);
-    }
-    .auth-field input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-glow);
-    }
-    .pw-wrap {
-      position: relative;
-    }
-    .pw-eye {
-      position: absolute;
-      right: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 0.9rem;
-      padding: 0.25rem;
-    }
-    .pw-eye:hover {
-      color: var(--text);
-    }
-    .pw-strength {
-      height: 4px;
-      border-radius: 2px;
-      margin-top: 0.5rem;
-      transition: var(--transition);
-    }
-    .pw-strength.weak { background: #ff5f57; width: 33%; }
-    .pw-strength.medium { background: #ffbd2e; width: 66%; }
-    .pw-strength.strong { background: var(--accent); width: 100%; }
-    .forgot-link {
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 0.8rem;
-      color: var(--primary);
-      background: none;
-      border: none;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    .forgot-link:hover {
-      color: var(--accent);
-    }
-    .auth-submit {
-      width: 100%;
-      background: var(--primary);
-      color: white;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 700;
-      padding: 0.85rem;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    .auth-submit:hover {
-      background: var(--primary-dark);
-    }
-    .auth-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-    .auth-msg {
-      margin-top: 0.75rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      text-align: center;
-    }
-    .auth-msg.error { color: #ff5f57; }
-    .auth-msg.success { color: var(--accent); }
-    .auth-divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 1.25rem 0;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .auth-divider::before, .auth-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-    .btn-google {
-      width: 100%;
-      background: var(--dark-3);
-      border: 1px solid var(--card-border);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 0.85rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-    }
-    .btn-google:hover {
-      border-color: var(--text-muted);
-      background: var(--card-bg);
-    }
-    .btn-google svg {
-      width: 20px;
-      height: 20px;
-    }
-    .auth-switch {
-      text-align: center;
-      margin-top: 1.25rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .auth-switch button {
-      background: none;
-      border: none;
-      color: var(--primary);
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    .auth-switch button:hover {
-      color: var(--accent);
-    }
-    .mobile-user-greeting {
-      padding: 1rem 0;
-      border-top: 1px solid var(--border);
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .mobile-user-greeting span {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-    .mobile-user-greeting strong {
-      color: var(--accent);
-    }
-    .mobile-logout-btn {
-      background: rgba(255, 95, 87, 0.1);
-      color: #ff5f57;
-      border: 1px solid rgba(255, 95, 87, 0.2);
-      padding: 0.6rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .mobile-logout-btn:hover {
-      background: rgba(255, 95, 87, 0.2);
-    }
-
-    /* ─── ANIMATIONS ─────────────────────────────────────── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     /* ─── RESPONSIVE ─────────────────────────────────────── */
     @media (max-width: 1024px) {
       .journey-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1330,6 +893,7 @@
         transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
         gap: 0.25rem;
         z-index: 999;
+        
       }
       .nav-links.active { left: 0; box-shadow: 8px 0 32px rgba(0,0,0,0.5); }
       .nav-links a { font-size: 1rem; padding: 0.65rem 0.75rem; width: 100%; }
@@ -1342,6 +906,7 @@
       }
       .nav-overlay.active { display: block; }
 
+      /* Fix 1 — auth controls: constrained so they never push hamburger off screen */
       .nav-auth-controls {
         max-width: calc(100vw - 160px);
         overflow: hidden;
@@ -1354,6 +919,7 @@
         white-space: nowrap;
       }
       .nav-auth-btn i { display: none; }
+      /* Fix 1 — user chip on mobile: shrink, truncate, never overflow */
       .nav-user-chip {
         max-width: 100%;
         overflow: hidden;
@@ -1378,156 +944,531 @@
       .cta-row { flex-direction: column; align-items: center; }
       .cta-btns { flex-direction: column; align-items: center; }
     }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       AUTH — MODAL, FORMS, NAV CHIP, GATE LOCK
+    ═══════════════════════════════════════════════════════ */
+
+    /* Backdrop */
+    .auth-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.80);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 9000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .auth-backdrop.open { opacity: 1; visibility: visible; }
+
+    /* Modal card */
+    .auth-modal {
+      background: var(--dark-2);
+      border: 1px solid var(--card-border);
+      border-radius: 1.25rem;
+      width: 100%; max-width: 420px;
+      position: relative; overflow: hidden;
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .auth-backdrop.open .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    /* Modal header */
+    .auth-modal-head {
+      padding: 1.5rem 1.75rem 0;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .auth-modal-head h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem; color: white; line-height: 1.2;
+    }
+    .auth-modal-head p { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    /* Close button */
+    .auth-close {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; cursor: pointer;
+      transition: var(--transition); flex-shrink: 0; margin-left: 1rem;
+    }
+    .auth-close:hover {
+      background: rgba(248,113,113,0.12);
+      border-color: rgba(248,113,113,0.4); color: #f87171;
+    }
+
+    /* Tab bar */
+    .auth-tabs {
+      display: flex; gap: 0.25rem;
+      padding: 1.25rem 1.75rem 0;
+    }
+    .auth-tab {
+      flex: 1; padding: 0.55rem 0;
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition);
+    }
+    .auth-tab:hover { color: var(--text); }
+    .auth-tab.active {
+      background: var(--primary); border-color: var(--primary);
+      color: white; box-shadow: 0 2px 12px var(--primary-glow);
+    }
+
+    /* Panels */
+    .auth-body { padding: 1.5rem 1.75rem 1.75rem; }
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    /* Form fields */
+    .auth-field { margin-bottom: 1rem; }
+    .auth-field label {
+      display: block; font-size: 0.74rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--text-muted); margin-bottom: 0.4rem;
+    }
+    .auth-field input {
+      width: 100%; padding: 0.75rem 1rem;
+      background: var(--dark-3);
+      border: 1px solid var(--card-border);
+      border-radius: 0.6rem;
+      color: var(--text); font-family: var(--font-body);
+      font-size: 0.9rem; outline: none;
+      transition: var(--transition);
+    }
+    .auth-field input::placeholder { color: var(--text-muted); }
+    .auth-field input:focus {
+      border-color: var(--primary); background: var(--dark-2);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    /* Submit button */
+    .auth-submit {
+      width: 100%; padding: 0.85rem; margin-top: 1.25rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; font-family: var(--font-body);
+      font-size: 0.92rem; font-weight: 700;
+      border: none; border-radius: 0.6rem; cursor: pointer;
+      transition: var(--transition);
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+    .auth-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(91,76,255,0.45);
+    }
+    .auth-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Message */
+    .auth-msg {
+      font-size: 0.82rem; font-weight: 600; min-height: 1.1em;
+      margin-top: 0.85rem; text-align: center;
+    }
+    .auth-msg.success { color: var(--accent); }
+    .auth-msg.error   { color: #f87171; }
+
+    /* Switch link */
+    .auth-switch {
+      text-align: center; font-size: 0.8rem;
+      color: var(--text-muted); margin-top: 1rem;
+    }
+    .auth-switch button {
+      background: none; border: none; padding: 0;
+      color: var(--primary); font-weight: 700;
+      font-size: 0.8rem; cursor: pointer; transition: var(--transition);
+    }
+    .auth-switch button:hover { color: var(--accent); }
+
+    /* ── Navbar auth controls — always visible, outside mobile menu ── */
+    .nav-auth-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .nav-auth-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.84rem; font-weight: 600;
+      padding: 0.4rem 1rem; border-radius: 7px;
+      cursor: pointer; transition: var(--transition);
+      white-space: nowrap;
+    }
+    .nav-auth-btn:hover { color: white; border-color: var(--primary); background: var(--primary-glow); }
+
+    .nav-user-chip {
+      display: none;
+      align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; font-weight: 600; color: var(--accent);
+    }
+    .nav-user-chip.show { display: inline-flex; }
+
+    .nav-logout-btn {
+      background: none; border: none; padding: 0;
+      color: var(--text-muted); font-size: 0.75rem;
+      cursor: pointer; transition: var(--transition);
+      font-family: var(--font-body);
+    }
+    .nav-logout-btn:hover { color: #f87171; }
+
+    /* ── Protected content lock ── */
+    .auth-locked {
+      position: relative;
+      filter: blur(6px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .auth-locked::after {
+      content: '🔒 Login to unlock';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(13,15,26,0.6);
+      color: var(--text-muted);
+      font-size: 0.85rem; font-weight: 600;
+      border-radius: inherit;
+      filter: none;
+      pointer-events: all;
+      cursor: pointer;
+      backdrop-filter: blur(2px);
+    }
+
+    /* Password strength indicator */
+    .pw-strength {
+      height: 3px; border-radius: 100px;
+      margin-top: 0.4rem; width: 0%;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+    .pw-strength.weak   { width: 33%; background: #f87171; }
+    .pw-strength.medium { width: 66%; background: var(--warn, #fbbf24); }
+    .pw-strength.strong { width: 100%; background: var(--accent); }
+    /* Fix 2 — show/hide password toggle */
+    .pw-wrap {
+      position: relative;
+    }
+    .pw-wrap input {
+      padding-right: 2.75rem;
+    }
+    .pw-eye {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s ease;
+    }
+    .pw-eye:hover { color: var(--text); }
+
+    /* ── Auth loading overlay ── */
+    .auth-loading {
+      position: fixed; inset: 0;
+      background: rgba(13,15,26,0.92);
+      backdrop-filter: blur(10px);
+      z-index: 8999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .auth-loading.show { opacity: 1; visibility: visible; }
+    .auth-loading-spinner {
+      width: 44px; height: 44px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .auth-loading-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* ── Google Sign-In button ── */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.1rem 0;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .btn-google {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.75rem 1rem;
+      background: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 0.6rem;
+      color: #3c4043;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.25);
+    }
+    .btn-google:hover { background: #f7f8f9; box-shadow: 0 3px 12px rgba(0,0,0,0.3); transform: translateY(-1px); }
+    .btn-google:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── Forgot password link ── */
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      padding: 0;
+      margin-top: 0.3rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: color 0.2s ease;
+    }
+    .forgot-link:hover { color: var(--primary); }
+
+    /* ── Logout toast ── */
+    .logout-toast {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark-2);
+      border: 1px solid rgba(0,229,160,0.35);
+      color: var(--accent);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .logout-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
 
-  <!-- ══ NAVBAR ════════════════════════════════════════════ -->
-  <nav class="navbar" role="navigation" aria-label="Main navigation">
+  <!-- Navbar -->
+  <nav class="navbar" aria-label="Main navigation">
     <div class="navbar-container">
-      <a href="codevent-digital.html" target="_self" class="logo">
+      <a href="codevent-digital.html" target="_self" class="logo" aria-label="CodeVent Digital — Home">
         <img src="icons/icon-192x192.png" alt="" class="logo-icon" aria-hidden="true">
         CodeVent <span class="logo-word">Digital</span>
       </a>
 
-      <ul class="nav-links" id="navLinks">
-        <li><a href="codevent-digital.html" target="_self">Home</a></li>
-        <li><a href="learning.html" target="_self">Learning</a></li>
-        <li><a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener">Blog</a></li>
-        <li><a href="community.html" target="_self">Community</a></li>
-        <li><a href="shop.html" target="_self">Shop</a></li>
-        <li><a href="toolkit.html" target="_self">Toolkit</a></li>
-        
-        <!-- Mobile User Greeting (Visible only when logged in on mobile) -->
-        <li class="mobile-user-greeting" id="mobileUserGreeting" style="display: none;">
-          <span>Hello, <strong id="mobileUserName"></strong></span>
-          <button class="mobile-logout-btn" id="mobileLogoutBtn">Log out</button>
+      <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <ul class="nav-links" id="navLinks" role="menubar">
+        <!-- Mobile auth greeting — shown when logged in -->
+        <li id="mobileUserGreeting" style="display:none; padding: 0 0.75rem 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem;">
+          <span style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted);">Logged in as</span>
+          <br/>
+          <span id="mobileUserName" style="font-size:1rem; font-weight:700; color:var(--accent);"></span>
+          <br/>
+          <button id="mobileLogoutBtn" style="margin-top:0.5rem; background:none; border:1px solid rgba(248,113,113,0.4); color:#f87171; font-size:0.8rem; font-weight:600; padding:0.3rem 0.75rem; border-radius:6px; cursor:pointer; font-family:var(--font-body);">
+            Log out
+          </button>
+        </li>
+        <li role="none"><a href="codevent-digital.html" target="_self" role="menuitem">Home</a></li>
+        <li role="none"><a href="learning.html" target="_self" role="menuitem">Learning</a></li>
+        <li role="none"><a href="https://codeventdigital.site/blog/" target="_blank" rel="noopener" target="_self" role="menuitem">Blog</a></li>
+        <li role="none"><a href="community.html" target="_self" role="menuitem">Community</a></li>
+        <li role="none"><a href="shop.html" target="_self" role="menuitem">Shop</a></li>
+        <li role="none"><a href="toolkit.html" target="_self" role="menuitem">Toolkit</a></li>
+        <li role="none"><a href="codevent-code-editor.html" target="_self" role="menuitem">Code Editor</a></li>
+        <li role="none"><a href="chat.html" target="_self" role="menuitem">AI Chat</a></li>
+        <li role="none">
+          <a href="#" data-enroll-link class="nav-cta" role="menuitem">
+            Start Free <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
         </li>
       </ul>
 
+      <!-- AUTH — always visible, outside the mobile menu -->
       <div class="nav-auth-controls" id="navAuthControls">
         <button class="nav-auth-btn" id="navSignInBtn" aria-label="Sign in or create account">
           <i class="fas fa-user" aria-hidden="true"></i> Sign In
         </button>
-
         <span class="nav-user-chip" id="navUserChip" aria-live="polite">
-          <i class="fas fa-circle-check" aria-hidden="true"></i>
-          <span id="navUserName"></span>
-          <button class="nav-logout-btn" id="navLogoutBtn" aria-label="Log out">
-            Log out
-          </button>
+          <!--i class="fas fa-circle-check" aria-hidden="true"></i>
+          <span id="navUserName"></span-->
+          <!--button class="nav-logout-btn" id="navLogoutBtn" aria-label="Log out">Log out</button-->
         </span>
       </div>
-
-      <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
-        <i class="fas fa-bars" aria-hidden="true"></i>
-      </button>
     </div>
   </nav>
-  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
   <!-- ══ HERO ══════════════════════════════════════════════ -->
-  <section class="hero" aria-labelledby="hero-title">
+  <section class="hero" id="home" aria-label="Hero section">
     <div class="hero-container">
+
+      <!-- LEFT: Copy + CTA -->
       <div class="hero-content">
         <div class="hero-badge">
-          <span class="dot"></span>
-          Now Enrolling
+          <span class="dot" aria-hidden="true"></span>
+          Build Your Digital Future
         </div>
-        <h1 class="hero-tagline" id="hero-title">
-          Build the <em>Digital Future</em>, One Line at a Time.
+
+        <h1 class="hero-tagline">
+          Building the Digital Future<br>
         </h1>
-        <p class="hero-sub">
-          CodeVent Digital is a technology and digital skills ecosystem helping you learn, build, and create with modern web development, AI automation, and machine learning.
+
+        <p class="hero-sub" style="margin-bottom:0.9rem;">
+          CodeVent Digital is a technology and digital skills ecosystem focused on helping people learn, build, and create with modern technology.
         </p>
+        <p class="hero-sub" style="margin-bottom:0.9rem;">
+          We combine practical learning, real world projects, digital products, and technology solutions to help individuals and businesses develop valuable digital capabilities and turn ideas into working solutions.
+        </p>
+        <p class="hero-sub" style="margin-bottom:0.9rem;">
+          From web development and software engineering to AI automation, machine learning, digital tools, and modern web technologies, we make it easier to understand technology, apply it in practice, and build with confidence.
+        </p>
+        <p class="hero-sub">
+          Whether you are developing your skills, building a digital product, improving a business process, or exploring new opportunities in technology, CodeVent Digital provides practical knowledge and solutions designed for the real world.
+        </p>
+
         <div class="hero-cta-group">
           <div class="cta-row">
-            <a href="learning.html" target="_self" class="btn-primary" aria-label="Start learning for free now">
+            <!-- PRIMARY CTA -->
+            <a href="#" data-enroll-link class="btn-primary" aria-label="Start learning for free">
               <i class="fas fa-rocket" aria-hidden="true"></i>
-              Start Learning Now
+              Start Learning — It's Free
             </a>
-            <a href="#" id="heroSignInLink" class="btn-secondary" aria-label="Sign in to access protected features">
-              <i class="fas fa-arrow-right-to-bracket" aria-hidden="true"></i>
-              Sign In
+            <!-- SECONDARY CTA -->
+            <a href="https://wa.me/2348185947780?text=Hello%20!%20I'm%20interested%20in%20codevent-digital%20community%20my%20name%20is%20________________%20" target="_blank" rel="noopener" class="btn-secondary" aria-label="Join our WhatsApp community channel">
+              <i class="fab fa-whatsapp" aria-hidden="true"></i>
+              Join Community
             </a>
           </div>
+
+          <!-- Trust line -->
           <div class="trust-line">
-            <i class="fas fa-shield-halved" aria-hidden="true"></i>
-            <span>Free to start. No credit card required.</span>
+            <i class="fas fa-circle-check" aria-hidden="true"></i>
+            <span>Free to start — no credit card required</span>
           </div>
-        </div>
-      </div>
-
-      <div class="hero-visual fade-up" style="transition-delay:0.2s">
-        <div class="stat-chip chip-top">
-          <div class="chip-icon chip-icon-green"><i class="fas fa-check" aria-hidden="true"></i></div>
-          <div>
-            <div class="chip-num">100%</div>
-            <div class="chip-desc">Project-Based</div>
-          </div>
-        </div>
-
-        <div class="visual-card">
-          <div class="card-header">
-            <div class="dot-r"></div>
-            <div class="dot-y"></div>
-            <div class="dot-g"></div>
-            <span class="card-file">learning-path.js</span>
-          </div>
-          <div class="code-block">
-            <span class="code-kw">const</span> <span class="code-fn">developer</span> = {<br>
-            &nbsp;&nbsp;name: <span class="code-str">"You"</span>,<br>
-            &nbsp;&nbsp;skills: [<span class="code-str">"HTML"</span>, <span class="code-str">"CSS"</span>, <span class="code-str">"JS"</span>],<br>
-            &nbsp;&nbsp;status: <span class="code-acc">"Ready to build"</span><br>
-            };<br><br>
-            <span class="code-comment">// Start your journey today</span><br>
-            <span class="code-fn">codevent</span>.<span class="code-fn">start</span>(developer);
-          </div>
-          <div class="pipeline">
-            <div class="pipeline-step done">
-              <div class="step-icon icon-learn"><i class="fas fa-book-open" aria-hidden="true"></i></div>
-              <div>
-                <div class="step-text">Learn</div>
-                <div class="step-sub">Foundations</div>
-              </div>
-              <span class="step-badge badge-free">Free</span>
-            </div>
-            <div class="pipeline-step active">
-              <div class="step-icon icon-build"><i class="fas fa-code" aria-hidden="true"></i></div>
-              <div>
-                <div class="step-text">Build</div>
-                <div class="step-sub">Real projects</div>
-              </div>
-              <span class="step-badge badge-active">Active</span>
-            </div>
-            <div class="pipeline-step">
-              <div class="step-icon icon-valid"><i class="fas fa-clipboard-check" aria-hidden="true"></i></div>
-              <div>
-                <div class="step-text">Validate</div>
-                <div class="step-sub">Get reviewed</div>
-              </div>
-              <span class="step-badge badge-soon">Soon</span>
-            </div>
-            <div class="pipeline-step">
-              <div class="step-icon icon-earn"><i class="fas fa-coins" aria-hidden="true"></i></div>
-              <div>
-                <div class="step-text">Monetize</div>
-                <div class="step-sub">Land opportunities</div>
-              </div>
-              <span class="step-badge badge-soon">Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="stat-chip chip-bottom">
-          <div class="chip-icon chip-icon-blue"><i class="fas fa-users" aria-hidden="true"></i></div>
-          <div>
-            <div class="chip-num">500+</div>
-            <div class="chip-desc">Active Learners</div>
-          </div>
+          <!-- Auth nudge -->
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.85rem;" data-auth="logged-out">
+            Already have an account?
+            <button id="heroSignInLink" style="background:none;border:none;color:var(--primary);font-weight:700;font-size:0.8rem;cursor:pointer;padding:0;text-decoration:underline;">
+              Sign in here
+            </button>
+          </p>
+          <!--p style="font-size:0.8rem;color:var(--accent);margin-top:0.85rem;display:none;" data-auth="logged-in">
+            <i class="fas fa-circle-check" aria-hidden="true"></i>
+            You're logged in — full access unlocked.
+        </p-->
         </div>
       </div>
     </div>
+  </section>
+  
+  <!--script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1629598637562109"
+     crossorigin="anonymous"></script-->
+<!-- codeventdigital ad unit -->
+<!--ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1629598637562109"
+     data-ad-slot="2198694017"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script-->
+
+  <!-- ══ STATS BAR ═════════════════════════════════════════ -->
+  <div class="stats-bar" aria-label="Platform statistics">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-num" data-count-to="7" data-suffix="+">7+</span>
+        <span class="stat-label">Structured Courses</span>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <span class="stat-num" data-count-to="100" data-suffix="%">100%</span>
+        <span class="stat-label">Free to Start</span>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <span class="stat-num">Online</span>
+        <span class="stat-label">Global, Digital-First</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MISSION / WHO WE ARE ══════════════════════════════ -->
+  <section class="platform" aria-labelledby="mission-title" style="padding-bottom:0;">
+    <p class="section-label">Who We Are</p>
+    <h2 class="section-title" id="mission-title">Learn technology. Build solutions. Create value.</h2>
+    <p class="section-sub" style="max-width:760px;margin:0 auto 1rem;">
+      CodeVent Digital brings together digital skills, practical learning, technology solutions, and digital products in one ecosystem.
+    </p>
+    <p class="section-sub" style="max-width:760px;margin:0 auto 1rem;">
+      We provide structured learning experiences and practical projects across web development, software engineering, AI automation, machine learning, and other emerging areas of technology. We also build digital solutions that help individuals, businesses, and organizations solve real problems and operate more effectively.
+    </p>
+    <p class="section-sub" style="max-width:760px;margin:0 auto 3.5rem;">
+      Our goal is simple: make modern technology more accessible, practical, and useful. Whether you are learning a new skill, developing a product, automating a process, or looking for a better way to use technology, CodeVent Digital is built to help you move from knowledge to action.
+    </p>
   </section>
 
   <!-- ══ JOURNEY SECTION ═══════════════════════════════════ -->
@@ -1919,6 +1860,7 @@
         navbar.style.boxShadow = window.scrollY > 20 ? '0 4px 32px rgba(0,0,0,0.4)' : 'none';
       }, { passive: true });
 
+
       // ════════════════════════════════════════════════════
       // AUTH MODAL
       // ════════════════════════════════════════════════════
@@ -2151,6 +2093,7 @@
       });
 
     }); // end DOMContentLoaded
+
 
     // ════════════════════════════════════════════════════════
     // AUTH STATE — runs outside DOMContentLoaded so it fires
