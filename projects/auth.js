@@ -1,3 +1,10 @@
+// auth.js
+// ─────────────────────────────────────────────────────────────
+// Handles: Signup · Login · Logout · Auth state · UI gating
+// Depends on: firebase-config.js  (must load first)
+// Used by:    index.html (and any other page needing auth)
+// ─────────────────────────────────────────────────────────────
+
 import { auth } from "./firebase-config.js";
 import {
   createUserWithEmailAndPassword,
@@ -5,12 +12,17 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const googleProvider = new GoogleAuthProvider();
+
+
+// ══════════════════════════════════════════════════════════════
+// 1. AUTH ACTIONS
+// ══════════════════════════════════════════════════════════════
 
 export async function signUp(name, email, password) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -24,17 +36,8 @@ export async function logIn(email, password) {
 }
 
 export async function signInWithGoogle() {
-  await signInWithRedirect(auth, googleProvider);
-}
-
-export async function checkGoogleRedirectResult() {
-  try {
-    const result = await getRedirectResult(auth);
-    return result ? result.user : null;
-  } catch (err) {
-    console.error("Google redirect result error:", err.code, err.message);
-    return null;
-  }
+  const cred = await signInWithPopup(auth, googleProvider);
+  return cred.user;
 }
 
 export async function logOut() {
@@ -46,20 +49,27 @@ export function currentUser() {
 }
 
 export async function resetPassword(email) {
-  const res = await fetch("https://password-reset-mailer.emezch93.workers.dev", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email })
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw { code: "auth/network-request-failed", message: data.error || "Failed to send reset email" };
-  }
+  await sendPasswordResetEmail(auth, email);
 }
+
+
+// ══════════════════════════════════════════════════════════════
+// 2. AUTH STATE LISTENER
+// Fires immediately with the persisted session, then on
+// every login / logout.
+// ══════════════════════════════════════════════════════════════
 
 export function onAuthChange(callback) {
   return onAuthStateChanged(auth, callback);
 }
+
+
+// ══════════════════════════════════════════════════════════════
+// 3. UI GATING
+// Add  data-auth="protected"  to any element you want locked.
+// Add  data-auth="logged-in"  to show only when authenticated.
+// Add  data-auth="logged-out" to show only when not logged in.
+// ══════════════════════════════════════════════════════════════
 
 export function applyAuthGate(user) {
   document.querySelectorAll('[data-auth="protected"]').forEach(el => {
@@ -73,6 +83,11 @@ export function applyAuthGate(user) {
   });
 }
 
+
+// ══════════════════════════════════════════════════════════════
+// 4. FIREBASE ERROR → HUMAN MESSAGE
+// ══════════════════════════════════════════════════════════════
+
 export function friendlyError(code) {
   const map = {
     "auth/email-already-in-use":   "An account with this email already exists.",
@@ -85,9 +100,9 @@ export function friendlyError(code) {
     "auth/network-request-failed": "Network error. Check your connection.",
     "auth/missing-email":          "Please enter your email address.",
     "auth/user-disabled":          "This account has been disabled.",
-    "auth/popup-closed-by-user":   "Sign in popup was closed. Please try again.",
+    "auth/popup-closed-by-user":   "Sign-in popup was closed. Please try again.",
     "auth/popup-blocked":          "Popup was blocked by your browser. Please allow popups.",
-    "auth/account-exists-with-different-credential": "An account already exists with this email using a different sign in method.",
+    "auth/account-exists-with-different-credential": "An account already exists with this email using a different sign-in method.",
   };
   return map[code] || "Something went wrong. Please try again.";
 }
