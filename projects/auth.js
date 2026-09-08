@@ -12,19 +12,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-const googleProvider =
-  new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
 
 /* ======================================================
    SIGN UP
 ====================================================== */
 
-export async function signUp(
-  name,
-  email,
-  password
-) {
+export async function signUp(name, email, password) {
 
   const credential =
     await createUserWithEmailAndPassword(
@@ -33,7 +28,6 @@ export async function signUp(
       password
     );
 
-
   await updateProfile(
     credential.user,
     {
@@ -41,9 +35,7 @@ export async function signUp(
     }
   );
 
-
   return credential.user;
-
 }
 
 
@@ -51,10 +43,7 @@ export async function signUp(
    LOGIN
 ====================================================== */
 
-export async function logIn(
-  email,
-  password
-) {
+export async function logIn(email, password) {
 
   const credential =
     await signInWithEmailAndPassword(
@@ -63,14 +52,12 @@ export async function logIn(
       password
     );
 
-
   return credential.user;
-
 }
 
 
 /* ======================================================
-   GOOGLE
+   GOOGLE AUTH
 ====================================================== */
 
 export async function signInWithGoogle() {
@@ -79,7 +66,6 @@ export async function signInWithGoogle() {
     auth,
     googleProvider
   );
-
 }
 
 
@@ -109,9 +95,7 @@ export async function checkGoogleRedirectResult() {
     );
 
     return null;
-
   }
-
 }
 
 
@@ -141,9 +125,7 @@ export function currentUser() {
    AUTH STATE
 ====================================================== */
 
-export function onAuthChange(
-  callback
-) {
+export function onAuthChange(callback) {
 
   return onAuthStateChanged(
     auth,
@@ -200,12 +182,53 @@ export function applyAuthGate(user) {
 
 
 /* ======================================================
+   PASSWORD RESET
+====================================================== */
+
+export async function resetPassword(email) {
+
+  const response =
+    await fetch(
+      "https://password-reset-mailer.emezch93.workers.dev",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          email
+        })
+      }
+    );
+
+
+  if (!response.ok) {
+
+    const data =
+      await response
+        .json()
+        .catch(() => ({}));
+
+
+    throw {
+      code: "auth/network-request-failed",
+      message:
+        data.error ||
+        "Failed to send reset email"
+    };
+
+  }
+
+}
+
+
+/* ======================================================
    FRIENDLY ERRORS
 ====================================================== */
 
-export function friendlyError(
-  code
-) {
+export function friendlyError(code) {
 
   const errors = {
 
