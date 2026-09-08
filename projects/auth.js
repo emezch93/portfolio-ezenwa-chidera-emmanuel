@@ -8,7 +8,6 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult,
-  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const googleProvider = new GoogleAuthProvider();
@@ -47,7 +46,15 @@ export function currentUser() {
 }
 
 export async function resetPassword(email) {
-  await sendPasswordResetEmail(auth, email);
+  const res = await fetch("https://password-reset-mailer.emezch93.workers.dev", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw { code: "auth/network-request-failed", message: data.error || "Failed to send reset email" };
+  }
 }
 
 export function onAuthChange(callback) {
