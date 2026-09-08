@@ -3,7 +3,7 @@
   "short_name": "CodeVent",
   "description": "CodeVent Digital — a technology and digital skills ecosystem for learning, building, and creating with modern technology.",
   "start_url": "/?utm_source=pwa",
-  "scope": "./",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0d0f1a",
